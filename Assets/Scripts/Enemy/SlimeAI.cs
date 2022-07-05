@@ -82,7 +82,7 @@ public class SlimeAI : MonoBehaviour
             {
                 PlayerMovement enemy = enemyCollider.transform.parent.gameObject.GetComponent<PlayerMovement>();
                 
-                StartCoroutine(enemy.Knockback(0.5f, 60f, 15f, this.transform));
+                StartCoroutine(enemy.Knockback(0.5f, 10f, 10f, this.transform));
 
                 enemyCollider.transform.parent.gameObject.GetComponent<Player>().TakeDamage(attackDamage);
             }

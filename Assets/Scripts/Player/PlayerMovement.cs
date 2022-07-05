@@ -12,18 +12,15 @@ public class PlayerMovement : MonoBehaviour {
     private bool isCrouching;
     public Collider2D physicsCollider;
 
-    // public bool playerCanMove;
 
-    public Player playerHasControl;
+    public bool playerCanMove;
 
 
 
     // Use this for initialization
     private void Start () {
 
-        // playerCanMove = true;
-
-        playerHasControl = GetComponent<Player>();
+        playerCanMove = true;
 
         rigidbody2d = transform.GetComponent<Rigidbody2D>();
 
@@ -32,7 +29,6 @@ public class PlayerMovement : MonoBehaviour {
     // Update is called once per frame
     private void Update () {
 
-        Debug.Log(playerCanMove);
         HandleMovement();
 
     }
@@ -41,8 +37,8 @@ public class PlayerMovement : MonoBehaviour {
     private void HandleMovement() {
         float moveSpeed = 5f;
 
-        // if(playerCanMove == false)
-        //     return;
+        if(playerCanMove == false)
+            return;
 
         
 
@@ -86,20 +82,20 @@ public class PlayerMovement : MonoBehaviour {
 
     public IEnumerator Knockback(float knockDur, float knockbackPwrX, float knockbackPwrY, Transform obj){
 
-    //  playerCanMove = false;
-     float timer = 0;
- 
-     while( knockDur > timer ) {
-         timer += Time.deltaTime;
-         Vector2 direction = (obj.transform.position - this.transform.position).normalized;
-         direction.x *= knockbackPwrX;
-         direction.y *= knockbackPwrY;
-         rigidbody2d.AddForce(-direction);
-     }
+        float timer = 0;
+        
+        playerCanMove = false;
 
- 
-     yield return 0; 
- 
-    //  playerCanMove = true;
- }
+        while( knockDur > timer ) {
+            timer += Time.deltaTime;
+            Vector2 direction = (obj.transform.position - this.transform.position).normalized;
+            direction.x *= knockbackPwrX;
+            direction.y *= knockbackPwrY;
+            rigidbody2d.AddForce(-direction);
+        }
+
+    
+        yield return new WaitForSeconds(0.5f); 
+        playerCanMove = true;
+    }
 }

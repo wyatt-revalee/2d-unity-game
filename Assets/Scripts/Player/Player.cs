@@ -119,6 +119,5 @@ public class Player : MonoBehaviour {
             temp++;
         }
         combatCollider.enabled = true;
-        // playerCanMove = true;
     }
 }
