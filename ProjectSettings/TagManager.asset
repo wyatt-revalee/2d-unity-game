@@ -14,10 +14,10 @@ TagManager:
   - Water
   - UI
   - Platforms
-  - Player
+  - PlayerPhysics
   - Enemies
-  - 
-  - 
+  - Weapon
+  - PlayerCombat
   - 
   - 
   - 

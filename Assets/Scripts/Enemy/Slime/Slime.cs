@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class EnemyAI : MonoBehaviour
+public class Slime : MonoBehaviour, IDamageable, IKnockbackable
 {
 
     [Header("Pathfinding")]
     public Transform target;
     public float activateDistance = 50f;
     public float pathUpdateSeconds = 0.5f;
+    public float nextWaypointDistance = 3f;
 
     [Header("Physics")]
     public float speed = 200f;
-    public float nextWaypointDistance = 3f;
     public float jumpNodeHeightRequirement = 0.8f;
     public float jumpModifier = 0.3f;
     public float JumpCheckOffset = 0.1f;
@@ -22,16 +22,17 @@ public class EnemyAI : MonoBehaviour
     public bool followEnabled = true;
     public bool jumpEnabled = true;
     public bool directionLookEnabled = true;
-    public float attackModifier = 0.01f;
 
     [Header("Combat")]
     public Transform attackPoint;
     public LayerMask enemyLayers;
+    public GameObject enemy;
     public float attackRange = 0.5f;
     public int attackDamage = 2;
     public int maxHealth = 2;
     public int currentHealth;
-    public float knockback = 5;
+    public float knockbackX = 5;
+    public float knockbackY = 5;
     public float attackSpeed = 0.1f;
     float nextAttackTime = 0f;
     bool movementControl = true;
@@ -62,37 +63,34 @@ public class EnemyAI : MonoBehaviour
             PathFollow();
         }
 
-        Attack();
     }
 
-    private void OnDrawGizmosSelected()
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if(attackPoint == null)
-            return;
-
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
-
-     void Attack()
-    {
-        // Deteck enemies in range of attack
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-
-        // Damage them
-        foreach(Collider2D enemyCollider in hitEnemies)
+        if(other.gameObject.layer == 10)
+            enemy = other.transform.parent.gameObject;
+        else
+            enemy = null;
+        
+        if(enemy != null)
         {
-            if(enemyCollider.isTrigger)
-            {
-                PlayerMovement enemy = enemyCollider.transform.parent.gameObject.GetComponent<PlayerMovement>();
-                
-                StartCoroutine(enemy.Knockback(0.5f, 10f, 10f, this.transform));
+            var knockback = enemy.GetComponent<IKnockbackable>();
+            var hit = enemy.GetComponent<IDamageable>();
 
-                enemyCollider.transform.parent.gameObject.GetComponent<Player>().TakeDamage(attackDamage);
+            if (hit != null)
+            {
+                hit.Damage(attackDamage);
+            }
+
+            if (knockback != null)
+            {
+                knockback.Knockback(knockbackX, knockbackY, this.transform);
             }
         }
+        
     }
 
-    public void TakeDamage(int damage) {
+    public void Damage(int damage) {
         currentHealth -= damage;
 
         if(currentHealth == 0)
@@ -175,8 +173,13 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    public IEnumerator Knockback(float knockDur, float knockbackPwrX, float knockbackPwrY, Transform obj){
+    public void Knockback(float knockbackPwrX, float knockbackPwrY, Transform obj)
+    {
+        StartCoroutine(StartKnockback(knockbackPwrX, knockbackPwrY, obj));
+    }
+    public IEnumerator StartKnockback(float knockbackPwrX, float knockbackPwrY, Transform obj){
 
+        float knockDur = 0.5f;
         float timer = 0;
         
         movementControl = false;

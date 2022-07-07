@@ -419,7 +419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 270.89502, y: -44.229996}
+  m_AnchoredPosition: {x: 270.89502, y: -44.22998}
   m_SizeDelta: {x: 541.79004, y: 88.45999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &467253242
@@ -582,7 +582,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.789562
+  orthographic size: 4.7918367
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -942,7 +942,6 @@ MonoBehaviour:
     m_Bits: 64
   colliders: []
   physicsCollider: {fileID: 1965688205}
-  hurtBox: {fileID: 0}
   animator: {fileID: 1309676145}
   lifeCounter: {fileID: 1856723490}
   healthBar: {fileID: 1460972741}
@@ -955,8 +954,8 @@ MonoBehaviour:
   currentHealth: 0
   attackDamage: 1
   attackRange: 0.56
-  knockbackY: 5
-  knockbackX: 5
+  knockbackY: 15
+  knockbackX: 15
   attackSpeed: 2
   combatCollider: {fileID: 2051172515}
   playerSprite: {fileID: 1309676140}
@@ -1118,24 +1117,25 @@ MonoBehaviour:
   target: {fileID: 1309676141}
   activateDistance: 50
   pathUpdateSeconds: 0.5
-  speed: 800
   nextWaypointDistance: 1
+  speed: 800
   jumpNodeHeightRequirement: 0.8
   jumpModifier: 0.6
   JumpCheckOffset: 0.1
   followEnabled: 1
   jumpEnabled: 1
   directionLookEnabled: 1
-  attackModifier: 0.1
   attackPoint: {fileID: 1009656812}
   enemyLayers:
     serializedVersion: 2
     m_Bits: 128
+  enemy: {fileID: 0}
   attackRange: 0.32
   attackDamage: 2
   maxHealth: 2
   currentHealth: 0
-  knockback: 30
+  knockbackX: 5
+  knockbackY: 5
   attackSpeed: 1
 --- !u!50 &1349596650
 Rigidbody2D:
@@ -2522,13 +2522,14 @@ GameObject:
   - component: {fileID: 1794895017}
   - component: {fileID: 1794895019}
   - component: {fileID: 1794895018}
-  m_Layer: 0
-  m_Name: AttackPoint
+  - component: {fileID: 1794895020}
+  m_Layer: 9
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1794895017
 Transform:
   m_ObjectHideFlags: 0
@@ -2536,14 +2537,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794895016}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3, y: -0.06, z: 91.57425}
+  m_LocalRotation: {x: 0.007105776, y: 0.011232501, z: 0.15842552, w: 0.98728144}
+  m_LocalPosition: {x: -0.157, y: -0.19, z: 91.57425}
   m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1309676141}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.6, y: 1.4, z: 18.24}
 --- !u!212 &1794895018
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2606,10 +2607,10 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.12305021, y: -0.080250084}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2620,8 +2621,21 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.2461004, y: 0.2830993}
   m_EdgeRadius: 0
+--- !u!114 &1794895020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794895016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c90c10c148ec44a97202114b21316c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1309676142}
 --- !u!1 &1856723486
 GameObject:
   m_ObjectHideFlags: 0
@@ -2842,7 +2856,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2051172514}
   - component: {fileID: 2051172515}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: CombatCollider
   m_TagString: SwitchingActive
   m_Icon: {fileID: 0}

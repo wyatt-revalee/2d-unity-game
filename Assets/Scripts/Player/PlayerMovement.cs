@@ -3,7 +3,7 @@ using System;
 using UnityEngine.SceneManagement;
 using System.Collections;
  
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : MonoBehaviour, IKnockbackable {
 
 
     // Rendering
@@ -80,8 +80,14 @@ public class PlayerMovement : MonoBehaviour {
     }
     
 
-    public IEnumerator Knockback(float knockDur, float knockbackPwrX, float knockbackPwrY, Transform obj){
+    public void Knockback(float knockbackPwrX, float knockbackPwrY, Transform obj)
+    {
+        StartCoroutine(StartKnockback(knockbackPwrX, knockbackPwrY, obj));
+    }
 
+    public IEnumerator StartKnockback(float knockbackPwrX, float knockbackPwrY, Transform obj){
+
+        float knockDur = 0.5f;
         float timer = 0;
         
         playerCanMove = false;
@@ -89,6 +95,7 @@ public class PlayerMovement : MonoBehaviour {
         while( knockDur > timer ) {
             timer += Time.deltaTime;
             Vector2 direction = (obj.transform.position - this.transform.position).normalized;
+            direction.y = -1;
             direction.x *= knockbackPwrX;
             direction.y *= knockbackPwrY;
             rigidbody2d.AddForce(-direction);
