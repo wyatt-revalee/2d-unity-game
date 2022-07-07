@@ -13,7 +13,7 @@ public class PlayerGFX : MonoBehaviour
     private bool isCrouching;
     private bool isJumping;
     private bool isFalling;
-    private int direction;
+    public int direction;
 
 
     // Start is called before the first frame update
@@ -36,7 +36,7 @@ public class PlayerGFX : MonoBehaviour
         animator.SetBool("IsGrounded", playerMovement.IsGrounded());
         animator.SetBool("IsFalling", isFalling);
 
-        SetCharDirection(rigidbody2d.velocity.x);
+        SetCharDirection();
         
     }
 
@@ -62,11 +62,11 @@ public class PlayerGFX : MonoBehaviour
         }
     }
 
-    private void SetCharDirection(float xSpeed) {
+    private void SetCharDirection() {
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             direction = -1;
-        else if(Input.GetKey(KeyCode.RightArrow))
+        else if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             direction = 1;
 
 

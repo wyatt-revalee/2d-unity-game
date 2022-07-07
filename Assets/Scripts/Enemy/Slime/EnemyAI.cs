@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class SlimeAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour
 {
 
     [Header("Pathfinding")]
@@ -32,6 +32,9 @@ public class SlimeAI : MonoBehaviour
     public int maxHealth = 2;
     public int currentHealth;
     public float knockback = 5;
+    public float attackSpeed = 0.1f;
+    float nextAttackTime = 0f;
+    bool movementControl = true;
 
     private Path path;
     private int currentWaypoint = 0;
@@ -107,7 +110,7 @@ public class SlimeAI : MonoBehaviour
 
     private void PathFollow()
     {
-        if (path == null)
+        if (path == null  || movementControl == false)
         {
             return;
         }
@@ -121,11 +124,14 @@ public class SlimeAI : MonoBehaviour
         }
 
          // Attack
+        if(Time.time >= nextAttackTime)
+        {
             if (isGrounded && (path.vectorPath.Count <= 6 && path.vectorPath.Count >= 3) && rb.velocity.y == 0 && !(target.position.y -1f > rb.transform.position.y))
             {
                 rb.AddForce(Vector2.up * speed * jumpModifier);
+                nextAttackTime = Time.time + 1f / attackSpeed;
             }
-
+        }
         //See if colliding with anything
         isGrounded = Physics2D.Raycast(transform.position, -Vector3.up, GetComponent<Collider2D>().bounds.extents.y + JumpCheckOffset);
 
@@ -167,6 +173,26 @@ public class SlimeAI : MonoBehaviour
                 transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
         }
+    }
+
+    public IEnumerator Knockback(float knockDur, float knockbackPwrX, float knockbackPwrY, Transform obj){
+
+        float timer = 0;
+        
+        movementControl = false;
+
+        while( knockDur > timer ) {
+            timer += Time.deltaTime;
+            Vector2 direction = (obj.transform.position - this.transform.position).normalized;
+            direction.x *= knockbackPwrX;
+            direction.y = -0.5f;
+            direction.y *= knockbackPwrY;
+            rb.AddForce(-direction);
+        }
+
+    
+        yield return new WaitForSeconds(0.5f); 
+        movementControl = true;
     }
 
     private bool TargetInDistance()
