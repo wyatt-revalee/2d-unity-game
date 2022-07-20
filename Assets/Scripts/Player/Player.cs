@@ -25,8 +25,8 @@ public class Player : MonoBehaviour, IDamageable{
     public int currentHealth;
     public int attackDamage = 1;
     public float attackRange = 0.3f;
-    public float knockbackY = 10;
-    public float knockbackX = 10;
+    public float knockbackY = 15;
+    public float knockbackX = 15;
     public float attackSpeed = 2f;
     float nextAttackTime = 0f;
 
@@ -64,7 +64,6 @@ public class Player : MonoBehaviour, IDamageable{
 
     public void Damage(int damage) {
 
-        Debug.Log("Damaged");
         StartCoroutine(FlashCo());
 
         currentHealth -= damage;

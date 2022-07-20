@@ -12,15 +12,16 @@ public class resizeCamera : MonoBehaviour {
     Camera _camera;
     void Start() {
         _camera = GetComponent<Camera>();
+        _camera.pixelRect = new Rect(0, 0, 1600, 900);
     }
 
     // Adjust the camera's height so the desired scene width fits in view
     // even if the screen/window size changes dynamically.
     void Update() {
-        float unitsPerPixel = sceneWidth / Screen.width;
+        // float unitsPerPixel = sceneWidth / Screen.width;
 
-        float desiredHalfHeight = 0.5f * unitsPerPixel * Screen.height;
+        // float desiredHalfHeight = 0.5f * unitsPerPixel * Screen.height;
 
-        _camera.orthographicSize = desiredHalfHeight;
+        // _camera.orthographicSize = desiredHalfHeight;
     }
 }

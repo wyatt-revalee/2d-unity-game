@@ -26,7 +26,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
     [Header("Combat")]
     public Transform attackPoint;
     public LayerMask enemyLayers;
-    public GameObject enemy;
+    public Collider2D combatCollider;
     public float attackRange = 0.5f;
     public int attackDamage = 2;
     public int maxHealth = 2;
@@ -64,31 +64,35 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
         }
 
     }
-
-    void OnTriggerEnter2D(Collider2D other)
+    
+    public void Knockback(float knockbackPwrX, float knockbackPwrY, Transform obj)
     {
-        if(other.gameObject.layer == 10)
-            enemy = other.transform.parent.gameObject;
-        else
-            enemy = null;
-        
-        if(enemy != null)
-        {
-            var knockback = enemy.GetComponent<IKnockbackable>();
-            var hit = enemy.GetComponent<IDamageable>();
-
-            if (hit != null)
-            {
-                hit.Damage(attackDamage);
-            }
-
-            if (knockback != null)
-            {
-                knockback.Knockback(knockbackX, knockbackY, this.transform);
-            }
-        }
-        
+        StartCoroutine(StartKnockback(knockbackPwrX, knockbackPwrY, obj));
     }
+    public IEnumerator StartKnockback(float knockbackPwrX, float knockbackPwrY, Transform obj){
+
+        float knockDur = 0.5f;
+        float timer = 0;
+        
+        movementControl = false;
+        combatCollider.enabled = false;
+        
+
+        while( knockDur > timer ) {
+            timer += Time.deltaTime;
+            Vector2 direction = (obj.transform.position - this.transform.position).normalized;
+            direction.x *= knockbackPwrX;
+            direction.y = -0.5f;
+            direction.y *= knockbackPwrY;
+            rb.AddForce(-direction);
+        }
+
+    
+        yield return new WaitForSeconds(0.5f); 
+        combatCollider.enabled = true;
+        movementControl = true;
+    }
+
 
     public void Damage(int damage) {
         currentHealth -= damage;
@@ -173,30 +177,6 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
         }
     }
 
-    public void Knockback(float knockbackPwrX, float knockbackPwrY, Transform obj)
-    {
-        StartCoroutine(StartKnockback(knockbackPwrX, knockbackPwrY, obj));
-    }
-    public IEnumerator StartKnockback(float knockbackPwrX, float knockbackPwrY, Transform obj){
-
-        float knockDur = 0.5f;
-        float timer = 0;
-        
-        movementControl = false;
-
-        while( knockDur > timer ) {
-            timer += Time.deltaTime;
-            Vector2 direction = (obj.transform.position - this.transform.position).normalized;
-            direction.x *= knockbackPwrX;
-            direction.y = -0.5f;
-            direction.y *= knockbackPwrY;
-            rb.AddForce(-direction);
-        }
-
-    
-        yield return new WaitForSeconds(0.5f); 
-        movementControl = true;
-    }
 
     private bool TargetInDistance()
     {

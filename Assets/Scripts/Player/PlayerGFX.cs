@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerGFX : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
+    private Transform playerSprite;
     private Rigidbody2D rigidbody2d;
     public Animator animator;
     public Player player;
@@ -14,12 +14,16 @@ public class PlayerGFX : MonoBehaviour
     private bool isJumping;
     private bool isFalling;
     public int direction;
-
+    
+    private Vector3 left;
+    private Vector3 right;
 
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        playerSprite = GetComponent<Transform>();
+        right = playerSprite.localScale;
+        left = new Vector3 (playerSprite.localScale.x * -1, playerSprite.localScale.y, playerSprite.localScale.z);
         rigidbody2d = transform.GetComponent<Rigidbody2D>();
         direction = 1;
 
@@ -27,7 +31,7 @@ public class PlayerGFX : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-
+        
         HandleMovementAnimations();
 
         animator.SetFloat("Speed", Math.Abs(rigidbody2d.velocity.x));
@@ -74,6 +78,9 @@ public class PlayerGFX : MonoBehaviour
         ? true
         : false;
 
-        spriteRenderer.flipX = flipX;
+        if(flipX)
+            playerSprite.localScale = left;
+        else
+            playerSprite.localScale = right;
     }
 }

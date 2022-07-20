@@ -15,10 +15,10 @@ TagManager:
   - UI
   - Platforms
   - PlayerPhysics
-  - Enemies
+  - EnemyPhysics
   - Weapon
   - PlayerCombat
-  - 
+  - EnemyCombat
   - 
   - 
   - 
