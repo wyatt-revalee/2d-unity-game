@@ -68,6 +68,9 @@ public class PlayerGFX : MonoBehaviour
 
     private void SetCharDirection() {
 
+        if(playerMovement.playerCanMove == false)
+            return;
+
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             direction = -1;
         else if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))

@@ -10,8 +10,8 @@ public class Player : MonoBehaviour, IDamageable{
     [SerializeField] private LayerMask platformsLayerMask;
     public Component[] colliders;
     public Collider2D physicsCollider;
-    // public Collider2D hurtBox;
 
+    public PlayerMovement playerMovement;
     public Animator animator;
 
     // Health and Lives
@@ -38,6 +38,7 @@ public class Player : MonoBehaviour, IDamageable{
     public float flashDuration;
     public int numberOfFlashes;
 
+
     // Use this for initialization
     private void Start () {
 
@@ -50,14 +51,19 @@ public class Player : MonoBehaviour, IDamageable{
     // Update is called once per frame
     private void Update () {
 
-        if(Time.time >= nextAttackTime)
+        if(playerMovement.isPaused == false)
         {
-            if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            if(Time.time >= nextAttackTime)
             {
-                Attack();
-                nextAttackTime = Time.time + 1f / attackSpeed;
+                if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+                {
+                    Attack();
+                    nextAttackTime = Time.time + 1f / attackSpeed;
+                }
             }
         }
+
+
         
     }
 

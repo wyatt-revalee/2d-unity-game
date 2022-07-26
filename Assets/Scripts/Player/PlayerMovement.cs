@@ -1,7 +1,8 @@
 using UnityEngine;
-using System;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
+using System.Collections.Generic;
  
 public class PlayerMovement : MonoBehaviour, IKnockbackable {
 
@@ -13,6 +14,8 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     public Collider2D physicsCollider;
 
 
+    public GameObject pauseMenu;
+    public bool isPaused;
     public bool playerCanMove;
 
 
@@ -36,6 +39,9 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
 
     private void HandleMovement() {
         float moveSpeed = 5f;
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+            PauseControl();
 
         if(playerCanMove == false)
             return;
@@ -64,7 +70,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     }
 
     public bool IsCrouching() {
-        if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+        if((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && playerCanMove == true)
         {
             return true;
         }
@@ -104,5 +110,27 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     
         yield return new WaitForSeconds(0.5f); 
         playerCanMove = true;
+    }
+
+    public void PauseControl()
+    {
+        if(isPaused == false)
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+            isPaused = true;
+            playerCanMove = false;
+            return;
+        }
+
+        if(isPaused == true)
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            isPaused = false;
+            playerCanMove = true;
+            return;
+        }
+
     }
 }
