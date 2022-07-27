@@ -128,7 +128,8 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
         if(isPaused == true)
         {
             pauseMenu.transform.GetChild(1).gameObject.SetActive(true);
-            pauseMenu.transform.GetChild(0).gameObject.SetActive(false);
+            pauseMenu.transform.GetChild(2).gameObject.SetActive(false);
+            pauseMenu.transform.GetChild(3).gameObject.SetActive(false);
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             isPaused = false;
