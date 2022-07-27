@@ -14,10 +14,12 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     public Collider2D physicsCollider;
 
 
+    //Gameflow
     public GameObject pauseMenu;
     public bool isPaused;
     public bool playerCanMove;
 
+    //pauseMenu.transform.GetChild(0).gameObject;
 
 
     // Use this for initialization
@@ -125,6 +127,8 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
 
         if(isPaused == true)
         {
+            pauseMenu.transform.GetChild(1).gameObject.SetActive(true);
+            pauseMenu.transform.GetChild(0).gameObject.SetActive(false);
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             isPaused = false;
