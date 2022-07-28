@@ -849,8 +849,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1.3986014
-    height: 1.6483517
+    width: 1.3468013
+    height: 1.5817224
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -2323,14 +2323,15 @@ MonoBehaviour:
   physicsCollider: {fileID: 1965688205}
   playerMovement: {fileID: 1309676148}
   animator: {fileID: 1309676145}
+  sceneTransition: {fileID: 777890563}
   lifeCounter: {fileID: 1856723490}
   healthBar: {fileID: 1460972741}
   enemyLayers:
     serializedVersion: 2
     m_Bits: 256
   attackPoint: {fileID: 1794895017}
-  lifeCount: 3
-  maxHealth: 10
+  lifeCount: 1
+  maxHealth: 2
   currentHealth: 0
   attackDamage: 1
   attackRange: 0.56

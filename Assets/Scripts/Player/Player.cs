@@ -10,9 +10,9 @@ public class Player : MonoBehaviour, IDamageable{
     [SerializeField] private LayerMask platformsLayerMask;
     public Component[] colliders;
     public Collider2D physicsCollider;
-
     public PlayerMovement playerMovement;
     public Animator animator;
+    public Animator sceneTransition;
 
     // Health and Lives
     [Header("Health and Combat")]
@@ -83,8 +83,7 @@ public class Player : MonoBehaviour, IDamageable{
         }
 
         if(lifeCount == 0) {
-            Destroy(gameObject);
-            SceneManager.LoadScene(2);
+            PlayerDeath();
 
         }
 
@@ -95,6 +94,11 @@ public class Player : MonoBehaviour, IDamageable{
         //Play animation
         animator.SetTrigger("Attack");
         
+    }
+
+    void PlayerDeath()
+    {
+        StartCoroutine(GameOver());
     }
 
     private IEnumerator FlashCo()
@@ -110,5 +114,13 @@ public class Player : MonoBehaviour, IDamageable{
             temp++;
         }
         combatCollider.enabled = true;
+    }
+
+    IEnumerator GameOver()
+    {
+        sceneTransition.SetTrigger("Start");
+
+        yield return new WaitForSeconds(0.8f);
+        SceneManager.LoadScene(2);
     }
 }

@@ -6,17 +6,27 @@ using UnityEngine.SceneManagement;
 public class GameOverMenu : MonoBehaviour
 {
 
-    public void PlayGame() {
-        SceneManager.LoadScene(1);
+    public Animator transition;
+
+    public void PlayGame() {        
+        StartCoroutine(SceneTransition(1));
     }
 
     public void MainMenuPress() {
-        SceneManager.LoadScene(0);
+        StartCoroutine(SceneTransition(0));
     }
 
     public void QuitGame() {
         Debug.Log("QUIT");
         Application.Quit();
+    }
+
+    IEnumerator SceneTransition(int sceneIndex)
+    {
+        transition.SetTrigger("Start");
+
+        yield return new WaitForSeconds(0.8f);
+        SceneManager.LoadScene(sceneIndex);
     }
 
 }
