@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
         
 
         // Jump
-        if (IsGrounded() && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))) {
+        if (IsGrounded() && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))) {
             float jumpVelocity = 7f;
             rigidbody2d.velocity = Vector2.up * jumpVelocity;
         }

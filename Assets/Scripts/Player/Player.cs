@@ -55,7 +55,7 @@ public class Player : MonoBehaviour, IDamageable{
         {
             if(Time.time >= nextAttackTime)
             {
-                if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+                if(Input.GetMouseButtonDown(0))
                 {
                     Attack();
                     nextAttackTime = Time.time + 1f / attackSpeed;
