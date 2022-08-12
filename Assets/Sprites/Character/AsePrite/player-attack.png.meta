@@ -107,12 +107,12 @@ TextureImporter:
       name: player-attack_0
       rect:
         serializedVersion: 2
-        x: 13
+        x: 12
         y: 0
         width: 46
         height: 61
       alignment: 9
-      pivot: {x: 0.6249392, y: 0.52174234}
+      pivot: {x: 0.6527059, y: 0.5153539}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -131,9 +131,9 @@ TextureImporter:
         x: 97
         y: 0
         width: 52
-        height: 55
+        height: 60
       alignment: 9
-      pivot: {x: 0.75045276, y: 0.6014821}
+      pivot: {x: 0.73414904, y: 0.52341485}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -150,11 +150,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 202
-        y: 0
+        y: 1
         width: 38
-        height: 55
+        height: 60
       alignment: 9
-      pivot: {x: 0.7056351, y: 0.5744202}
+      pivot: {x: 0.6602073, y: 0.53121966}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,9 +173,9 @@ TextureImporter:
         x: 300
         y: 0
         width: 42
-        height: 55
+        height: 60
       alignment: 9
-      pivot: {x: 0.58859545, y: 0.5811857}
+      pivot: {x: 0.6003498, y: 0.5390248}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -191,12 +191,12 @@ TextureImporter:
       name: player-attack_4
       rect:
         serializedVersion: 2
-        x: 412
+        x: 408
         y: 0
-        width: 54
-        height: 60
+        width: 59
+        height: 61
       alignment: 9
-      pivot: {x: 0.23126164, y: 0.5434117}
+      pivot: {x: 0.29363135, y: 0.546062}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -212,12 +212,12 @@ TextureImporter:
       name: player-attack_5
       rect:
         serializedVersion: 2
-        x: 505
+        x: 501
         y: 0
-        width: 45
+        width: 56
         height: 62
       alignment: 9
-      pivot: {x: 0.3180854, y: 0.548013}
+      pivot: {x: 0.3578382, y: 0.5302126}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -233,12 +233,12 @@ TextureImporter:
       name: player-attack_6
       rect:
         serializedVersion: 2
-        x: 600
-        y: 0
-        width: 27
-        height: 55
+        x: 593
+        y: 1
+        width: 57
+        height: 61
       alignment: 9
-      pivot: {x: 0.3484045, y: 0.61501306}
+      pivot: {x: 0.3110373, y: 0.5307081}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,9 +257,9 @@ TextureImporter:
         x: 681
         y: 0
         width: 37
-        height: 54
+        height: 62
       alignment: 9
-      pivot: {x: 0.5703983, y: 0.6033614}
+      pivot: {x: 0.60125405, y: 0.5226594}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
