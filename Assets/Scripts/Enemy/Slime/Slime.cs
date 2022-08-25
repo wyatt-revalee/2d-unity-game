@@ -7,6 +7,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
 {
 
     [Header("Pathfinding")]
+    public GameObject player;
     public Transform target;
     public float activateDistance = 50f;
     public float pathUpdateSeconds = 0.5f;
@@ -45,6 +46,8 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
 
     public void Start() 
     {
+        player = GameObject.Find ("PlayerCharacter");
+        target = player.GetComponent<Transform>();
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 

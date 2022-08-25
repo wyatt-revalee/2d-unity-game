@@ -6,6 +6,7 @@ TagManager:
   tags:
   - AlwaysActive
   - SwitchingActive
+  - Enemy
   layers:
   - Default
   - TransparentFX

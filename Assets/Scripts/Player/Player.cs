@@ -14,13 +14,13 @@ public class Player : MonoBehaviour, IDamageable{
     public Animator animator;
     public Animator sceneTransition;
 
-    // Health and Lives
+    // Health and Money
     [Header("Health and Combat")]
-    public LifeCounter lifeCounter;
+    public CoinCounter coinCounter;
     public HealthBar healthBar;
     public LayerMask enemyLayers;
     public Transform attackPoint;
-    public int lifeCount = 3;
+    public int coins;
     public int maxHealth = 10;
     public int currentHealth;
     public int attackDamage = 1;
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour, IDamageable{
 
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-        lifeCounter.SetLives(lifeCount);
+        // lifeCounter.SetLives(lifeCount);
  
     }
  
@@ -76,16 +76,17 @@ public class Player : MonoBehaviour, IDamageable{
         healthBar.SetHealth(currentHealth);
 
         if(currentHealth == 0) {
-            lifeCount -= 1;
-            lifeCounter.SetLives(lifeCount);
-            healthBar.SetHealth(maxHealth);
-            currentHealth = maxHealth;
-        }
-
-        if(lifeCount == 0) {
+            // lifeCount -= 1;
+            // lifeCounter.SetLives(lifeCount);
+            // healthBar.SetHealth(maxHealth);
+            // currentHealth = maxHealth;
             PlayerDeath();
-
         }
+
+        // if(lifeCount == 0) {
+        //     PlayerDeath();
+
+        // }
 
     }
 
