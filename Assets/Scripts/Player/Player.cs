@@ -76,17 +76,8 @@ public class Player : MonoBehaviour, IDamageable{
         healthBar.SetHealth(currentHealth);
 
         if(currentHealth == 0) {
-            // lifeCount -= 1;
-            // lifeCounter.SetLives(lifeCount);
-            // healthBar.SetHealth(maxHealth);
-            // currentHealth = maxHealth;
             PlayerDeath();
         }
-
-        // if(lifeCount == 0) {
-        //     PlayerDeath();
-
-        // }
 
     }
 
