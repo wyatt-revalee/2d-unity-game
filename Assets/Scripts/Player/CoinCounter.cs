@@ -8,11 +8,11 @@ public class CoinCounter : MonoBehaviour
 {
 
     public TMP_Text coinCount;
-    public Image coinIcon;
+    public Player player;
 
     public void SetCoinCount(int coins) {
         coinCount = GetComponent<TMP_Text>();
-        coinCount.text = "x " + coinCount.ToString();
+        coinCount.text = "  x" + player.coins.ToString();
     }
 
 }

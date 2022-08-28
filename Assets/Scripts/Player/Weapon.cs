@@ -8,9 +8,9 @@ public class Weapon : MonoBehaviour
     public Player player;
     private GameObject enemy;
 
-    public float knockbackX; 
-    public float knockbackY;
-    public int attackDamage;
+    private float knockbackX; 
+    private float knockbackY;
+    private int attackDamage;
 
     void Start()
     {
