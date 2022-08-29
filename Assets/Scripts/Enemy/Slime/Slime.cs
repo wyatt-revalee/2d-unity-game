@@ -28,6 +28,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
     public Transform attackPoint;
     public LayerMask enemyLayers;
     public Collider2D combatCollider;
+    public GameObject coinDrop;
     public float attackRange = 0.5f;
     public int attackDamage = 2;
     public int maxHealth = 2;
@@ -100,8 +101,10 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
     public void Damage(int damage) {
         currentHealth -= damage;
 
-        if(currentHealth == 0)
+        if(currentHealth == 0) {
+            GameObject coin = (GameObject)Instantiate(coinDrop, transform.position, Quaternion.identity);
             Destroy(gameObject);
+        }
     }
 
     private void UpdatePath()

@@ -328,6 +328,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   combatCollider: {fileID: 8943630721600990646}
+  coinDrop: {fileID: 6596649389071708153, guid: 7d9ab96e7f2503f4aa3cb83a614a9d63, type: 3}
   attackRange: 0.32
   attackDamage: 1
   maxHealth: 1
