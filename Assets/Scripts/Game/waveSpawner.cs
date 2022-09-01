@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class waveSpawner : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class waveSpawner : MonoBehaviour
     public List<Enemy> enemies = new List<Enemy>();
     public int currWave;
     public float waveValue;
+    public GameObject waveVisual;
+    public TMP_Text waveText;
     public List<GameObject> enemiesToSpawn = new List<GameObject>();
 
     public Transform spawnLocation;
@@ -15,10 +18,15 @@ public class waveSpawner : MonoBehaviour
     public float waveTimer;
     private float spawnInterval;
     private float spawnTimer;
+    // private float transitionTime;
+    public float waveTransitionTime;
+    public bool transitioning;
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   
+        transitioning = false;
+        // transitionTime = 10f;
         waveDuration = 20;
         waveValue = 10f;
         GenerateWave();
@@ -53,17 +61,18 @@ public class waveSpawner : MonoBehaviour
 
         if(waveTimer<=0 && spawnedEnemies.Length <=0)
         {
-             currWave += 1;
-             waveDuration += 20;
-             waveValue *= 1.5f;
-
-             GenerateWave();
+            waveTransitionTime -= Time.fixedDeltaTime;
+            if(waveTransitionTime <= 0)
+                GenerateWave();
+            if(transitioning == false)
+                StartCoroutine(WaveTransition());
         }
         
     }
 
     public void GenerateWave()
     {
+        waveTransitionTime = 15f;
         GenerateEnemies();
 
         waveValue = 10 * currWave;
@@ -106,6 +115,18 @@ public class waveSpawner : MonoBehaviour
         enemiesToSpawn.Clear();
         enemiesToSpawn = generatedEnemies;
 
+    }
+
+    public IEnumerator WaveTransition()
+    {
+        transitioning = true;
+        currWave += 1;
+        waveText.text = "Wave " + currWave.ToString();
+        waveDuration += 20;
+        waveVisual.SetActive(true);
+        yield return new WaitForSeconds(5);
+        waveVisual.SetActive(false);
+        transitioning = false;
     }
 
 
