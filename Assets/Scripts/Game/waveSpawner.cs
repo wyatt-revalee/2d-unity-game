@@ -9,8 +9,11 @@ public class waveSpawner : MonoBehaviour
     public List<Enemy> enemies = new List<Enemy>();
     public int currWave;
     public float waveValue;
-    public GameObject waveVisual;
-    public TMP_Text waveText;
+    public GameObject waveFlashVisual;
+    public GameObject waveUIVisual;
+    public TMP_Text waveFlashText;
+    public TMP_Text waveUIText;
+    private string waveText;
     public List<GameObject> enemiesToSpawn = new List<GameObject>();
 
     public Transform spawnLocation;
@@ -18,15 +21,14 @@ public class waveSpawner : MonoBehaviour
     public float waveTimer;
     private float spawnInterval;
     private float spawnTimer;
-    // private float transitionTime;
-    public float waveTransitionTime;
+    private float transitionTime;
     public bool transitioning;
 
     // Start is called before the first frame update
     void Start()
     {   
         transitioning = false;
-        // transitionTime = 10f;
+        transitionTime = 5f;
         waveDuration = 20;
         waveValue = 10f;
         GenerateWave();
@@ -36,6 +38,8 @@ public class waveSpawner : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        waveFlashText.text = waveText;
+        waveUIText.text = waveText;
         if(spawnTimer <= 0)
         {
             //spawn an enemy
@@ -59,26 +63,21 @@ public class waveSpawner : MonoBehaviour
         GameObject[] spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         
 
-        if(waveTimer<=0 && spawnedEnemies.Length <=0)
+        if(waveTimer<=0 && spawnedEnemies.Length <=0 && transitioning == false)
         {
-            waveTransitionTime -= Time.fixedDeltaTime;
-            if(waveTransitionTime <= 0)
-                GenerateWave();
-            if(transitioning == false)
-                StartCoroutine(WaveTransition());
+            currWave += 1;
+            waveDuration += 20;
+            waveValue = 10 * currWave;
+            GenerateWave();
         }
         
     }
 
     public void GenerateWave()
     {
-        waveTransitionTime = 15f;
-        GenerateEnemies();
 
-        waveValue = 10 * currWave;
-
-        spawnInterval = waveDuration / enemiesToSpawn.Count; // gives a fixed time between each enemies
-        waveTimer = waveDuration; // wave duration is read only
+        if(transitioning == false)
+            StartCoroutine(WaveTransition());
 
     }
 
@@ -120,12 +119,17 @@ public class waveSpawner : MonoBehaviour
     public IEnumerator WaveTransition()
     {
         transitioning = true;
-        currWave += 1;
-        waveText.text = "Wave " + currWave.ToString();
-        waveDuration += 20;
-        waveVisual.SetActive(true);
+        waveText = "Wave " + currWave.ToString();
+        waveFlashVisual.SetActive(true);
+        waveUIVisual.SetActive(false);
         yield return new WaitForSeconds(5);
-        waveVisual.SetActive(false);
+        waveUIVisual.SetActive(true);
+        waveFlashVisual.SetActive(false);
+        yield return new WaitForSeconds(transitionTime);
+        GenerateEnemies();
+
+        spawnInterval = waveDuration / enemiesToSpawn.Count; // gives a fixed time between each enemies
+        waveTimer = waveDuration; // wave duration is read only
         transitioning = false;
     }
 
