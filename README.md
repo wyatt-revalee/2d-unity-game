@@ -6,4 +6,4 @@ Although there is a vision to this game it is also sort of a playground for me t
 
 Right now it is very much a WIP, but eventualy I would like to publish it as a full fledged game I think.
 
-Test build available at [(https://play.unity.com/mg/other/webgl-s25)]
+Test build available at https://play.unity.com/mg/other/webgl-s25
