@@ -21,6 +21,11 @@ General Development:
         - Stage 5 - Boss
             - Create Boss
                 - Boss mob, potentialy minion mobs too
+        - After Stage 5...
+                - Loop?
+                - Next 'World'?
+                        - Next color
+                        - New enemies (corresponding to color)
     - Wave spawning
         - Randomized spawn points
             - In air for flying enemies, on ground for non
