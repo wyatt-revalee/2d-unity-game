@@ -1,3 +1,8 @@
+Bugs:
+    - While in air, player can cling to walls
+        - Could be a feature, but needs proper animations
+    - Enemies can be killed right as they spawn, only destroying the collider, not the whole enemy, essentially softlocking the game.
+
 Sprites & Animation
     - New player animations
         - Combo swing (WIP)
