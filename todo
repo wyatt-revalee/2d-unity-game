@@ -1,0 +1,49 @@
+Sprites & Animation
+    - New player animations
+        - Combo swing (WIP)
+    - Bat sprite update (with animation)
+    - New Enemies
+    - Anvil
+        - Upgrade animation?
+    - Portal
+        - Most likely an animation
+    - Death animations
+        - For both the player and enemies
+    
+
+General Development:
+    - Levels
+        - Randomized level layouts
+            - Each level has progressing theme (e.g. level 1 grassy, level 4 full dungeon)
+            - Set of x many layouts that level uses, simply apply skin depending on level num
+        - Stage 4 (easy)
+            - Copy stage 3
+        - Stage 5 - Boss
+            - Create Boss
+                - Boss mob, potentialy minion mobs too
+    - Wave spawning
+        - Randomized spawn points
+            - In air for flying enemies, on ground for non
+        - Randomized portal locations?
+    
+    - Combat
+        - Enemy health bars
+        - Floating damage numbers?
+        - New player moves
+        - Player upgrades
+            - Items (think roguelike fashion)
+            - Anvil in shop
+                - Spend $ : get upgrades
+                    - Attack Damage
+                    - Attack Speed
+                    - Health Increase
+                    - Health Regen?
+            - New moves
+                - Spin aoe attack
+                - Ground slam
+                    - Air to ground slam
+                - Some others
+    - Adjust camera and UI to screen size for varying dimensions
+    - Sound
+        - Implement sound effects
+        - Most likey using Audacity
