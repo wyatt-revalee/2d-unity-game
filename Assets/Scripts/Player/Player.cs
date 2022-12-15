@@ -13,6 +13,9 @@ public class Player : MonoBehaviour, IDamageable{
     public PlayerMovement playerMovement;
     public Animator animator;
     public Animator sceneTransition;
+    private GameObject playerSpawnPoint;
+    private int currentScene;
+    private bool playerMoved;
 
     // Health and Money
     [Header("Health and Combat")]
@@ -42,14 +45,30 @@ public class Player : MonoBehaviour, IDamageable{
     // Use this for initialization
     private void Start () {
 
+        currentScene = SceneManager.GetActiveScene().buildIndex;
+
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-        // lifeCounter.SetLives(lifeCount);
  
     }
  
     // Update is called once per frame
-    private void Update () {
+    private void Update ()
+     {
+
+        if(SceneManager.GetActiveScene().buildIndex > currentScene)
+        {
+            playerMoved = false;
+            playerSpawnPoint = GameObject.Find("PlayerSpawnPoint");
+            currentScene += 1;
+            transform.position = playerSpawnPoint.transform.position;
+        }
+        if(SceneManager.GetActiveScene().buildIndex == 2 && playerMoved == false)
+        {
+            playerSpawnPoint = GameObject.Find("PlayerSpawnPoint");
+            transform.position = playerSpawnPoint.transform.position;
+            playerMoved = true;
+        }
 
         if(playerMovement.isPaused == false)
         {
@@ -113,6 +132,6 @@ public class Player : MonoBehaviour, IDamageable{
         sceneTransition.SetTrigger("Start");
 
         yield return new WaitForSeconds(0.8f);
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 }

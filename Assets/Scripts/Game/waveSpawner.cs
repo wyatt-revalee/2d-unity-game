@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class waveSpawner : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class waveSpawner : MonoBehaviour
     public TMP_Text waveUIText;
     private string waveText;
     public List<GameObject> enemiesToSpawn = new List<GameObject>();
+    private static GameObject Instance;
+    public GameObject portal;
+    private int currentScene;
+    private bool shopping;
 
     public Transform spawnLocation;
     public int waveDuration;
@@ -27,6 +32,17 @@ public class waveSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
+        currentScene = SceneManager.GetActiveScene().buildIndex;
+        portal = GameObject.Find ("Portal");
+        portal.SetActive(false);
+        if(Instance == null)
+        {
+            Instance = gameObject;
+            DontDestroyOnLoad(gameObject);
+        } else
+        {
+            Destroy(gameObject);
+        }
         transitioning = false;
         transitionTime = 5f;
         waveDuration = 20;
@@ -38,8 +54,24 @@ public class waveSpawner : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1)
+            Destroy(gameObject);
+        
+        if(SceneManager.GetActiveScene().buildIndex == 2)
+            shopping = true;
+        else if(SceneManager.GetActiveScene().buildIndex > 2)
+            shopping = false;
+
+        if(SceneManager.GetActiveScene().buildIndex > currentScene)
+        {
+            portal = GameObject.Find("Portal");
+            portal.SetActive(false);
+            Debug.Log("New portal found!");
+        }
+
         waveFlashText.text = waveText;
         waveUIText.text = waveText;
+
         if(spawnTimer <= 0)
         {
             //spawn an enemy
@@ -60,15 +92,21 @@ public class waveSpawner : MonoBehaviour
             waveTimer -= Time.fixedDeltaTime;
         }
 
-        GameObject[] spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-        
 
-        if(waveTimer<=0 && spawnedEnemies.Length <=0 && transitioning == false)
+        GameObject[] spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        if(waveTimer<=0 && spawnedEnemies.Length <=0 && transitioning == false && shopping == false)
         {
-            currWave += 1;
-            waveDuration += 20;
-            waveValue = 10 * currWave;
-            GenerateWave();
+            portal.SetActive(true);
+            if(SceneManager.GetActiveScene().buildIndex > currentScene)
+            {
+                portal.SetActive(false);
+                currentScene += 1;
+                currWave += 1;
+                waveDuration += 20;
+                waveValue = 10 * currWave;
+                GenerateWave();
+            }
         }
         
     }
@@ -118,19 +156,22 @@ public class waveSpawner : MonoBehaviour
 
     public IEnumerator WaveTransition()
     {
-        transitioning = true;
-        waveText = "Wave " + currWave.ToString();
-        waveFlashVisual.SetActive(true);
-        waveUIVisual.SetActive(false);
-        yield return new WaitForSeconds(5);
-        waveUIVisual.SetActive(true);
-        waveFlashVisual.SetActive(false);
-        yield return new WaitForSeconds(transitionTime);
-        GenerateEnemies();
+        if(currentScene == SceneManager.GetActiveScene().buildIndex)
+        {
+            transitioning = true;
+            waveText = "Wave " + currWave.ToString();
+            waveFlashVisual.SetActive(true);
+            waveUIVisual.SetActive(false);
+            yield return new WaitForSeconds(5);
+            waveUIVisual.SetActive(true);
+            waveFlashVisual.SetActive(false);
+            yield return new WaitForSeconds(transitionTime);
+            GenerateEnemies();
 
-        spawnInterval = waveDuration / enemiesToSpawn.Count; // gives a fixed time between each enemies
-        waveTimer = waveDuration; // wave duration is read only
-        transitioning = false;
+            spawnInterval = waveDuration / enemiesToSpawn.Count; // gives a fixed time between each enemies
+            waveTimer = waveDuration; // wave duration is read only
+            transitioning = false;
+        }
     }
 
 

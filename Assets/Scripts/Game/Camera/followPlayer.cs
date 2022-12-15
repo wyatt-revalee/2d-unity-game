@@ -5,8 +5,22 @@ using UnityEngine;
 public class followPlayer : MonoBehaviour
 {
 
-    public Transform player;
+    private static GameObject Instance;
+    public GameObject player;
     // Update is called once per frame
+
+    void Start()
+    {
+        player = GameObject.Find ("PlayerCharacter");
+        if(Instance == null)
+        {
+            Instance = gameObject;
+            DontDestroyOnLoad(gameObject);
+        } else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Update()
     {
 

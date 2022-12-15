@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     private Rigidbody2D rigidbody2d;
     private bool isCrouching;
     public Collider2D physicsCollider;
+    private static GameObject Instance;
 
 
     //Gameflow
@@ -19,14 +20,21 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     public bool isPaused;
     public bool playerCanMove;
 
-    //pauseMenu.transform.GetChild(0).gameObject;
 
 
     // Use this for initialization
     private void Start () {
 
-        playerCanMove = true;
+        if(Instance == null)
+        {
+            Instance = gameObject;
+            DontDestroyOnLoad(gameObject);
+        } else
+        {
+            Destroy(gameObject);
+        }
 
+        playerCanMove = true;
         rigidbody2d = transform.GetComponent<Rigidbody2D>();
 
     }
@@ -34,6 +42,8 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     // Update is called once per frame
     private void Update () {
 
+        if(SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1)
+            Destroy(gameObject);
         HandleMovement();
 
     }
