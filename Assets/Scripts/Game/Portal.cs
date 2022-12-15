@@ -17,8 +17,8 @@ public class Portal : MonoBehaviour
 
     void Start()
     {
-        highlightColor = new Color(0, 1, 1, 1);
-        portalColor = new Color(2, 0, 0, 1);
+        highlightColor = new Color(0.5f, 0, 0);
+        portalColor = new Color(1, 0, 0);
         portalSprite = transform.GetComponent<SpriteRenderer>();
         portalSprite.color = portalColor;
     }
