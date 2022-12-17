@@ -23,6 +23,9 @@ public class followPlayer : MonoBehaviour
     }
     void Update()
     {
+        if(player == null)
+            player = GameObject.Find ("PlayerCharacter");
+
 
         transform.position = player.transform.position + new Vector3(-1, 0, -5);
         

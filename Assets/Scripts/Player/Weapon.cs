@@ -11,12 +11,13 @@ public class Weapon : MonoBehaviour
     private float knockbackX; 
     private float knockbackY;
     private int attackDamage;
+    private int critChance;
 
     void Start()
     {
         knockbackX = player.knockbackX;
         knockbackY = player.knockbackY;
-        attackDamage = player.attackDamage;
+        critChance = 30;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -35,7 +36,12 @@ public class Weapon : MonoBehaviour
 
             if (hit != null)
             {
+                attackDamage = player.attackDamage;
+                bool isCritical = UnityEngine.Random.Range(0, 100) < critChance;
+                if(isCritical)
+                    attackDamage *= 2;
                 hit.Damage(attackDamage);
+                DamagePopup.Create(enemy.transform.position, attackDamage, isCritical);
             }
 
             if (knockback != null)

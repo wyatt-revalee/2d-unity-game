@@ -29,6 +29,9 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
     public LayerMask enemyLayers;
     public Collider2D combatCollider;
     public GameObject coinDrop;
+    public HealthBar healthBar;
+    public GameObject healthBarVisual;
+    public int healthBarTime = 0;
     public float attackRange = 0.5f;
     public int attackDamage = 2;
     public int maxHealth = 2;
@@ -39,6 +42,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
     float nextAttackTime = 0f;
     bool movementControl = true;
 
+    public Transform sprite;
     private Path path;
     private int currentWaypoint = 0;
     bool isGrounded = false;
@@ -53,6 +57,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
         rb = GetComponent<Rigidbody2D>();
 
         currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
 
         
         InvokeRepeating("UpdatePath", 0f, pathUpdateSeconds);
@@ -97,11 +102,23 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
         movementControl = true;
     }
 
+    public IEnumerator ShowHealth(){
+        healthBarTime++;
+        healthBarVisual.SetActive(true);
+        if(healthBarTime > 0)
+            yield return new WaitForSeconds(4);
+            healthBarTime--;
+        if(healthBarTime == 0)
+            healthBarVisual.SetActive(false);
+    }
+
 
     public void Damage(int damage) {
         currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+        StartCoroutine(ShowHealth());
 
-        if(currentHealth == 0) {
+        if(currentHealth <= 0) {
             GameObject coin = (GameObject)Instantiate(coinDrop, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
@@ -174,11 +191,11 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
         {
             if (rb.velocity.x > 0.05f)
             {
-                transform.localScale = new Vector3(-1f * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                sprite.localScale = new Vector3(-1f * Mathf.Abs(sprite.localScale.x), sprite.localScale.y, sprite.localScale.z);
             }
             else if (rb.velocity.x < -0.05f)
             {
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                sprite.localScale = new Vector3(Mathf.Abs(sprite.localScale.x), sprite.localScale.y, sprite.localScale.z);
             }
         }
     }

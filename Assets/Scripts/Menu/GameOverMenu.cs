@@ -9,7 +9,7 @@ public class GameOverMenu : MonoBehaviour
     public Animator transition;
 
     public void PlayGame() {        
-        StartCoroutine(SceneTransition(2));
+        StartCoroutine(SceneTransition(3));
     }
 
     public void MainMenuPress() {

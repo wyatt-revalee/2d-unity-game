@@ -16,12 +16,12 @@ public class ItemPickup : MonoBehaviour
     }
 
     // Update is called once per frame
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D item)
     {
 
-        if(other.gameObject.layer == 12)
+        if(item.gameObject.layer == 12)
         {
-            Destroy(other.gameObject);
+            Destroy(item.gameObject);
             player.coins += 1;
             coinCounter.SetCoinCount(player.coins);
         }

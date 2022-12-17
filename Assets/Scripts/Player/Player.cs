@@ -94,9 +94,19 @@ public class Player : MonoBehaviour, IDamageable{
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
 
-        if(currentHealth == 0) {
+        if(currentHealth <= 0) {
             PlayerDeath();
         }
+
+    }
+
+    public void Heal(int coinCost) {
+
+        currentHealth = maxHealth;
+        healthBar.SetHealth(currentHealth);
+
+        coins -= coinCost;
+        coinCounter.SetCoinCount(coins);
 
     }
 
