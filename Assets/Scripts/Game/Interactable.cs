@@ -27,9 +27,8 @@ public class Interactable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject collisionGameObject = collision.transform.parent.gameObject;
 
-        if(collisionGameObject.name == "PlayerCharacter")
+        if(collision.gameObject.layer == 7)
         {
             isInRange = true;
             enterRangeAction.Invoke(); // Fire in range event (Object Highlight)
@@ -38,9 +37,8 @@ public class Interactable : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        GameObject collisionGameObject = collision.transform.parent.gameObject;
         
-        if(collisionGameObject.name == "PlayerCharacter")
+        if(collision.gameObject.layer == 7)
         {
             isInRange = false;
             exitRangeAction.Invoke(); // Fire in range event (Object Highlight)

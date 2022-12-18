@@ -21,6 +21,7 @@ public class Player : MonoBehaviour, IDamageable{
     [Header("Health and Combat")]
     public CoinCounter coinCounter;
     public HealthBar healthBar;
+    public ManaBar manaBar;
     public LayerMask enemyLayers;
     public Transform attackPoint;
     public AxeProjectileBehavior secondaryProjectile;
@@ -28,11 +29,14 @@ public class Player : MonoBehaviour, IDamageable{
     public int coins;
     public int maxHealth = 10;
     public int currentHealth;
+    public float maxMana = 100f;
+    public float currentMana;
     public int attackDamage = 1;
     public float attackRange = 0.3f;
     public float knockbackY = 15;
     public float knockbackX = 15;
     public float attackSpeed = 2f;
+    public float manaRegenSpeed = 12f;
     float nextAttackTime = 0f;
 
     [Header("Iframe Variables")]
@@ -47,10 +51,14 @@ public class Player : MonoBehaviour, IDamageable{
     // Use this for initialization
     private void Start () {
 
+        sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
+
         currentScene = SceneManager.GetActiveScene().buildIndex;
 
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        currentMana = maxMana;
+        manaBar.SetMaxMana(maxMana);
  
     }
  
@@ -64,16 +72,28 @@ public class Player : MonoBehaviour, IDamageable{
             playerSpawnPoint = GameObject.Find("PlayerSpawnPoint");
             currentScene += 1;
             transform.position = playerSpawnPoint.transform.position;
+            sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
+
         }
         if(SceneManager.GetActiveScene().buildIndex == 2 && playerMoved == false)
         {
             playerSpawnPoint = GameObject.Find("PlayerSpawnPoint");
             transform.position = playerSpawnPoint.transform.position;
             playerMoved = true;
+            sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
+
         }
 
         if(playerMovement.isPaused == false)
         {
+            if(currentMana < maxMana)
+            {
+                currentMana += 0.015f;
+                // if(currentMana > maxMana)
+                //     currentMana = maxMana;
+                manaBar.SetMana(currentMana);
+            }
+            
             if(Time.time >= nextAttackTime)
             {
                 if(Input.GetMouseButtonDown(0))
@@ -126,11 +146,15 @@ public class Player : MonoBehaviour, IDamageable{
 
     void SecondaryAttack()
     {
-        //Play animation
-        animator.SetTrigger("Attack");
-        //Create Projectile
-        Instantiate(secondaryProjectile, LaunchOffset.position, transform.rotation);
-        
+        float manaCost = 20f;
+        if(currentMana >= manaCost)
+        {
+            //Play animation
+            animator.SetTrigger("Attack");
+            //Create Projectile
+            Instantiate(secondaryProjectile, LaunchOffset.position, transform.rotation);
+            manaBar.SetMana(currentMana -= manaCost);
+        }
     }
 
     void PlayerDeath()
@@ -155,6 +179,7 @@ public class Player : MonoBehaviour, IDamageable{
 
     IEnumerator GameOver()
     {
+        Debug.Log("GAME OVER");
         sceneTransition.SetTrigger("Start");
 
         yield return new WaitForSeconds(0.8f);

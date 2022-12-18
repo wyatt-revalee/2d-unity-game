@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     // Use this for initialization
     private void Start () {
 
+        isPaused = false;
+
         if(Instance == null)
         {
             Instance = gameObject;
@@ -69,11 +71,13 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
 
 
         // Left and Right movement
-        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && !IsCrouching()) {
-            rigidbody2d.velocity = new Vector2(-moveSpeed, rigidbody2d.velocity.y);
+        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && !IsCrouching() && !(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))) {
+                rigidbody2d.velocity = new Vector2(-moveSpeed, rigidbody2d.velocity.y);
+                return;
         } else {
-            if ((Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && !IsCrouching()) {
-            rigidbody2d.velocity = new Vector2(+moveSpeed, rigidbody2d.velocity.y);
+            if ((Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && !IsCrouching() && !(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))) {
+                rigidbody2d.velocity = new Vector2(+moveSpeed, rigidbody2d.velocity.y);
+                return;
             } else {
             // No keys pressed
             rigidbody2d.velocity = new Vector2(0, rigidbody2d.velocity.y);
@@ -128,10 +132,11 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     {
         if(isPaused == false)
         {
-            pauseMenu.SetActive(true);
             Time.timeScale = 0f;
             isPaused = true;
             playerCanMove = false;
+            Debug.Log("Paused");
+            pauseMenu.SetActive(true);
             return;
         }
 

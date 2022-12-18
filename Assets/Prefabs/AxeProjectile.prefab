@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 2176640601788819670}
   - component: {fileID: 2176640601788819689}
   - component: {fileID: 8984704154464290262}
-  m_Layer: 0
+  - component: {fileID: 115458427254260014}
+  m_Layer: 10
   m_Name: AxeProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,4 +115,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a566f421d932e4fbc1647a00a96add, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 2888360100593607615, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
   Speed: 10
+  critChance: 30
+--- !u!50 &115458427254260014
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2176640601788819688}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 2

@@ -72,13 +72,12 @@ public class PlayerGFX : MonoBehaviour
 
         float rotation = playerSprite.rotation.eulerAngles.y;
 
-        if ( (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && rotation < 179)
+        if ( (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && rotation < 179 && !(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)))
             playerSprite.Rotate(0f, 180f, 0f, Space.Self);
 
-        else if( (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && rotation > 1)
+        else if( (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && rotation > 1 && !(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)))
             playerSprite.Rotate(0f, 180f, 0f, Space.Self);
         
-        Debug.Log(rotation);
 
     }
 }

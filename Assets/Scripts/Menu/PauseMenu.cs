@@ -10,6 +10,8 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume() {
         //Resume game
+        Time.timeScale = 1f;
+        gameObject.transform.parent.gameObject.SetActive(false);
     }
 
     public void QuitToMenu() {
