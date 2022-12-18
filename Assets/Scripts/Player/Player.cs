@@ -23,6 +23,8 @@ public class Player : MonoBehaviour, IDamageable{
     public HealthBar healthBar;
     public LayerMask enemyLayers;
     public Transform attackPoint;
+    public AxeProjectileBehavior secondaryProjectile;
+    public Transform LaunchOffset;
     public int coins;
     public int maxHealth = 10;
     public int currentHealth;
@@ -76,7 +78,12 @@ public class Player : MonoBehaviour, IDamageable{
             {
                 if(Input.GetMouseButtonDown(0))
                 {
-                    Attack();
+                    PrimaryAttack();
+                    nextAttackTime = Time.time + 1f / attackSpeed;
+                }
+                if(Input.GetMouseButtonDown(1))
+                {
+                    SecondaryAttack();
                     nextAttackTime = Time.time + 1f / attackSpeed;
                 }
             }
@@ -110,10 +117,19 @@ public class Player : MonoBehaviour, IDamageable{
 
     }
 
-    void Attack()
+    void PrimaryAttack()
     {
         //Play animation
         animator.SetTrigger("Attack");
+        
+    }
+
+    void SecondaryAttack()
+    {
+        //Play animation
+        animator.SetTrigger("Attack");
+        //Create Projectile
+        Instantiate(secondaryProjectile, LaunchOffset.position, transform.rotation);
         
     }
 

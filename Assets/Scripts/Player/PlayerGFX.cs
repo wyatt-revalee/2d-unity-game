@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerGFX : MonoBehaviour
 {
-    private Transform playerSprite;
+    public Transform playerSprite;
     private Rigidbody2D rigidbody2d;
     public Animator animator;
     public Player player;
@@ -21,7 +21,6 @@ public class PlayerGFX : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerSprite = GetComponent<Transform>();
         right = playerSprite.localScale;
         left = new Vector3 (playerSprite.localScale.x * -1, playerSprite.localScale.y, playerSprite.localScale.z);
         rigidbody2d = transform.GetComponent<Rigidbody2D>();
@@ -71,19 +70,15 @@ public class PlayerGFX : MonoBehaviour
         if(playerMovement.playerCanMove == false)
             return;
 
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-            direction = -1;
-        else if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-            direction = 1;
+        float rotation = playerSprite.rotation.eulerAngles.y;
 
+        if ( (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && rotation < 179)
+            playerSprite.Rotate(0f, 180f, 0f, Space.Self);
 
-        bool flipX = (direction < 0.0f)
-        ? true
-        : false;
+        else if( (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && rotation > 1)
+            playerSprite.Rotate(0f, 180f, 0f, Space.Self);
+        
+        Debug.Log(rotation);
 
-        if(flipX)
-            playerSprite.localScale = left;
-        else
-            playerSprite.localScale = right;
     }
 }

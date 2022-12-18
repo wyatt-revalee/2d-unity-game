@@ -21,7 +21,8 @@ public class waveSpawner : MonoBehaviour
     private int currentScene;
     private bool shopping;
 
-    public Transform spawnLocation;
+    public Transform spawnParent;
+    private List<Transform> spawnLocations = new List<Transform>();
     public int waveDuration;
     public float waveTimer;
     private float spawnInterval;
@@ -32,6 +33,9 @@ public class waveSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
+
+        getSpawns();
+
         currentScene = SceneManager.GetActiveScene().buildIndex;
         portal = GameObject.Find ("Portal");
         portal.SetActive(false);
@@ -77,7 +81,8 @@ public class waveSpawner : MonoBehaviour
             //spawn an enemy
             if(enemiesToSpawn.Count > 0)
             {
-                GameObject enemy = (GameObject)Instantiate(enemiesToSpawn[0], spawnLocation.position,Quaternion.identity); // spawn first enemy in our list
+                int randLocation = UnityEngine.Random.Range(0, spawnLocations.Count);
+                GameObject enemy = (GameObject)Instantiate(enemiesToSpawn[0], spawnLocations[randLocation].position,Quaternion.identity); // spawn first enemy in our list
                 enemiesToSpawn.RemoveAt(0); // and remove it
                 spawnTimer = spawnInterval;
             }
@@ -110,6 +115,12 @@ public class waveSpawner : MonoBehaviour
         }
         
     }
+
+    void getSpawns() {
+            foreach (Transform spawnPoint in spawnParent){
+                spawnLocations.Add(spawnPoint);
+            }
+        }
 
     public void GenerateWave()
     {
