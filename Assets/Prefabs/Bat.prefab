@@ -421,7 +421,7 @@ MonoBehaviour:
   directionLookEnabled: 1
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   combatCollider: {fileID: 3312762804732281908}
   coinDrop: {fileID: 6596649389071708153, guid: 7d9ab96e7f2503f4aa3cb83a614a9d63, type: 3}
   healthBar: {fileID: 3309274432019607050}
