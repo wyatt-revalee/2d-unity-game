@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, IDamageable{
     public float knockbackY = 15;
     public float knockbackX = 15;
     public float attackSpeed = 2f;
-    public float manaRegenSpeed = 12f;
+    private float manaRegenSpeed = 0.2f;
     float nextAttackTime = 0f;
 
     [Header("Iframe Variables")]
@@ -86,13 +86,6 @@ public class Player : MonoBehaviour, IDamageable{
 
         if(playerMovement.isPaused == false)
         {
-            if(currentMana < maxMana)
-            {
-                currentMana += 0.015f;
-                // if(currentMana > maxMana)
-                //     currentMana = maxMana;
-                manaBar.SetMana(currentMana);
-            }
             
             if(Time.time >= nextAttackTime)
             {
@@ -111,6 +104,21 @@ public class Player : MonoBehaviour, IDamageable{
 
 
         
+    }
+
+    private void FixedUpdate() 
+    {
+        if(playerMovement.isPaused == false)
+        {
+            if(currentMana < maxMana)
+            {
+                currentMana += manaRegenSpeed;
+                // if(currentMana > maxMana)
+                //     currentMana = maxMana;
+                manaBar.SetMana(currentMana);
+            }
+        }
+
     }
 
 

@@ -119,7 +119,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
         StartCoroutine(ShowHealth());
 
         if(currentHealth <= 0) {
-            GameObject coin = (GameObject)Instantiate(coinDrop, transform.position, Quaternion.identity);
+            Instantiate(coinDrop, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

@@ -7,7 +7,7 @@ using UnityEngine;
 public class resizeCamera : MonoBehaviour {
 
     // Set this to the in-world distance between the left & right edges of your scene.
-    public float sceneWidth = 300;
+    // public float sceneWidth = 300;
 
     Camera _camera;
     void Start() {

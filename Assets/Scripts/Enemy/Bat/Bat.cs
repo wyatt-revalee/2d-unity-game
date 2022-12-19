@@ -114,7 +114,7 @@ public class Bat : MonoBehaviour, IDamageable, IKnockbackable
 
         if(currentHealth <= 0) {
             for(int i = 0; i < coins; i++){
-                GameObject coin = (GameObject)Instantiate(coinDrop, transform.position, Quaternion.identity);
+                Instantiate(coinDrop, transform.position, Quaternion.identity);
             }
             Destroy(gameObject);
         }
