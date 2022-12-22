@@ -68,17 +68,17 @@ public class LevelEditor : MonoBehaviour
         }
 
         
-        if(Input.GetMouseButtonDown(3))
+        if(Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1))
         {
             PlacePortalSpawn(pos);
         }
 
-        if(Input.GetKeyDown(KeyCode.Z) && Input.GetMouseButton(3))
+        if(Input.GetKeyDown(KeyCode.Z) && Input.GetMouseButton(0))
         {
             UndoLastPortalSpawn();
         }
 
-        if(Input.GetMouseButtonDown(2))
+        if(Input.GetMouseButtonDown(1) && Input.GetKeyDown(KeyCode.LeftControl))
         {
             PlaceEnemySpawn(pos);
         }
@@ -88,7 +88,7 @@ public class LevelEditor : MonoBehaviour
             UndoLastEnemySpawn();
         }
 
-        if(Input.GetMouseButtonDown(4))
+        if(Input.GetMouseButtonDown(0) && Input.GetKeyDown(KeyCode.LeftControl))
         {
             PlacePlayerSpawn(pos);
         }

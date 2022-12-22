@@ -9,7 +9,13 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
     public string saveName;
+    public string saveName2;
     public GameObject spawnPoints;
+    public GameObject portalSpawns;
+    public GameObject enemySpawns;
+    public GameObject playerSpawn;
+
+    public List<GameObject> levelSpawns;
 
     private void Awake()
     {
@@ -17,7 +23,7 @@ public class LevelManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this);
 
-        spawnPoints = new GameObject("spawnPoints");
+        CreateParents();
 
         foreach (Tilemap tilemap in tilemaps)
         {
@@ -53,12 +59,18 @@ public class LevelManager : MonoBehaviour
     private void Update()
     {
         //save level when pressing Ctrl + A
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.A)) Savelevel();
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.A)) Savelevel(saveName);
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D)) Savelevel(saveName2);
         //load level when pressing Ctrl + L
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.L)) LoadLevel();
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.L)) LoadLevel(saveName);
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.M)) LoadLevel(saveName2);
+
+
+
+        GameObject[] levelSpawns = GameObject.FindGameObjectsWithTag("Level");
     }
 
-    void Savelevel()
+    void Savelevel(string levelName)
     {
         //create a new leveldata
         LevelData levelData = new LevelData();
@@ -113,17 +125,21 @@ public class LevelManager : MonoBehaviour
 
         //save the data as a json
         string json = JsonUtility.ToJson(levelData, true);
-        File.WriteAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\"+saveName+".json", json);
+        File.WriteAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\"+levelName+".json", json);
 
         //debug
         Debug.Log("Level was saved");
     }
 
-    void LoadLevel()
+    void LoadLevel(string levelName)
     {
+
+        foreach (var spawn in levelSpawns) Destroy(spawn);
         //load the json file to a leveldata
-        string json = File.ReadAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\"+saveName+".json");
+        string json = File.ReadAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\"+levelName+".json");
         LevelData levelData = JsonUtility.FromJson<LevelData>(json);
+
+        CreateParents();
 
         foreach (var data in levelData.layers)
         {
@@ -145,10 +161,11 @@ public class LevelManager : MonoBehaviour
         foreach (var spawn in levelData.portalSpawns)
         {
             pspawnCount++;
-            GameObject pspawn = new GameObject("portalSpawn" + pspawnCount.ToString());
+            GameObject pspawn = new GameObject("spawn" + pspawnCount.ToString());
             SpriteRenderer spriteRen = pspawn.AddComponent<SpriteRenderer>();
             spriteRen.sprite = portalSprite;
             pspawn.transform.localScale = new Vector3(0.5f, 1f, 1f);
+            pspawn.transform.SetParent(portalSpawns.transform);
             pspawn.transform.position = spawn;
         }
 
@@ -157,13 +174,20 @@ public class LevelManager : MonoBehaviour
         foreach (var spawn in levelData.enemySpawns)
         {
             espawnCount++;
-            GameObject espawn = new GameObject("enemySpawn" + espawnCount.ToString());
+            GameObject espawn = new GameObject("spawn" + espawnCount.ToString());
             SpriteRenderer spriteRen = espawn.AddComponent<SpriteRenderer>();
             spriteRen.sprite = enemySprite;
-            espawn.transform.localScale = new Vector3(1f, 1f, 1f);
-            espawn.transform.SetParent(spawnPoints.transform);
+            espawn.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+            espawn.transform.SetParent(enemySpawns.transform);
             espawn.transform.position = spawn;
         }
+
+        playerSpawn = new GameObject("playerSpawn");
+        SpriteRenderer playSprite = playerSpawn.AddComponent<SpriteRenderer>();
+        playSprite.sprite = playerSprite;
+        playerSpawn.transform.SetParent(spawnPoints.transform);
+        playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
+        playerSpawn.transform.position = levelData.playerSpawn;
 
         //Next, createPlayerSpawn
 
@@ -173,6 +197,20 @@ public class LevelManager : MonoBehaviour
 
         //debug
         Debug.Log("Level was loaded");
+    }
+
+    void CreateParents()
+    {
+        spawnPoints = new GameObject("spawnPoints");
+        portalSpawns = new GameObject("portalSpawns");
+            portalSpawns.transform.SetParent(spawnPoints.transform);
+            portalSpawns.tag = "Level";
+        enemySpawns = new GameObject("enemySpawns");
+            enemySpawns.transform.SetParent(spawnPoints.transform);
+            enemySpawns.tag = "Level";
+
+        levelSpawns = new List<GameObject>();
+        levelSpawns.Add(spawnPoints);
     }
 }
 
