@@ -16,6 +16,7 @@ public class Player : MonoBehaviour, IDamageable{
     private GameObject playerSpawnPoint;
     private int currentScene;
     private bool playerMoved;
+    public bool isGrounded;
 
     // Health and Money
     [Header("Health and Combat")]
@@ -65,6 +66,8 @@ public class Player : MonoBehaviour, IDamageable{
     // Update is called once per frame
     private void Update ()
      {
+
+        isGrounded = playerMovement.IsGrounded();
 
         if(SceneManager.GetActiveScene().buildIndex > currentScene)
         {

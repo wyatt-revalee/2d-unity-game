@@ -9,7 +9,6 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
     public string saveName;
-    public string saveName2;
     public GameObject spawnPoints;
     public GameObject portalSpawns;
     public GameObject enemySpawns;
@@ -40,6 +39,8 @@ public class LevelManager : MonoBehaviour
     public List<CustomTile> tiles = new List<CustomTile>();
     [SerializeField] List<Tilemap> tilemaps = new List<Tilemap>();
     public Dictionary<int, Tilemap> layers = new Dictionary<int, Tilemap>();
+    public LevelEditor levelEditor;
+    
 
     [Header("Sprites")]
     public Sprite portalSprite;
@@ -47,7 +48,6 @@ public class LevelManager : MonoBehaviour
     public Sprite enemySprite;
 
 
-    public LevelEditor levelEditor;
 
     public enum Tilemaps
     {
@@ -60,10 +60,8 @@ public class LevelManager : MonoBehaviour
     {
         //save level when pressing Ctrl + A
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.A)) Savelevel(saveName);
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.D)) Savelevel(saveName2);
         //load level when pressing Ctrl + L
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.L)) LoadLevel(saveName);
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.M)) LoadLevel(saveName2);
 
 
 
@@ -143,10 +141,13 @@ public class LevelManager : MonoBehaviour
 
         foreach (var data in levelData.layers)
         {
+
+
             if (!layers.TryGetValue(data.layer_id, out Tilemap tilemap)) break;
 
             //clear the tilemap
             tilemap.ClearAllTiles();
+
 
             //place the tiles
             for (int i = 0; i < data.tiles.Count; i++)
@@ -164,6 +165,7 @@ public class LevelManager : MonoBehaviour
             GameObject pspawn = new GameObject("spawn" + pspawnCount.ToString());
             SpriteRenderer spriteRen = pspawn.AddComponent<SpriteRenderer>();
             spriteRen.sprite = portalSprite;
+            spriteRen.sortingLayerName = "Objects";
             pspawn.transform.localScale = new Vector3(0.5f, 1f, 1f);
             pspawn.transform.SetParent(portalSpawns.transform);
             pspawn.transform.position = spawn;
@@ -177,7 +179,8 @@ public class LevelManager : MonoBehaviour
             GameObject espawn = new GameObject("spawn" + espawnCount.ToString());
             SpriteRenderer spriteRen = espawn.AddComponent<SpriteRenderer>();
             spriteRen.sprite = enemySprite;
-            espawn.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+            spriteRen.sortingLayerName = "Objects";
+            espawn.transform.localScale = new Vector3(0.2f, 0.2f, 1f);
             espawn.transform.SetParent(enemySpawns.transform);
             espawn.transform.position = spawn;
         }
@@ -185,15 +188,10 @@ public class LevelManager : MonoBehaviour
         playerSpawn = new GameObject("playerSpawn");
         SpriteRenderer playSprite = playerSpawn.AddComponent<SpriteRenderer>();
         playSprite.sprite = playerSprite;
+        playSprite.sortingLayerName = "Objects";
         playerSpawn.transform.SetParent(spawnPoints.transform);
         playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
         playerSpawn.transform.position = levelData.playerSpawn;
-
-        //Next, createPlayerSpawn
-
-        //Should probably create a parent "SpawnPoints" and make children
-        // "portalSpawns", "enemySpawns", and "playerSpawn" as well as 
-        // make subchildren containing the actual spawns for the first two.
 
         //debug
         Debug.Log("Level was loaded");

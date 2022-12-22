@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 11400000, guid: 265c35abad7787a48869d5ad9711f872, type: 2}
   id: EmptySky
-  tilemap: 10
+  tilemap: 30

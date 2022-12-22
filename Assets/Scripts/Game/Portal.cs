@@ -6,17 +6,25 @@ using UnityEngine.SceneManagement;
 public class Portal : MonoBehaviour
 {
 
-    public int iLevelToLoad;
-    public string sLevelToLoad;
-    public bool useIntegerToLoadLevel = false;
-
     private SpriteRenderer portalSprite;
     private Color portalColor;
     private Color highlightColor;
 
+    private GameObject manager;
+    private ManageLevels manageLevels;
+    public int nextLevelInt;
+    public string nextLevel;
+    public int randomMap;
+
 
     void Start()
     {
+        // randomMap = UnityEngine.Random.Range(1, 5);
+        randomMap = 1;
+        manager = GameObject.Find("Manager");
+        manageLevels = manager.GetComponent<ManageLevels>();
+        nextLevelInt = manageLevels.nextLevel;
+        nextLevel = "Level" + nextLevelInt.ToString() + randomMap.ToString();
         highlightColor = new Color(0.5f, 0, 0);
         portalColor = new Color(1, 0, 0);
         portalSprite = transform.GetComponent<SpriteRenderer>();
@@ -33,15 +41,20 @@ public class Portal : MonoBehaviour
         portalSprite.color = portalColor;
     }
 
-    public void LoadScene()
+    public void LoadLevel()
     {
-        if(useIntegerToLoadLevel)
+        //Load Shop
+        if(nextLevelInt == 3 || nextLevelInt == 5)
         {
-            SceneManager.LoadScene(iLevelToLoad);
+            if(SceneManager.GetActiveScene().buildIndex == 2)
+                SceneManager.LoadScene(3);
+            else
+                SceneManager.LoadScene(2);
         }
-        else{
-            SceneManager.LoadScene(sLevelToLoad);
+        
 
-        }
+        //Else, go to next level
+        manageLevels.LoadLevel(nextLevel);
+       
     }
 }

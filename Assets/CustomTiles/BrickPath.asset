@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec557146ad0dbd44f9e89c2326ce1d98, type: 3}
-  m_Name: Brick
+  m_Name: BrickPath
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: d81d2a1f115b6de46bda8b8fc8a77a35, type: 2}
-  id: Brick
-  tilemap: 30
+  tile: {fileID: 11400000, guid: e20b2738addf8754f9e41a30bd626269, type: 2}
+  id: BrickPath
+  tilemap: 50

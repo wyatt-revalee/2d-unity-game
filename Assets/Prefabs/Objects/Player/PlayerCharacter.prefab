@@ -111,8 +111,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -578765913
+  m_SortingLayer: 1
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: c31a55bddf0745d4e87b8626a2b7cbe9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -188,6 +188,7 @@ MonoBehaviour:
   sceneTransition: {fileID: 0}
   coinCounter: {fileID: 0}
   healthBar: {fileID: 0}
+  manaBar: {fileID: 0}
   enemyLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -197,6 +198,8 @@ MonoBehaviour:
   coins: 0
   maxHealth: 10
   currentHealth: 0
+  maxMana: 10
+  currentMana: 0
   attackDamage: 1
   attackRange: 0.56
   knockbackY: 30

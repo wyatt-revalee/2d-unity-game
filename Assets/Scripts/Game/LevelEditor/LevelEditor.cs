@@ -68,7 +68,7 @@ public class LevelEditor : MonoBehaviour
         }
 
         
-        if(Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButton(0) && Input.GetMouseButtonDown(1))
         {
             PlacePortalSpawn(pos);
         }
@@ -78,17 +78,17 @@ public class LevelEditor : MonoBehaviour
             UndoLastPortalSpawn();
         }
 
-        if(Input.GetMouseButtonDown(1) && Input.GetKeyDown(KeyCode.LeftControl))
+        if(Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
         {
             PlaceEnemySpawn(pos);
         }
 
-        if(Input.GetKeyDown(KeyCode.Z) && Input.GetMouseButton(2))
+        if(Input.GetKey(KeyCode.Z) && Input.GetMouseButtonDown(1))
         {
             UndoLastEnemySpawn();
         }
 
-        if(Input.GetMouseButtonDown(0) && Input.GetKeyDown(KeyCode.LeftControl))
+        if(Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftControl))
         {
             PlacePlayerSpawn(pos);
         }
@@ -112,6 +112,7 @@ public class LevelEditor : MonoBehaviour
             newPortalSpawn.transform.position = pos;
             SpriteRenderer spriteRen = newPortalSpawn.AddComponent<SpriteRenderer>();
             spriteRen.sprite = portalSpawnSprite;
+            spriteRen.sortingLayerName = "Objects";
             newPortalSpawn.transform.localScale = portalScale;
             portalSpawns.Add(newPortalSpawn);
     }
@@ -133,6 +134,7 @@ public class LevelEditor : MonoBehaviour
         newEnemySpawn.transform.position = pos;
         SpriteRenderer spriteRen = newEnemySpawn.AddComponent<SpriteRenderer>();
         spriteRen.sprite = enemySpawnSprite;
+        spriteRen.sortingLayerName = "Objects";
         newEnemySpawn.transform.localScale = new Vector3(0.2f, 0.2f, 1f);
         enemySpawns.Add(newEnemySpawn);
     }
@@ -154,6 +156,7 @@ public class LevelEditor : MonoBehaviour
         playerSpawn.transform.position = pos;
         SpriteRenderer spriteRen = playerSpawn.AddComponent<SpriteRenderer>();
         spriteRen.sprite = playerSpawnSprite;
+        spriteRen.sortingLayerName = "Objects";
         playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
         
     }
