@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     // Use this for initialization
     private void Start () {
 
+        pauseMenu = GameObject.Find("PauseMenu");
+
         isPaused = false;
 
         if(Instance == null)

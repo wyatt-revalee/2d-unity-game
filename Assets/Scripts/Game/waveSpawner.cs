@@ -34,6 +34,8 @@ public class waveSpawner : MonoBehaviour
     void Start()
     {   
 
+        spawnParent = GameObject.Find("Grid").transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform;
+
         getSpawns();
 
         currentScene = SceneManager.GetActiveScene().buildIndex;
@@ -68,6 +70,8 @@ public class waveSpawner : MonoBehaviour
 
         if(SceneManager.GetActiveScene().buildIndex > currentScene)
         {
+            spawnParent = GameObject.Find("Grid").transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform;
+            getSpawns();
             portal = GameObject.Find("Portal");
             portal.SetActive(false);
             Debug.Log("New portal found!");
