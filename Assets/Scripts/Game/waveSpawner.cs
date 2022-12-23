@@ -9,6 +9,8 @@ public class waveSpawner : MonoBehaviour
    
    //General
     public List<Enemy> enemies = new List<Enemy>();
+    public int spawnerWorldCheck;
+    public int spawnerLevel;
     public int currWave;
     private int waveValue;
     public List<GameObject> enemiesToSpawn = new List<GameObject>();
@@ -31,6 +33,8 @@ public class waveSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spawnerWorldCheck = 1;
+        spawnerLevel = 0;
         currWave = 0;
         if(Instance == null)
         {
@@ -40,6 +44,9 @@ public class waveSpawner : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (SceneManager.GetActiveScene().buildIndex != 3)
+            SceneManager.LoadScene(3);
     }
  
     // Update is called once per frame
@@ -55,9 +62,17 @@ public class waveSpawner : MonoBehaviour
             shopping = false;
         
         if(shopping == true) return;
+        if(manageLevels.loading == true) return;
 
-        if(currWave < manageLevels.currentLevel)
+        if(manageLevels.world > spawnerWorldCheck)
         {
+            spawnerWorldCheck++;
+            spawnerLevel = 0;
+        }
+
+        if(spawnerLevel < manageLevels.currentLevel)
+        {
+            spawnerLevel++;
             currWave++;
             StartCoroutine(StartLevel());
         }

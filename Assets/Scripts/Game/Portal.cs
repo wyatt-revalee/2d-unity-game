@@ -14,6 +14,9 @@ public class Portal : MonoBehaviour
     private ManageLevels manageLevels;
     public int nextLevelInt;
     public string nextLevel;
+    public int currentLevelInt;
+    public string currentLevel;
+
     public int randomMap;
 
 
@@ -25,6 +28,8 @@ public class Portal : MonoBehaviour
         manageLevels = manager.GetComponent<ManageLevels>();
         nextLevelInt = manageLevels.nextLevel;
         nextLevel = "Level" + nextLevelInt.ToString() + @"\" + randomMap.ToString();
+        currentLevelInt = manageLevels.currentLevel;
+        currentLevel = "Level" + currentLevelInt.ToString() + @"\" + randomMap.ToString();
         highlightColor = new Color(0.5f, 0, 0);
         portalColor = new Color(1, 0, 0);
         portalSprite = transform.GetComponent<SpriteRenderer>();
@@ -51,7 +56,7 @@ public class Portal : MonoBehaviour
             {
                 Debug.Log("Leaving shop");
                 SceneManager.LoadScene(3);
-                manageLevels.LoadLevel(nextLevel);
+                manageLevels.LeaveShopStarter(nextLevel);
                 Destroy(gameObject);
                 return;
             }
@@ -59,6 +64,7 @@ public class Portal : MonoBehaviour
             {
                 Debug.Log("Loading shop");
                 SceneManager.LoadScene(2);
+                manageLevels.ClearMap(currentLevel);
                 Destroy(gameObject);
                 return;
             }

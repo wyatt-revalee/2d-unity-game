@@ -52,6 +52,9 @@ public class Player : MonoBehaviour, IDamageable{
     // Use this for initialization
     private void Start () {
 
+       if (SceneManager.GetActiveScene().buildIndex != 3)
+            SceneManager.LoadScene(3);
+
         sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
 
         currentScene = SceneManager.GetActiveScene().buildIndex;

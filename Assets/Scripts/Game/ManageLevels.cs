@@ -14,25 +14,23 @@ public class ManageLevels : MonoBehaviour
     private GameObject portalSpawns;
     private GameObject enemySpawns;
     private GameObject playerSpawn;
+    public bool loading;
 
     public GameObject portal;
     public GameObject player;
 
     public List<GameObject> levelSpawns;
 
+    public int world;
     public int currentLevel;
     public int nextLevel;
     private string firstLevel = @"Level1\1";
 
     private void Start()
     {
-        GameObject[] managers = GameObject.FindGameObjectsWithTag("Manager");
-        if(managers.Length > 1) Destroy(gameObject);
-        Debug.Log("TEST");
+        world = 0;
+        loading = true;
         //set up the instance
-        if (instance == null) instance = this;
-        else Destroy(this);
-
         if(Instance == null)
         {
             Instance = gameObject;
@@ -41,8 +39,9 @@ public class ManageLevels : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if (SceneManager.GetActiveScene().buildIndex == 4)
+            SceneManager.LoadScene(3);
 
-        CreateParents();
         currentLevel = 0;
         nextLevel = 1;
 
@@ -57,7 +56,7 @@ public class ManageLevels : MonoBehaviour
             }
         }
 
-        LoadLevel(firstLevel);
+        StartCoroutine(StartManager());
     }
 
     public List<CustomTile> tiles = new List<CustomTile>();
@@ -86,29 +85,21 @@ public class ManageLevels : MonoBehaviour
 
     public void LoadLevel(string levelName)
     {
-
-        if(SceneManager.GetActiveScene().buildIndex == 2)
-            return;
-
-        currentLevel++;
-        nextLevel++;
-
-        foreach (var spawn in levelSpawns) Destroy(spawn);
+        loading = true;
+        Debug.Log("Loading: " + levelName.ToString());
+        
         //load the json file to a leveldata
         string json = File.ReadAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\"+levelName+".json");
         LevelData levelData = JsonUtility.FromJson<LevelData>(json);
 
-        CreateParents();
 
         foreach (var data in levelData.layers)
         {
 
-
             if (!layers.TryGetValue(data.layer_id, out Tilemap tilemap)) break;
-
+            foreach (var spawn in levelSpawns) Destroy(spawn);
             //clear the tilemap
             tilemap.ClearAllTiles();
-
 
             //place the tiles
             for (int i = 0; i < data.tiles.Count; i++)
@@ -117,6 +108,8 @@ public class ManageLevels : MonoBehaviour
                 if (tile) tilemap.SetTile(new Vector3Int(data.poses_x[i], data.poses_y[i], 0), tile);
             }
         }
+
+        CreateParents();
 
         int pspawnCount = 0;
         // Loop through all portal spawns and instantiate them
@@ -154,11 +147,28 @@ public class ManageLevels : MonoBehaviour
         playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
         playerSpawn.transform.position = levelData.playerSpawn;
 
-        //debug
-        Debug.Log("Level " + currentLevel.ToString() + " was loaded");
         player.transform.position = playerSpawn.transform.position;
-        if(SceneManager.GetActiveScene().buildIndex != 2)
+        if(currentLevel == 4)
+        {
+            currentLevel = nextLevel;
+            nextLevel = 1;
+        }
+        else
+        {
+            currentLevel = nextLevel;
+            nextLevel++;
+        }
+        if(currentLevel == 1)
+            world++;
+        if(SceneManager.GetActiveScene().buildIndex == 3)
+        {
             CreatePortal();
+            Debug.Log("Portal Created");
+        }
+        
+        loading = false;
+        Debug.Log(levelName.ToString() + " was loaded");
+
     }
 
     void CreateParents()
@@ -183,6 +193,37 @@ public class ManageLevels : MonoBehaviour
         Instantiate(portal, randomSpawn, Quaternion.identity);
         
     }
+
+    public void ClearMap(string levelName)
+    {
+        string json = File.ReadAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\"+levelName+".json");
+       LevelData levelData = JsonUtility.FromJson<LevelData>(json);
+
+        foreach (var data in levelData.layers)
+        {
+            if (!layers.TryGetValue(data.layer_id, out Tilemap tilemap)) break;
+            //clear the tilemap
+            tilemap.ClearAllTiles();
+        }
+    }
+
+    public IEnumerator StartManager()
+    {
+        yield return new WaitUntil(() => (SceneManager.GetActiveScene().buildIndex == 3) == true);
+        LoadLevel(firstLevel);
+    }
+
+    public void LeaveShopStarter(string levelname){
+        StartCoroutine(LeaveShop(levelname));
+    }
+
+    public IEnumerator LeaveShop(string levelname)
+    {
+        Debug.Log(SceneManager.GetActiveScene().buildIndex);
+        yield return new WaitUntil(() => (SceneManager.GetActiveScene().buildIndex == 3) == true);
+        LoadLevel(levelname);
+    }
+
 }
 
 public class LevelData
