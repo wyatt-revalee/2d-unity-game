@@ -8,6 +8,7 @@ TagManager:
   - SwitchingActive
   - Enemy
   - Level
+  - Manager
   layers:
   - Default
   - TransparentFX

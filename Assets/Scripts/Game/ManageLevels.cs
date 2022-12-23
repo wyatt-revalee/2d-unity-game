@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class ManageLevels : MonoBehaviour
 {
+    private static GameObject Instance;
     public static ManageLevels instance;
     private GameObject spawnPoints;
     private GameObject portalSpawns;
@@ -14,6 +16,7 @@ public class ManageLevels : MonoBehaviour
     private GameObject playerSpawn;
 
     public GameObject portal;
+    public GameObject player;
 
     public List<GameObject> levelSpawns;
 
@@ -21,15 +24,27 @@ public class ManageLevels : MonoBehaviour
     public int nextLevel;
     private string firstLevel = @"Level1\1";
 
-    private void Awake()
+    private void Start()
     {
+        GameObject[] managers = GameObject.FindGameObjectsWithTag("Manager");
+        if(managers.Length > 1) Destroy(gameObject);
+        Debug.Log("TEST");
         //set up the instance
         if (instance == null) instance = this;
         else Destroy(this);
 
+        if(Instance == null)
+        {
+            Instance = gameObject;
+            DontDestroyOnLoad(gameObject);
+        } else
+        {
+            Destroy(gameObject);
+        }
+
         CreateParents();
-        currentLevel = 1;
-        nextLevel = 2;
+        currentLevel = 0;
+        nextLevel = 1;
 
         foreach (Tilemap tilemap in tilemaps)
         {
@@ -43,7 +58,6 @@ public class ManageLevels : MonoBehaviour
         }
 
         LoadLevel(firstLevel);
-        CreatePortal();
     }
 
     public List<CustomTile> tiles = new List<CustomTile>();
@@ -72,6 +86,12 @@ public class ManageLevels : MonoBehaviour
 
     public void LoadLevel(string levelName)
     {
+
+        if(SceneManager.GetActiveScene().buildIndex == 2)
+            return;
+
+        currentLevel++;
+        nextLevel++;
 
         foreach (var spawn in levelSpawns) Destroy(spawn);
         //load the json file to a leveldata
@@ -135,7 +155,10 @@ public class ManageLevels : MonoBehaviour
         playerSpawn.transform.position = levelData.playerSpawn;
 
         //debug
-        Debug.Log("Level was loaded");
+        Debug.Log("Level " + currentLevel.ToString() + " was loaded");
+        player.transform.position = playerSpawn.transform.position;
+        if(SceneManager.GetActiveScene().buildIndex != 2)
+            CreatePortal();
     }
 
     void CreateParents()

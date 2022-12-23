@@ -258,6 +258,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122676570}
   m_CullTransparentMesh: 1
+--- !u!1 &206516615 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2888360100593607608, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
+  m_PrefabInstance: {fileID: 1576041467}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &231829705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1285,15 +1290,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemies:
   - enemyPrefab: {fileID: 3312762804332744540, guid: 5f2990c4f3878b04c815b3d0bc131e5d, type: 3}
-    cost: 2
+    cost: 10
   - enemyPrefab: {fileID: 8880572237057677201, guid: 7250d296224b40240a3ef702adae7d92, type: 3}
-    cost: 1
+    cost: 10
   currWave: 0
   enemiesToSpawn: []
-  spawnLocation: []
-  spawnIndex: 0
-  waveDuration: 0
-  spawnedEnemies: []
+  manageLevels: {fileID: 1804786409}
+  portal: {fileID: 0}
+  shopping: 0
+  settingUp: 0
+  spawnParent: {fileID: 0}
+  spawnLocations: []
+  waveDuration: 2
 --- !u!1 &804087185
 GameObject:
   m_ObjectHideFlags: 0
@@ -2243,7 +2251,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2888360100593607615, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
   m_PrefabInstance: {fileID: 1576041467}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 206516615}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0d096b4367d3504dbe9c4cc5115135f, type: 3}
@@ -2259,7 +2267,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2888360100593607589, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
   m_PrefabInstance: {fileID: 1576041467}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 206516615}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98b9be3a1cd761042810454948c22c02, type: 3}
@@ -2949,7 +2957,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: -1554925383
   m_SortingOrder: 4
   m_TargetDisplay: 0
 --- !u!224 &1456945221
@@ -3679,7 +3687,7 @@ GameObject:
   - component: {fileID: 1804786409}
   m_Layer: 0
   m_Name: Manager
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3712,6 +3720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portal: {fileID: 4145301130972541177, guid: d5f83765555d78549998ac546ce1536d, type: 3}
+  player: {fileID: 206516615}
   levelSpawns: []
   currentLevel: 0
   nextLevel: 0
