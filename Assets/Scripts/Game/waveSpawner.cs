@@ -1,52 +1,80 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
  
 public class waveSpawner : MonoBehaviour
 {
    
+   //General
     public List<Enemy> enemies = new List<Enemy>();
     public int currWave;
     private int waveValue;
     public List<GameObject> enemiesToSpawn = new List<GameObject>();
+    private static GameObject Instance;
+    public ManageLevels manageLevels;
+    public GameObject portal;
+    public bool shopping;
+    public bool settingUp;
  
+    //Spawning
     public Transform spawnParent;
     public List<Transform> spawnLocations = new List<Transform>();
-    public int spawnIndex;
- 
+
+    //Intervals and timers
     public int waveDuration;
     private float waveTimer;
     private float spawnInterval;
     private float spawnTimer;
-    
-    public List<GameObject> spawnedEnemies = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
-        GenerateWave();
+        currWave = 0;
+        if(Instance == null)
+        {
+            Instance = gameObject;
+            DontDestroyOnLoad(gameObject);
+        } else
+        {
+            Destroy(gameObject);
+        }
     }
  
     // Update is called once per frame
     void FixedUpdate()
     {
+        //If at main menu or game over menu, get rid of wave spawner
+        if(SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1)
+            Destroy(gameObject);
+
+        if(SceneManager.GetActiveScene().buildIndex == 2)
+            shopping = true;
+        else
+            shopping = false;
+        
+        if(shopping == true) return;
+
+        if(currWave < manageLevels.currentLevel)
+        {
+            currWave++;
+            StartCoroutine(StartLevel());
+        }
+        if(settingUp == true) return;
+        GameObject[] spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         if(spawnTimer <=0)
         {
             //spawn an enemy
             if(enemiesToSpawn.Count >0)
             {
-                GameObject enemy = (GameObject)Instantiate(enemiesToSpawn[0], spawnLocations[spawnIndex].position,Quaternion.identity); // spawn first enemy in our list
+                int randLocation = UnityEngine.Random.Range(0, spawnLocations.Count-1);
+                // Debug.Log("spawnLocations.Count: " +  spawnLocations.Count.ToString());
+                // Debug.Log("spawnLocations.Count", spawnLocations.Count);
+                
+                GameObject enemy = (GameObject)Instantiate(enemiesToSpawn[0], spawnLocations[randLocation].position,Quaternion.identity); // spawn first enemy in our list
                 enemiesToSpawn.RemoveAt(0); // and remove it
-                spawnedEnemies.Add(enemy);
                 spawnTimer = spawnInterval;
- 
-                // if(spawnIndex + 1 <= spawnLocations.Length-1)
-                // {
-                //     spawnIndex++;
-                // }
-                // else
-                // {
-                //     spawnIndex = 0;
-                // }
             }
             else
             {
@@ -59,10 +87,9 @@ public class waveSpawner : MonoBehaviour
             waveTimer -= Time.fixedDeltaTime;
         }
  
-        if(waveTimer<=0 && spawnedEnemies.Count <=0)
+        if(waveTimer<=0 && spawnedEnemies.Length <=0 && enemiesToSpawn.Count == 0)
         {
-            currWave++;
-            GenerateWave();
+            portal.SetActive(true);
         }
     }
  
@@ -107,11 +134,32 @@ public class waveSpawner : MonoBehaviour
         enemiesToSpawn = generatedEnemies;
     }
 
-    void getSpawns() {
+    void getSpawns() 
+        {
+            spawnLocations.Clear();
             foreach (Transform spawnPoint in spawnParent){
                 spawnLocations.Add(spawnPoint);
             }
         }
+
+    void StartNewLevel() {
+        portal.SetActive(false);
+        getSpawns();
+        GenerateWave();
+        settingUp = false;
+    }
+
+    IEnumerator StartLevel()
+    {
+        settingUp = true;
+        portal = GameObject.Find("Portal(Clone)");
+        yield return new WaitUntil(() => portal == true);
+        GameObject temp = GameObject.Find("spawnPoints");
+        yield return new WaitUntil(() => temp == true);
+        spawnParent = temp.transform.GetChild(1);
+        StartNewLevel();
+
+    }
   
 }
  
