@@ -19,6 +19,13 @@ public class waveSpawner : MonoBehaviour
     public GameObject portal;
     public bool shopping;
     public bool settingUp;
+
+    // Wave Visual
+    public GameObject waveFlashVisual;
+    public GameObject waveUIVisual;
+    public TMP_Text waveFlashText;
+    public TMP_Text waveUIText;
+    private string waveText;
  
     //Spawning
     public Transform spawnParent;
@@ -158,7 +165,6 @@ public class waveSpawner : MonoBehaviour
         }
 
     void StartNewLevel() {
-        portal.SetActive(false);
         getSpawns();
         GenerateWave();
         settingUp = false;
@@ -172,6 +178,19 @@ public class waveSpawner : MonoBehaviour
         GameObject temp = GameObject.Find("spawnPoints");
         yield return new WaitUntil(() => temp == true);
         spawnParent = temp.transform.GetChild(1);
+        portal.SetActive(false);
+
+        //Start wavevisual and transition
+        waveText = "Wave " + currWave.ToString();
+        waveFlashText.text = waveText;
+        waveUIText.text = waveText;
+        waveFlashVisual.SetActive(true);
+        waveUIVisual.SetActive(false);
+        yield return new WaitForSeconds(5);
+        waveUIVisual.SetActive(true);
+        waveFlashVisual.SetActive(false);
+        yield return new WaitForSeconds(5);
+
         StartNewLevel();
 
     }

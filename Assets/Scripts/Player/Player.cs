@@ -55,15 +55,11 @@ public class Player : MonoBehaviour, IDamageable{
        if (SceneManager.GetActiveScene().buildIndex != 3)
             SceneManager.LoadScene(3);
 
-        sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
-
-        currentScene = SceneManager.GetActiveScene().buildIndex;
-
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         currentMana = maxMana;
         manaBar.SetMaxMana(maxMana);
- 
+
     }
  
     // Update is called once per frame
@@ -71,24 +67,6 @@ public class Player : MonoBehaviour, IDamageable{
      {
 
         isGrounded = playerMovement.IsGrounded();
-
-        if(SceneManager.GetActiveScene().buildIndex > currentScene)
-        {
-            playerMoved = false;
-            playerSpawnPoint = GameObject.Find("PlayerSpawnPoint");
-            currentScene += 1;
-            transform.position = playerSpawnPoint.transform.position;
-            sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
-
-        }
-        if(SceneManager.GetActiveScene().buildIndex == 2 && playerMoved == false)
-        {
-            playerSpawnPoint = GameObject.Find("PlayerSpawnPoint");
-            transform.position = playerSpawnPoint.transform.position;
-            playerMoved = true;
-            sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
-
-        }
 
         if(playerMovement.isPaused == false)
         {
@@ -194,7 +172,7 @@ public class Player : MonoBehaviour, IDamageable{
     IEnumerator GameOver()
     {
         Debug.Log("GAME OVER");
-        sceneTransition.SetTrigger("Start");
+        sceneTransition.SetTrigger("End");
 
         yield return new WaitForSeconds(0.8f);
         SceneManager.LoadScene(1);

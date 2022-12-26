@@ -15,6 +15,7 @@ public class ManageLevels : MonoBehaviour
     private GameObject enemySpawns;
     private GameObject playerSpawn;
     public bool loading;
+    public Animator sceneTransition;
 
     public GameObject portal;
     public GameObject player;
@@ -28,6 +29,7 @@ public class ManageLevels : MonoBehaviour
 
     private void Start()
     {
+        CreateTileLists();
         world = 0;
         loading = true;
         //set up the instance
@@ -62,8 +64,17 @@ public class ManageLevels : MonoBehaviour
     public List<CustomTile> tiles = new List<CustomTile>();
     [SerializeField] List<Tilemap> tilemaps = new List<Tilemap>();
     public Dictionary<int, Tilemap> layers = new Dictionary<int, Tilemap>();
-    
 
+    //Palette Dictionary of Lists
+    public Dictionary<string, List<CustomTile>> palettes = new Dictionary<string, List<CustomTile>>();
+    List<CustomTile> red = new List<CustomTile>();
+    List<CustomTile> orange = new List<CustomTile>();
+    List<CustomTile> yellow = new List<CustomTile>();
+    List<CustomTile> green = new List<CustomTile>();
+    List<CustomTile> blue = new List<CustomTile>();
+    List<CustomTile> purple = new List<CustomTile>();
+
+    
     [Header("Sprites")]
     public Sprite portalSprite;
     public Sprite playerSprite;
@@ -85,6 +96,7 @@ public class ManageLevels : MonoBehaviour
 
     public void LoadLevel(string levelName)
     {
+        sceneTransition.SetTrigger("Start");
         loading = true;
         Debug.Log("Loading: " + levelName.ToString());
         
@@ -104,7 +116,7 @@ public class ManageLevels : MonoBehaviour
             //place the tiles
             for (int i = 0; i < data.tiles.Count; i++)
             {
-                TileBase tile = tiles.Find(t => t.id == data.tiles[i]).tile;
+                TileBase tile = red.Find(t => t.id == data.tiles[i]).tile;
                 if (tile) tilemap.SetTile(new Vector3Int(data.poses_x[i], data.poses_y[i], 0), tile);
             }
         }
@@ -219,11 +231,39 @@ public class ManageLevels : MonoBehaviour
 
     public IEnumerator LeaveShop(string levelname)
     {
-        Debug.Log(SceneManager.GetActiveScene().buildIndex);
         yield return new WaitUntil(() => (SceneManager.GetActiveScene().buildIndex == 3) == true);
         LoadLevel(levelname);
     }
 
+    public void CreateTileLists()
+    {
+        //Add the initialized empty lists to the dict
+        palettes.Add("Red", red);
+        palettes.Add("Orange", orange);
+        palettes.Add("Yellow", yellow);
+        palettes.Add("Green", green);
+        palettes.Add("Blue", blue);
+        palettes.Add("Purple", purple);
+
+        //Loop through each folder of custom tiles (red, orange, ...)
+        string[] dir = Directory.GetFiles(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\CustomTiles\");
+        foreach (string path in dir)
+        {
+            //Remove unnecessary stuff from path to get the key for the dict (so get the color from the filepath)
+            string file = path.Substring(56, path.Length-56);
+            file = file.Remove(file.Length - 5);
+
+            //Go through each customtile in the color, create it as a customtile using Resources.Load, and add it into the corresponding list of the dict
+            string[] tilePalette = Directory.GetFiles(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\CustomTiles\" + file, "*.asset");
+            foreach (var tile in tilePalette)
+            {
+                //Get local path from full path, pass it into Resources.Load to grab file
+                string tileSnip = tile.Substring(55, tile.Length-61);
+                CustomTile ctile = Resources.Load<CustomTile>(@"CustomTiles" + tileSnip);
+                palettes[file].Add(ctile);
+            }
+        }
+    }
 }
 
 public class LevelData
@@ -247,3 +287,4 @@ public class LayerData
         layer_id = id;
     }
 }
+
