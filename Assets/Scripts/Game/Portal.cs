@@ -9,6 +9,8 @@ public class Portal : MonoBehaviour
     private SpriteRenderer portalSprite;
     private Color portalColor;
     private Color highlightColor;
+    public GameObject sceneTransParent;
+    public Animator sceneTransition;
 
     private GameObject manager;
     private ManageLevels manageLevels;
@@ -22,6 +24,8 @@ public class Portal : MonoBehaviour
 
     void Start()
     {
+        sceneTransParent = GameObject.Find("SceneLoader");
+        sceneTransition = sceneTransParent.transform.GetChild(0).GetComponent<Animator>();
         // randomMap = UnityEngine.Random.Range(1, 5);
         randomMap = 1;
         manager = GameObject.Find("Manager");
@@ -44,6 +48,18 @@ public class Portal : MonoBehaviour
     public void DeHighlight()
     {
         portalSprite.color = portalColor;
+    }
+
+    public void StartTransition()
+    {
+        StartCoroutine(LoadTransition());
+    }
+
+    public IEnumerator LoadTransition()
+    {
+        sceneTransition.SetTrigger("End");
+        yield return new WaitForSeconds(1f);
+        LoadLevel();
     }
 
     public void LoadLevel()

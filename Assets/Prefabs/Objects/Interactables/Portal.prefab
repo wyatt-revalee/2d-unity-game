@@ -125,8 +125,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd7108625d844e346baa0f1c2524155d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneTransParent: {fileID: 0}
+  sceneTransition: {fileID: 0}
   nextLevelInt: 0
   nextLevel: 
+  currentLevelInt: 0
+  currentLevel: 
   randomMap: 0
 --- !u!1001 &5435590401913372971
 PrefabInstance:
@@ -193,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1571024781328223528, guid: 9926d3644002e1f41baedce262b16229, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadLevel
+      value: StartTransition
       objectReference: {fileID: 0}
     - target: {fileID: 1571024781328223528, guid: 9926d3644002e1f41baedce262b16229, type: 3}
       propertyPath: enterRangeAction.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
