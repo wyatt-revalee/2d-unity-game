@@ -189,7 +189,7 @@ public class waveSpawner : MonoBehaviour
         yield return new WaitForSeconds(5);
         waveUIVisual.SetActive(true);
         waveFlashVisual.SetActive(false);
-        yield return new WaitForSeconds(5);
+        // yield return new WaitForSeconds(5);
 
         StartNewLevel();
 

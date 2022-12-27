@@ -7,10 +7,11 @@ public class Portal : MonoBehaviour
 {
 
     private SpriteRenderer portalSprite;
-    private Color portalColor;
+    private Color32 portalColor;
     private Color highlightColor;
     public GameObject sceneTransParent;
     public Animator sceneTransition;
+    public int currentWorld;
 
     private GameObject manager;
     private ManageLevels manageLevels;
@@ -34,8 +35,11 @@ public class Portal : MonoBehaviour
         nextLevel = "Level" + nextLevelInt.ToString() + @"\" + randomMap.ToString();
         currentLevelInt = manageLevels.currentLevel;
         currentLevel = "Level" + currentLevelInt.ToString() + @"\" + randomMap.ToString();
-        highlightColor = new Color(0.5f, 0, 0);
-        portalColor = new Color(1, 0, 0);
+        currentWorld = manageLevels.world;
+        portalColor = manageLevels.worldColors[currentWorld];
+        // highlightColor = new Color32((byte)portalColor.r/2, (byte)portalColor.g/2, (byte)portalColor.b/2, (byte)255);
+        Debug.Log(portalColor.r);
+        highlightColor = new Color32(100, 200, 0, 255);
         portalSprite = transform.GetComponent<SpriteRenderer>();
         portalSprite.color = portalColor;
     }

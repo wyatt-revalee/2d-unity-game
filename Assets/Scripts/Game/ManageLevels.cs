@@ -30,7 +30,7 @@ public class ManageLevels : MonoBehaviour
     private void Start()
     {
         CreateTileLists();
-        world = 0;
+        world = 1;
         loading = true;
         //set up the instance
         if(Instance == null)
@@ -74,6 +74,27 @@ public class ManageLevels : MonoBehaviour
     List<CustomTile> blue = new List<CustomTile>();
     List<CustomTile> purple = new List<CustomTile>();
 
+    //Dictionary for conversion of int to world name
+    public Dictionary<int, string> intToColor = new Dictionary<int, string>()
+    {
+        {1, "Red"},
+        {2, "Orange"},
+        {3, "Yellow"},
+        {4, "Green"},
+        {5, "Blue"},
+        {6, "Purple"},
+    };
+
+    public Dictionary<int, Color32> worldColors = new Dictionary<int, Color32>()
+    {
+        {1, new Color32(255, 0, 0, 255)},       // Red
+        {2, new Color32(255, 125, 42, 255)},    // Orange
+        {3, new Color32(255, 0, 0, 255)},       // Yellow
+        {4, new Color32(255, 0, 0, 255)},       // Green
+        {5, new Color32(255, 0, 0, 255)},       // Blue
+        {6, new Color32(255, 0, 0, 255)},       // Purple
+    };
+
     
     [Header("Sprites")]
     public Sprite portalSprite;
@@ -96,10 +117,27 @@ public class ManageLevels : MonoBehaviour
 
     public void LoadLevel(string levelName)
     {
-        sceneTransition.SetTrigger("Start");
         loading = true;
         Debug.Log("Loading: " + levelName.ToString());
         
+        sceneTransition.SetTrigger("Start");
+
+        if(currentLevel == 4)
+        {
+            currentLevel = nextLevel;
+            nextLevel = 1;
+        }
+        else
+        {
+            currentLevel = nextLevel;
+            nextLevel++;
+        }
+        if(currentLevel == 1)
+            world++;
+
+        string worldKey = intToColor[world];
+        List<CustomTile> currWorld = palettes[worldKey];
+
         //load the json file to a leveldata
         string json = File.ReadAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\"+levelName+".json");
         LevelData levelData = JsonUtility.FromJson<LevelData>(json);
@@ -116,7 +154,7 @@ public class ManageLevels : MonoBehaviour
             //place the tiles
             for (int i = 0; i < data.tiles.Count; i++)
             {
-                TileBase tile = red.Find(t => t.id == data.tiles[i]).tile;
+                TileBase tile = currWorld.Find(t => t.id == data.tiles[i]).tile;
                 if (tile) tilemap.SetTile(new Vector3Int(data.poses_x[i], data.poses_y[i], 0), tile);
             }
         }
@@ -160,18 +198,7 @@ public class ManageLevels : MonoBehaviour
         playerSpawn.transform.position = levelData.playerSpawn;
 
         player.transform.position = playerSpawn.transform.position;
-        if(currentLevel == 4)
-        {
-            currentLevel = nextLevel;
-            nextLevel = 1;
-        }
-        else
-        {
-            currentLevel = nextLevel;
-            nextLevel++;
-        }
-        if(currentLevel == 1)
-            world++;
+        
         if(SceneManager.GetActiveScene().buildIndex == 3)
         {
             CreatePortal();
@@ -246,19 +273,19 @@ public class ManageLevels : MonoBehaviour
         palettes.Add("Purple", purple);
 
         //Loop through each folder of custom tiles (red, orange, ...)
-        string[] dir = Directory.GetFiles(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\CustomTiles\");
+        string[] dir = Directory.GetFiles(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Resources\CustomTiles\");
         foreach (string path in dir)
         {
             //Remove unnecessary stuff from path to get the key for the dict (so get the color from the filepath)
-            string file = path.Substring(56, path.Length-56);
+            string file = path.Substring(66, path.Length-66);
             file = file.Remove(file.Length - 5);
 
             //Go through each customtile in the color, create it as a customtile using Resources.Load, and add it into the corresponding list of the dict
-            string[] tilePalette = Directory.GetFiles(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\CustomTiles\" + file, "*.asset");
+            string[] tilePalette = Directory.GetFiles(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Resources\CustomTiles\" + file, "*.asset");
             foreach (var tile in tilePalette)
             {
                 //Get local path from full path, pass it into Resources.Load to grab file
-                string tileSnip = tile.Substring(55, tile.Length-61);
+                string tileSnip = tile.Substring(65, tile.Length-71);
                 CustomTile ctile = Resources.Load<CustomTile>(@"CustomTiles" + tileSnip);
                 palettes[file].Add(ctile);
             }
