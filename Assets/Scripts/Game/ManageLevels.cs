@@ -85,6 +85,7 @@ public class ManageLevels : MonoBehaviour
         {6, "Purple"},
     };
 
+    // Dictionary for assigning colors to objects respective to world
     public Dictionary<int, Color32> worldColors = new Dictionary<int, Color32>()
     {
         {1, new Color32(255, 0, 0, 255)},       // Red
@@ -95,13 +96,10 @@ public class ManageLevels : MonoBehaviour
         {6, new Color32(255, 0, 0, 255)},       // Purple
     };
 
-    
     [Header("Sprites")]
     public Sprite portalSprite;
     public Sprite playerSprite;
     public Sprite enemySprite;
-
-
 
     public enum Tilemaps
     {
@@ -252,6 +250,16 @@ public class ManageLevels : MonoBehaviour
         LoadLevel(firstLevel);
     }
 
+    public void EnterShopStarter(){
+        StartCoroutine(EnterShop());
+    }
+
+    public IEnumerator EnterShop()
+    {
+        yield return new WaitUntil(() => (SceneManager.GetActiveScene().buildIndex == 2) == true);
+        LoadShop();
+    }
+
     public void LeaveShopStarter(string levelname){
         StartCoroutine(LeaveShop(levelname));
     }
@@ -290,6 +298,70 @@ public class ManageLevels : MonoBehaviour
                 palettes[file].Add(ctile);
             }
         }
+    }
+
+    // This is similar to loadLevel but is just used to load the shop, nothing else.
+    public void LoadShop()
+    {
+        loading = true;
+        Debug.Log("Loading: Shop");
+        
+        sceneTransition.SetTrigger("Start");
+
+        string worldKey = intToColor[world];
+        List<CustomTile> currWorld = palettes[worldKey];
+
+        //load the json file to a leveldata
+        string json = File.ReadAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\Shop.json");
+        LevelData levelData = JsonUtility.FromJson<LevelData>(json);
+
+
+        foreach (var data in levelData.layers)
+        {
+
+            if (!layers.TryGetValue(data.layer_id, out Tilemap tilemap)) break;
+            foreach (var spawn in levelSpawns) Destroy(spawn);
+            //clear the tilemap
+            tilemap.ClearAllTiles();
+
+            //place the tiles
+            for (int i = 0; i < data.tiles.Count; i++)
+            {
+                TileBase tile = currWorld.Find(t => t.id == data.tiles[i]).tile;
+                if (tile) tilemap.SetTile(new Vector3Int(data.poses_x[i], data.poses_y[i], 0), tile);
+            }
+        }
+
+        CreateParents();
+
+        int pspawnCount = 0;
+        // Loop through all portal spawns and instantiate them
+        foreach (var spawn in levelData.portalSpawns)
+        {
+            pspawnCount++;
+            GameObject pspawn = new GameObject("spawn" + pspawnCount.ToString());
+            SpriteRenderer spriteRen = pspawn.AddComponent<SpriteRenderer>();
+            spriteRen.sprite = portalSprite;
+            spriteRen.sortingLayerName = "Objects";
+            pspawn.transform.localScale = new Vector3(0.5f, 1f, 1f);
+            pspawn.transform.SetParent(portalSpawns.transform);
+            pspawn.transform.position = spawn;
+        }
+
+        playerSpawn = new GameObject("playerSpawn");
+        SpriteRenderer playSprite = playerSpawn.AddComponent<SpriteRenderer>();
+        playSprite.sprite = playerSprite;
+        playSprite.sortingLayerName = "Objects";
+        playerSpawn.transform.SetParent(spawnPoints.transform);
+        playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
+        playerSpawn.transform.position = levelData.playerSpawn;
+
+        player.transform.position = playerSpawn.transform.position;
+        CreatePortal();
+        Debug.Log("Portal Created");
+        
+        loading = false;
+        Debug.Log("Shop was loaded");
     }
 }
 
