@@ -12,6 +12,7 @@ public class Portal : MonoBehaviour
     public GameObject sceneTransParent;
     public Animator sceneTransition;
     public int currentWorld;
+    public GameObject interactCanvas;
 
     private GameObject manager;
     private ManageLevels manageLevels;
@@ -37,20 +38,20 @@ public class Portal : MonoBehaviour
         currentLevel = "Level" + currentLevelInt.ToString() + @"\" + randomMap.ToString();
         currentWorld = manageLevels.world;
         portalColor = manageLevels.worldColors[currentWorld];
-        // highlightColor = new Color32((byte)portalColor.r/2, (byte)portalColor.g/2, (byte)portalColor.b/2, (byte)255);
-        Debug.Log(portalColor.r);
-        highlightColor = new Color32(100, 200, 0, 255);
+        highlightColor = new Color32(System.Convert.ToByte(portalColor.r/2), System.Convert.ToByte(portalColor.g/2), System.Convert.ToByte(portalColor.b/2), 255);
         portalSprite = transform.GetComponent<SpriteRenderer>();
         portalSprite.color = portalColor;
     }
 
     public void Highlight()
     {
+        interactCanvas.SetActive(true);
         portalSprite.color = highlightColor;
     }
 
     public void DeHighlight()
     {
+        interactCanvas.SetActive(false);
         portalSprite.color = portalColor;
     }
 
@@ -82,15 +83,14 @@ public class Portal : MonoBehaviour
             }
             else
             {
-                Debug.Log("Loading shop");
                 SceneManager.LoadScene(2);
                 manageLevels.ClearMap(currentLevel);
+                manageLevels.EnterShopStarter();
                 Destroy(gameObject);
                 return;
             }
         }
         
-        Debug.Log("Loading level: " + nextLevel);
         //Else, go to next level
         manageLevels.LoadLevel(nextLevel);
         Destroy(gameObject);

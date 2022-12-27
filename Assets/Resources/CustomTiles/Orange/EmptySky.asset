@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec557146ad0dbd44f9e89c2326ce1d98, type: 3}
   m_Name: EmptySky
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 265c35abad7787a48869d5ad9711f872, type: 2}
+  tile: {fileID: 11400000, guid: 192822bb186e4124588fa7f9885b86c2, type: 2}
   id: EmptySky
   tilemap: 30

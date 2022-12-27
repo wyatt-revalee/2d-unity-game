@@ -7,11 +7,22 @@ public class Anvil : MonoBehaviour
     private GameObject player;
     private Player playerscript;
     private int healCost = 5;
+    public GameObject interactCanvas;
 
     void Start() {
         player = GameObject.Find("PlayerCharacter");
         playerscript = player.GetComponent<Player>();
 
+    }
+
+    public void InRange()
+    {
+        interactCanvas.SetActive(true);
+    }
+
+    public void OutOfRange()
+    {
+        interactCanvas.SetActive(false);
     }
 
     public void HealPlayer() {
