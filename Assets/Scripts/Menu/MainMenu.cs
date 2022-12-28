@@ -20,7 +20,7 @@ public class MainMenu : MonoBehaviour
 
     IEnumerator SceneTransition()
     {
-        transition.SetTrigger("Start");
+        transition.SetTrigger("End");
 
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(4);

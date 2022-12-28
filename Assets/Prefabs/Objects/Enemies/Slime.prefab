@@ -391,7 +391,7 @@ SpriteRenderer:
   m_SortingLayerID: -578765913
   m_SortingLayer: 1
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: cb63902d729c34348a26a964d0a2e02a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2091e46316d74a943936c4c2a41c7c86, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -598,8 +598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19bf632872e5ec94891c3a8f2b1dff70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  target: {fileID: 0}
+  player: {fileID: 2888360100593607608, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
+  target: {fileID: 2888360100593607612, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
   activateDistance: 50
   pathUpdateSeconds: 0.5
   nextWaypointDistance: 1
@@ -626,6 +626,7 @@ MonoBehaviour:
   knockbackX: 5
   knockbackY: 5
   attackSpeed: 1
+  spriteRen: {fileID: 8880572236309661427}
   sprite: {fileID: 8880572236309661421}
 --- !u!60 &8880572237057677206
 PolygonCollider2D:

@@ -42,6 +42,9 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
     float nextAttackTime = 0f;
     bool movementControl = true;
 
+    public SpriteRenderer spriteRen;
+    GameObject manager;
+    ManageLevels managerScript;
     public Transform sprite;
     private Path path;
     private int currentWaypoint = 0;
@@ -51,6 +54,9 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
 
     public void Start() 
     {
+        manager = GameObject.Find("Manager");
+        managerScript = manager.GetComponent<ManageLevels>();
+        spriteRen.color = managerScript.worldColors[managerScript.world];
         player = GameObject.Find ("PlayerCharacter");
         target = player.GetComponent<Transform>();
         seeker = GetComponent<Seeker>();

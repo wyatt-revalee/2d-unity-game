@@ -30,7 +30,7 @@ public class ManageLevels : MonoBehaviour
     private void Start()
     {
         CreateTileLists();
-        world = 1;
+        world = 0;
         loading = true;
         //set up the instance
         if(Instance == null)
@@ -110,6 +110,8 @@ public class ManageLevels : MonoBehaviour
 
     private void Update()
     {
+        if(SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1)
+            Destroy(gameObject);
         GameObject[] levelSpawns = GameObject.FindGameObjectsWithTag("Level");
     }
 
@@ -328,6 +330,7 @@ public class ManageLevels : MonoBehaviour
             for (int i = 0; i < data.tiles.Count; i++)
             {
                 TileBase tile = currWorld.Find(t => t.id == data.tiles[i]).tile;
+                Debug.Log(tile);
                 if (tile) tilemap.SetTile(new Vector3Int(data.poses_x[i], data.poses_y[i], 0), tile);
             }
         }

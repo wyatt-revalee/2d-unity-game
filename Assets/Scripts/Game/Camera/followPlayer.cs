@@ -14,14 +14,6 @@ public class followPlayer : MonoBehaviour
     void Start()
     {
         player = GameObject.Find ("PlayerCharacter");
-        if(Instance == null)
-        {
-            Instance = gameObject;
-            DontDestroyOnLoad(gameObject);
-        } else
-        {
-            Destroy(gameObject);
-        }
     }
     void Update()
     {
