@@ -9,7 +9,7 @@ public class GameOverMenu : MonoBehaviour
     public Animator transition;
 
     public void PlayGame() {        
-        StartCoroutine(SceneTransition(3));
+        StartCoroutine(SceneTransition(4));
     }
 
     public void MainMenuPress() {
@@ -23,7 +23,7 @@ public class GameOverMenu : MonoBehaviour
 
     IEnumerator SceneTransition(int sceneIndex)
     {
-        transition.SetTrigger("Start");
+        transition.SetTrigger("End");
 
         yield return new WaitForSeconds(0.8f);
         SceneManager.LoadScene(sceneIndex);

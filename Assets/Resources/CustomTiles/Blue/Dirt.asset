@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec557146ad0dbd44f9e89c2326ce1d98, type: 3}
   m_Name: Dirt
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 7d713ca475f46964e8075896ad1534c0, type: 2}
+  tile: {fileID: 11400000, guid: 36ce1b5f57a1d5740a363370c6c8ea58, type: 2}
   id: Dirt
   tilemap: 50

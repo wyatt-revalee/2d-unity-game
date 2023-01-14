@@ -30,7 +30,6 @@ public class ManageLevels : MonoBehaviour
     private void Start()
     {
         CreateTileLists();
-        world = 0;
         loading = true;
         //set up the instance
         if(Instance == null)
@@ -90,10 +89,10 @@ public class ManageLevels : MonoBehaviour
     {
         {1, new Color32(255, 0, 0, 255)},       // Red
         {2, new Color32(255, 125, 42, 255)},    // Orange
-        {3, new Color32(255, 0, 0, 255)},       // Yellow
-        {4, new Color32(255, 0, 0, 255)},       // Green
-        {5, new Color32(255, 0, 0, 255)},       // Blue
-        {6, new Color32(255, 0, 0, 255)},       // Purple
+        {3, new Color32(255, 201, 0, 255)},       // Yellow
+        {4, new Color32(0, 255, 0, 255)},       // Green
+        {5, new Color32(0, 245, 255, 255)},       // Blue
+        {6, new Color32(113, 0, 255, 255)},       // Purple
     };
 
     [Header("Sprites")]
@@ -112,6 +111,9 @@ public class ManageLevels : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1)
             Destroy(gameObject);
+        
+        if(sceneTransition == null)
+            sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
         GameObject[] levelSpawns = GameObject.FindGameObjectsWithTag("Level");
     }
 

@@ -40,7 +40,7 @@ public class waveSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnerWorldCheck = 1;
+        spawnerWorldCheck = manageLevels.world;
         spawnerLevel = 0;
         currWave = 0;
         if(Instance == null)
@@ -75,6 +75,7 @@ public class waveSpawner : MonoBehaviour
         {
             spawnerWorldCheck++;
             spawnerLevel = 0;
+            currWave = 0;
         }
 
         if(spawnerLevel < manageLevels.currentLevel)
@@ -165,6 +166,7 @@ public class waveSpawner : MonoBehaviour
         }
 
     void StartNewLevel() {
+        // Debug.Log("Starting new level");
         getSpawns();
         GenerateWave();
         settingUp = false;
@@ -173,8 +175,12 @@ public class waveSpawner : MonoBehaviour
     IEnumerator StartLevel()
     {
         settingUp = true;
+        // Debug.Log("LOOKING FOR PORTAL");
+        // Debug.Log(portal);
         portal = GameObject.Find("Portal(Clone)");
         yield return new WaitUntil(() => portal == true);
+        // Debug.Log("FOUND PORTAL");
+        // Debug.Log(portal);
         GameObject temp = GameObject.Find("spawnPoints");
         yield return new WaitUntil(() => temp == true);
         spawnParent = temp.transform.GetChild(1);

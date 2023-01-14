@@ -48,17 +48,20 @@ public class Player : MonoBehaviour, IDamageable{
     public float flashDuration;
     public int numberOfFlashes;
 
+    public ManageLevels managerScript;
+
 
     // Use this for initialization
     private void Start () {
 
-       if (SceneManager.GetActiveScene().buildIndex != 3)
-            SceneManager.LoadScene(3);
+    //    if (SceneManager.GetActiveScene().buildIndex != 3)
+    //         SceneManager.LoadScene(3);
 
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         currentMana = maxMana;
         manaBar.SetMaxMana(maxMana);
+        playerSprite.color = managerScript.worldColors[managerScript.world];
 
     }
  
@@ -86,7 +89,8 @@ public class Player : MonoBehaviour, IDamageable{
             }
         }
 
-
+        if(sceneTransition == null)
+            sceneTransition = GameObject.Find("SceneLoader").transform.GetChild(0).GetComponent<Animator>();
         
     }
 
@@ -119,14 +123,14 @@ public class Player : MonoBehaviour, IDamageable{
 
     }
 
-    public void Heal(int coinCost) {
-
+    public void Heal() {
         currentHealth = maxHealth;
         healthBar.SetHealth(currentHealth);
+    }
 
+    public void Purchase(int coinCost) {
         coins -= coinCost;
         coinCounter.SetCoinCount(coins);
-
     }
 
     void PrimaryAttack()
@@ -166,6 +170,7 @@ public class Player : MonoBehaviour, IDamageable{
             yield return new WaitForSeconds(flashDuration);
             temp++;
         }
+        playerSprite.color = managerScript.worldColors[managerScript.world];
         combatCollider.enabled = true;
     }
 

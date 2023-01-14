@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec557146ad0dbd44f9e89c2326ce1d98, type: 3}
   m_Name: Clouds1
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: 89e1f9e2f8d6f6e49a4496e1f2dc6eaf, type: 2}
+  tile: {fileID: 11400000, guid: 2ffc9e53a8b15454880b981cee761563, type: 2}
   id: Clouds1
   tilemap: 30
