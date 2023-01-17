@@ -2,6 +2,7 @@ Bugs:
     - While in air, player can cling to walls
         - Could be a feature, but needs proper animations
     - Enemies can be killed right as they spawn, only destroying the collider, not the whole enemy, essentially softlocking the game.
+    - Boss can clip through floor (from spawning slime) causing it to be unkillable.
 
 Sprites & Animation
     - New player animations
@@ -17,7 +18,8 @@ Sprites & Animation
     
 
 General Development:
-    - Levels
+
+    - Levels - DONE + ALL CHILDREN DONE
         - Randomized level layouts
             - Each level has progressing theme (e.g. level 1 grassy, level 4 full dungeon)
             - Set of x many layouts that level uses, simply apply skin depending on level num
@@ -31,29 +33,40 @@ General Development:
                 - Next 'World'?
                         - Next color
                         - New enemies (corresponding to color)
+                        
     - Wave spawning
-        - Randomized spawn points
+        - Randomized spawn points - DONE
             - In air for flying enemies, on ground for non
-        - Randomized portal locations?
+        - Randomized portal locations? - DONE
     
     - Combat
-        - Enemy health bars
-        - Floating damage numbers?
-        - New player moves
+        - Game Progession
+            - In each world, defeat boss to gain their power
+                - Unique to each boss
+                - Red    : Lifesteal?
+                - Orange : Fire?
+                - Yellow : ?
+                - Green  : Healing?
+                - Blue   : Ice?
+                - Purple : ?             
+                
+        - Enemy health bars - DONE
+        - Floating damage numbers? - DONE
+        - New player moves - DONE & COUNTING
         - Player upgrades
-            - Items (think roguelike fashion)
+            - Items (think roguelike fashion)  // Probably won't do for this game. Doesn't fit gameplay right.
             - Anvil in shop
-                - Spend $ : get upgrades
+                - Spend $ : get upgrades - DONE (somwhat). Could use more selections.
                     - Attack Damage
                     - Attack Speed
                     - Health Increase
                     - Health Regen?
             - New moves
-                - Spin aoe attack
+                - Spin aoe attack - DONE
                 - Ground slam
-                    - Air to ground slam
+                    - Air to ground slam - DONE
                 - Some others
-    - Adjust camera and UI to screen size for varying dimensions
+    - Adjust camera and UI to screen size for varying dimensions - DONE?
     - Sound
         - Implement sound effects
         - Most likey using Audacity
