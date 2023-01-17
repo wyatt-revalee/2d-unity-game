@@ -33,8 +33,8 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
     public GameObject healthBarVisual;
     public int healthBarTime = 0;
     public float attackRange = 0.5f;
-    public int attackDamage = 2;
-    public int maxHealth = 2;
+    public int attackDamage;
+    public int maxHealth;
     public int currentHealth;
     public float knockbackX = 5;
     public float knockbackY = 5;
@@ -56,11 +56,17 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
     {
         manager = GameObject.Find("Manager");
         managerScript = manager.GetComponent<ManageLevels>();
-        spriteRen.color = managerScript.worldColors[managerScript.world];
+        if(managerScript.world == 7)
+            spriteRen.color = managerScript.worldColors[UnityEngine.Random.Range(1, 7)];
+        else
+            spriteRen.color = managerScript.worldColors[managerScript.world];
         player = GameObject.Find ("PlayerCharacter");
         target = player.GetComponent<Transform>();
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
+
+        maxHealth = 4*managerScript.world;
+        attackDamage = 1*managerScript.world;
 
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
@@ -103,7 +109,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
         }
 
     
-        yield return new WaitForSeconds(0.5f); 
+        yield return new WaitForSeconds(0.2f); 
         combatCollider.enabled = true;
         movementControl = true;
     }

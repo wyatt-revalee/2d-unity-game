@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: -578765913
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4353b92c62693534baff17aeabbb68cd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 11e45654ea4b8044e9d744e39f71ed94, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -327,7 +327,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 3
   m_LinearDrag: 0
   m_AngularDrag: 0.2
   m_GravityScale: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   activateDistance: 50
   pathUpdateSeconds: 0.5
   nextWaypointDistance: 3
-  speed: 200
+  speed: 800
   followEnabled: 1
   directionLookEnabled: 1
   enemyLayers:
@@ -426,6 +426,7 @@ MonoBehaviour:
   coinDrop: {fileID: 6596649389071708153, guid: 7d9ab96e7f2503f4aa3cb83a614a9d63, type: 3}
   healthBar: {fileID: 3309274432019607050}
   healthBarVisual: {fileID: 2866941538576037796}
+  spriteRen: {fileID: 961419087823257176}
   coins: 2
   healthBarTime: 0
   attackRange: 0.5

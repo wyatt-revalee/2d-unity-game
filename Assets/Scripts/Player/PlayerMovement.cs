@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
 
     // Rendering
     [SerializeField] private LayerMask platformsLayerMask;
-    private Rigidbody2D rigidbody2d;
+    public Rigidbody2D rigidbody2d;
     private bool isCrouching;
     public Collider2D physicsCollider;
     private static GameObject Instance;
@@ -17,8 +17,10 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
 
     //Gameflow
     public GameObject pauseMenu;
+    public GameObject inventory;
     public bool isPaused;
     public bool playerCanMove;
+    public bool inventoryIsOpen;
 
 
 
@@ -26,6 +28,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     private void Start () {
 
         pauseMenu = GameObject.Find("PauseMenu");
+        // inventory = GameObject.Find("Inventory");
 
         isPaused = false;
 
@@ -59,6 +62,12 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
         if(Input.GetKeyDown(KeyCode.Escape))
             PauseControl();
 
+        if(isPaused == true)
+            return;
+
+        if(Input.GetKeyDown(KeyCode.Tab))
+            InventoryControl();
+
         if(playerCanMove == false)
             return;
 
@@ -87,8 +96,16 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
         }
     }
 
+    public bool CheckMovement()
+    {
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            return true;
+        else
+            return false;
+    }
+
     public bool IsCrouching() {
-        if((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && playerCanMove == true)
+        if((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && playerCanMove == true && IsGrounded() && !CheckMovement())
         {
             return true;
         }
@@ -148,8 +165,34 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
             pauseMenu.transform.GetChild(2).gameObject.SetActive(false);
             pauseMenu.transform.GetChild(3).gameObject.SetActive(false);
             pauseMenu.SetActive(false);
-            Time.timeScale = 1f;
+            if(inventoryIsOpen == false)
+            {
+                Time.timeScale = 1f;
+                playerCanMove = true;
+            }
             isPaused = false;
+            return;
+        }
+
+    }
+
+    public void InventoryControl()
+    {
+        if(inventoryIsOpen == false)
+        {
+            Time.timeScale = 0f;
+            inventoryIsOpen = true;
+            playerCanMove = false;
+            Debug.Log("Inventory Opened");
+            inventory.SetActive(true);
+            return;
+        }
+
+        if(inventoryIsOpen == true)
+        {
+            inventory.SetActive(false);
+            Time.timeScale = 1f;
+            inventoryIsOpen = false;
             playerCanMove = true;
             return;
         }

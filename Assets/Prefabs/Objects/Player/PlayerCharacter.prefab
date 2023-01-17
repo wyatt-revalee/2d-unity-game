@@ -140,7 +140,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 1
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -186,6 +186,7 @@ MonoBehaviour:
   playerMovement: {fileID: 2888360100593607589}
   animator: {fileID: 2888360100593607584}
   sceneTransition: {fileID: 0}
+  isGrounded: 0
   coinCounter: {fileID: 0}
   healthBar: {fileID: 0}
   manaBar: {fileID: 0}
@@ -195,12 +196,17 @@ MonoBehaviour:
   attackPoint: {fileID: 2888360101203205496}
   secondaryProjectile: {fileID: 8984704154464290262, guid: e6df5f44ca7693a459664ab5aef09fb9, type: 3}
   LaunchOffset: {fileID: 5449391427854421157}
+  spinCooldownIcon: {fileID: 0}
   coins: 0
   maxHealth: 10
   currentHealth: 0
   maxMana: 10
   currentMana: 0
   attackDamage: 1
+  baseDamage: 2
+  meleeDamage: 0
+  rangedDamage: 0
+  heavyDamage: 0
   attackRange: 0.56
   knockbackY: 30
   knockbackX: 30
@@ -211,6 +217,7 @@ MonoBehaviour:
   regularColor: {r: 1, g: 1, b: 1, a: 1}
   flashDuration: 0.15
   numberOfFlashes: 4
+  managerScript: {fileID: 0}
 --- !u!114 &2888360100593607589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,5 +513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac488dc0327cf54a9dd3f69055c0dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2888360100593607615}
+  player: {fileID: 2888360100593607608}
+  playerScript: {fileID: 2888360100593607615}
+  movementScript: {fileID: 2888360100593607589}
   coinCounter: {fileID: 0}
+  playerAnimator: {fileID: 2888360100593607584}

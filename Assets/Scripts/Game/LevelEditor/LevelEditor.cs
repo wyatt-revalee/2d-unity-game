@@ -10,10 +10,12 @@ public class LevelEditor : MonoBehaviour
     public List<GameObject> portalSpawns = new List<GameObject>();    
     public List<GameObject> enemySpawns = new List<GameObject>();    
     public GameObject playerSpawn;
+    public GameObject bossSpawn;
  
     public Sprite enemySpawnSprite;
     public Sprite playerSpawnSprite;
     public Sprite portalSpawnSprite;
+    public Sprite bossSpawnSprite;
     private Vector3 portalScale = new Vector3(3f, 6f, 1f);
 
     Tilemap currentTilemap
@@ -93,6 +95,11 @@ public class LevelEditor : MonoBehaviour
             PlacePlayerSpawn(pos);
         }
 
+        if(Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.X))
+        {
+            PlaceBossSpawn(pos);
+        }
+
     }
 
     void PlaceTile(Vector3Int pos)
@@ -159,6 +166,17 @@ public class LevelEditor : MonoBehaviour
         spriteRen.sortingLayerName = "Objects";
         playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
         
+    }
+
+    void PlaceBossSpawn(Vector3Int pos)
+    {
+         if(bossSpawn) Destroy(bossSpawn);
+        bossSpawn = new GameObject("BossSpawn");
+        bossSpawn.transform.position = pos;
+        SpriteRenderer spriteRen = bossSpawn.AddComponent<SpriteRenderer>();
+        spriteRen.sprite = bossSpawnSprite;
+        spriteRen.sortingLayerName = "Objects";
+        bossSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
     }
    
 }

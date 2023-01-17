@@ -5,11 +5,16 @@ using UnityEngine;
 public class AxeProjectileBehavior : MonoBehaviour
 {
 
-    public Player player;
+    public Player playerScript;
     public float Speed = 20f;
     private GameObject enemy;
     int attackDamage;
     public int critChance = 30;
+
+    void Start()
+    {
+        playerScript = GameObject.Find("PlayerCharacter").GetComponent<Player>();
+    }
 
     void Update()
     {
@@ -19,7 +24,7 @@ public class AxeProjectileBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.layer == 11 || other.gameObject.layer == 8)
+        if (other.gameObject.layer == 11 || other.gameObject.layer == 8 || other.gameObject.layer == 13)
             enemy = other.gameObject;
         else
             enemy = null;
@@ -32,7 +37,8 @@ public class AxeProjectileBehavior : MonoBehaviour
 
             if (hit != null)
             {
-                attackDamage = player.attackDamage;
+                attackDamage = playerScript.attackDamage;
+                Debug.Log(attackDamage);
                 bool isCritical = UnityEngine.Random.Range(0, 100) < critChance;
                 if(isCritical)
                     attackDamage *= 2;
@@ -42,7 +48,7 @@ public class AxeProjectileBehavior : MonoBehaviour
 
             if (knockback != null)
             {
-                knockback.Knockback(player.knockbackX, player.knockbackY, player.transform);
+                knockback.Knockback(playerScript.knockbackX, playerScript.knockbackY, gameObject.transform);
             }
         }
         Destroy(gameObject);

@@ -14,6 +14,7 @@ public class ManageLevels : MonoBehaviour
     private GameObject portalSpawns;
     private GameObject enemySpawns;
     private GameObject playerSpawn;
+    private GameObject bossSpawn;
     public bool loading;
     public Animator sceneTransition;
 
@@ -72,6 +73,7 @@ public class ManageLevels : MonoBehaviour
     List<CustomTile> green = new List<CustomTile>();
     List<CustomTile> blue = new List<CustomTile>();
     List<CustomTile> purple = new List<CustomTile>();
+    List<CustomTile> white = new List<CustomTile>();
 
     //Dictionary for conversion of int to world name
     public Dictionary<int, string> intToColor = new Dictionary<int, string>()
@@ -82,23 +84,21 @@ public class ManageLevels : MonoBehaviour
         {4, "Green"},
         {5, "Blue"},
         {6, "Purple"},
+        {7, "White"}
     };
 
     // Dictionary for assigning colors to objects respective to world
     public Dictionary<int, Color32> worldColors = new Dictionary<int, Color32>()
     {
+        {0, new Color32(255, 0, 0, 255)},       // Red, Index 0 for scripts that are a tad too quick
         {1, new Color32(255, 0, 0, 255)},       // Red
         {2, new Color32(255, 125, 42, 255)},    // Orange
         {3, new Color32(255, 201, 0, 255)},       // Yellow
         {4, new Color32(0, 255, 0, 255)},       // Green
         {5, new Color32(0, 245, 255, 255)},       // Blue
         {6, new Color32(113, 0, 255, 255)},       // Purple
+        {7, new Color32(255, 255, 255, 255)},       // White
     };
-
-    [Header("Sprites")]
-    public Sprite portalSprite;
-    public Sprite playerSprite;
-    public Sprite enemySprite;
 
     public enum Tilemaps
     {
@@ -169,9 +169,6 @@ public class ManageLevels : MonoBehaviour
         {
             pspawnCount++;
             GameObject pspawn = new GameObject("spawn" + pspawnCount.ToString());
-            SpriteRenderer spriteRen = pspawn.AddComponent<SpriteRenderer>();
-            spriteRen.sprite = portalSprite;
-            spriteRen.sortingLayerName = "Objects";
             pspawn.transform.localScale = new Vector3(0.5f, 1f, 1f);
             pspawn.transform.SetParent(portalSpawns.transform);
             pspawn.transform.position = spawn;
@@ -183,21 +180,20 @@ public class ManageLevels : MonoBehaviour
         {
             espawnCount++;
             GameObject espawn = new GameObject("spawn" + espawnCount.ToString());
-            SpriteRenderer spriteRen = espawn.AddComponent<SpriteRenderer>();
-            spriteRen.sprite = enemySprite;
-            spriteRen.sortingLayerName = "Objects";
             espawn.transform.localScale = new Vector3(0.2f, 0.2f, 1f);
             espawn.transform.SetParent(enemySpawns.transform);
             espawn.transform.position = spawn;
         }
 
         playerSpawn = new GameObject("playerSpawn");
-        SpriteRenderer playSprite = playerSpawn.AddComponent<SpriteRenderer>();
-        playSprite.sprite = playerSprite;
-        playSprite.sortingLayerName = "Objects";
         playerSpawn.transform.SetParent(spawnPoints.transform);
         playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
         playerSpawn.transform.position = levelData.playerSpawn;
+
+        bossSpawn = new GameObject("bossSpawn");
+        bossSpawn.transform.SetParent(spawnPoints.transform);
+        bossSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
+        bossSpawn.transform.position = levelData.bossSpawn;
 
         player.transform.position = playerSpawn.transform.position;
         
@@ -283,6 +279,7 @@ public class ManageLevels : MonoBehaviour
         palettes.Add("Green", green);
         palettes.Add("Blue", blue);
         palettes.Add("Purple", purple);
+        palettes.Add("White", white);
 
         //Loop through each folder of custom tiles (red, orange, ...)
         string[] dir = Directory.GetFiles(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Resources\CustomTiles\");
@@ -332,7 +329,6 @@ public class ManageLevels : MonoBehaviour
             for (int i = 0; i < data.tiles.Count; i++)
             {
                 TileBase tile = currWorld.Find(t => t.id == data.tiles[i]).tile;
-                Debug.Log(tile);
                 if (tile) tilemap.SetTile(new Vector3Int(data.poses_x[i], data.poses_y[i], 0), tile);
             }
         }
@@ -345,18 +341,12 @@ public class ManageLevels : MonoBehaviour
         {
             pspawnCount++;
             GameObject pspawn = new GameObject("spawn" + pspawnCount.ToString());
-            SpriteRenderer spriteRen = pspawn.AddComponent<SpriteRenderer>();
-            spriteRen.sprite = portalSprite;
-            spriteRen.sortingLayerName = "Objects";
             pspawn.transform.localScale = new Vector3(0.5f, 1f, 1f);
             pspawn.transform.SetParent(portalSpawns.transform);
             pspawn.transform.position = spawn;
         }
 
         playerSpawn = new GameObject("playerSpawn");
-        SpriteRenderer playSprite = playerSpawn.AddComponent<SpriteRenderer>();
-        playSprite.sprite = playerSprite;
-        playSprite.sortingLayerName = "Objects";
         playerSpawn.transform.SetParent(spawnPoints.transform);
         playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
         playerSpawn.transform.position = levelData.playerSpawn;
@@ -374,6 +364,7 @@ public class LevelData
 {
     public List<LayerData> layers = new List<LayerData>();
     public Vector3 playerSpawn;
+    public Vector3 bossSpawn;
     public List<Vector3> portalSpawns = new List<Vector3>();
     public List<Vector3> enemySpawns = new List<Vector3>();
 }

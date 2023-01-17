@@ -9,6 +9,7 @@ public class waveSpawner : MonoBehaviour
    
    //General
     public List<Enemy> enemies = new List<Enemy>();
+    public List<Boss> bosses = new List<Boss>();
     public int spawnerWorldCheck;
     public int spawnerLevel;
     public int currWave;
@@ -29,6 +30,7 @@ public class waveSpawner : MonoBehaviour
  
     //Spawning
     public Transform spawnParent;
+    public Transform bossSpawn;
     public List<Transform> spawnLocations = new List<Transform>();
 
     //Intervals and timers
@@ -157,6 +159,11 @@ public class waveSpawner : MonoBehaviour
         enemiesToSpawn = generatedEnemies;
     }
 
+    void SpawnBoss()
+    {
+        GameObject enemy = (GameObject)Instantiate(bosses[0].bossPrefab, bossSpawn.transform.position,Quaternion.identity);
+    }
+
     void getSpawns() 
         {
             spawnLocations.Clear();
@@ -172,6 +179,14 @@ public class waveSpawner : MonoBehaviour
         settingUp = false;
     }
 
+    void StartBossLevel() {
+        getSpawns();
+        GenerateWave();
+        SpawnBoss();
+        settingUp = false;
+        Debug.Log("BOSS LEVEL STARTED");
+    }
+
     IEnumerator StartLevel()
     {
         settingUp = true;
@@ -184,6 +199,9 @@ public class waveSpawner : MonoBehaviour
         GameObject temp = GameObject.Find("spawnPoints");
         yield return new WaitUntil(() => temp == true);
         spawnParent = temp.transform.GetChild(1);
+        if(currWave % 5 == 0)
+            bossSpawn = temp.transform.GetChild(3);
+        
         portal.SetActive(false);
 
         //Start wavevisual and transition
@@ -197,7 +215,10 @@ public class waveSpawner : MonoBehaviour
         waveFlashVisual.SetActive(false);
         // yield return new WaitForSeconds(5);
 
-        StartNewLevel();
+        if(currWave % 5 == 0)
+            StartBossLevel();
+        else
+            StartNewLevel();
 
     }
   
@@ -208,4 +229,10 @@ public class Enemy
 {
     public GameObject enemyPrefab;
     public int cost;
+}
+
+[System.Serializable]
+public class Boss
+{
+    public GameObject bossPrefab;
 }

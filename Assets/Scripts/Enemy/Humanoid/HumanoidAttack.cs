@@ -2,33 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HurtBox : MonoBehaviour
+public class HumanoidAttack : MonoBehaviour
 {
 
-    private GameObject enemy;
-    public Slime slime;
+    private GameObject playerEnemy;
+    public Humanoid humanoid;
     private float knockbackX;
     private float knockbackY;
     private int attackDamage;
 
     void Start()
     {
-        knockbackX = slime.knockbackX;
-        knockbackY = slime.knockbackY;
-        attackDamage = slime.attackDamage;
+        knockbackX = humanoid.knockbackX;
+        knockbackY = humanoid.knockbackY;
+        attackDamage = humanoid.attackDamage;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.layer == 10)
-            enemy = other.transform.parent.gameObject;
+            playerEnemy = other.transform.parent.gameObject;
         else
-            enemy = null;
+            playerEnemy = null;
         
-        if(enemy != null)
+        if(playerEnemy != null)
         {
-            var knockback = enemy.GetComponent<IKnockbackable>();
-            var hit = enemy.GetComponent<IDamageable>();
+            var knockback = playerEnemy.GetComponent<IKnockbackable>();
+            var hit = playerEnemy.GetComponent<IDamageable>();
 
             if (hit != null)
             {

@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour
     public GameObject portalSpawns;
     public GameObject enemySpawns;
     public GameObject playerSpawn;
+    public GameObject bossSpawn;
 
     public List<GameObject> levelSpawns;
 
@@ -46,8 +47,7 @@ public class LevelManager : MonoBehaviour
     public Sprite portalSprite;
     public Sprite playerSprite;
     public Sprite enemySprite;
-
-
+    public Sprite bossSprite;
 
     public enum Tilemaps
     {
@@ -121,6 +121,8 @@ public class LevelManager : MonoBehaviour
 
         levelData.playerSpawn = levelEditor.playerSpawn.transform.position;
 
+        levelData.bossSpawn = levelEditor.bossSpawn.transform.position;
+
         //save the data as a json
         string json = JsonUtility.ToJson(levelData, true);
         File.WriteAllText(@"C:\Users\Wyatt\UnityProjects\2D-Game\Assets\Levels\"+levelName+".json", json);
@@ -192,6 +194,15 @@ public class LevelManager : MonoBehaviour
         playerSpawn.transform.SetParent(spawnPoints.transform);
         playerSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
         playerSpawn.transform.position = levelData.playerSpawn;
+
+        bossSpawn = new GameObject("bossSpawn");
+        SpriteRenderer sprite = bossSpawn.AddComponent<SpriteRenderer>();
+        sprite.sprite = bossSprite;
+        sprite.sortingLayerName = "Objects";
+        bossSpawn.transform.SetParent(spawnPoints.transform);
+        bossSpawn.transform.localScale = new Vector3(5f, 5f, 1f);
+        bossSpawn.transform.position = levelData.bossSpawn;
+        
 
         //debug
         Debug.Log("Level was loaded");

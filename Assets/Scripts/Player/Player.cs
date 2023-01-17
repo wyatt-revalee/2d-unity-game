@@ -17,6 +17,7 @@ public class Player : MonoBehaviour, IDamageable{
     private int currentScene;
     private bool playerMoved;
     public bool isGrounded;
+    private int currentWorld = 0;
 
     // Health and Money
     [Header("Health and Combat")]
@@ -27,18 +28,26 @@ public class Player : MonoBehaviour, IDamageable{
     public Transform attackPoint;
     public AxeProjectileBehavior secondaryProjectile;
     public Transform LaunchOffset;
+    public GameObject spinCooldownIcon;
+    private AbilityIcon spinAttackScript;
     public int coins;
     public int maxHealth = 10;
     public int currentHealth;
     public float maxMana = 100f;
     public float currentMana;
-    public int attackDamage = 1;
+    public int attackDamage;
+    public int baseDamage = 2;
+    public int meleeDamage;
+    public int rangedDamage;
+    public int heavyDamage;
     public float attackRange = 0.3f;
     public float knockbackY = 15;
     public float knockbackX = 15;
     public float attackSpeed = 2f;
     private float manaRegenSpeed = 0.2f;
     float nextAttackTime = 0f;
+    private float nextSpinTime = 0f;
+    private float spinCooldown = 5f;
 
     [Header("Iframe Variables")]
     public Collider2D combatCollider;
@@ -54,14 +63,16 @@ public class Player : MonoBehaviour, IDamageable{
     // Use this for initialization
     private void Start () {
 
-    //    if (SceneManager.GetActiveScene().buildIndex != 3)
-    //         SceneManager.LoadScene(3);
-
+        meleeDamage = baseDamage;
+        rangedDamage = baseDamage-1;
+        heavyDamage = baseDamage+1;
+        attackDamage = meleeDamage;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         currentMana = maxMana;
         manaBar.SetMaxMana(maxMana);
         playerSprite.color = managerScript.worldColors[managerScript.world];
+        spinAttackScript = spinCooldownIcon.GetComponent<AbilityIcon>();
 
     }
  
@@ -69,23 +80,43 @@ public class Player : MonoBehaviour, IDamageable{
     private void Update ()
      {
 
+        if(managerScript.world > currentWorld)
+        {
+            currentWorld = managerScript.world;
+            playerSprite.color = managerScript.worldColors[managerScript.world];
+        }
+
         isGrounded = playerMovement.IsGrounded();
 
-        if(playerMovement.isPaused == false)
+        if(playerMovement.playerCanMove == true)
         {
             
             if(Time.time >= nextAttackTime)
             {
+                if(Input.GetKeyDown(KeyCode.F) && Time.time >= nextSpinTime)
+                {
+                    spinAttackScript.StartCooldown();
+                    StartCoroutine(SpinAttack());
+                    nextAttackTime = Time.time + 1f / attackSpeed;
+                    nextSpinTime = Time.time + spinCooldown;
+                }
                 if(Input.GetMouseButtonDown(0))
                 {
                     PrimaryAttack();
                     nextAttackTime = Time.time + 1f / attackSpeed;
                 }
-                if(Input.GetMouseButtonDown(1))
+                if(!isGrounded && Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.S))
+                {
+                    StartCoroutine(AtgSlam());
+                    nextAttackTime = Time.time + 1f / attackSpeed;
+                }
+                
+                else if(Input.GetMouseButtonDown(1))
                 {
                     SecondaryAttack();
                     nextAttackTime = Time.time + 1f / attackSpeed;
                 }
+                
             }
         }
 
@@ -136,6 +167,7 @@ public class Player : MonoBehaviour, IDamageable{
     void PrimaryAttack()
     {
         //Play animation
+        attackDamage = meleeDamage;
         animator.SetTrigger("Attack");
         
     }
@@ -145,12 +177,31 @@ public class Player : MonoBehaviour, IDamageable{
         float manaCost = 20f;
         if(currentMana >= manaCost)
         {
+            attackDamage = rangedDamage;
             //Play animation
             animator.SetTrigger("Attack");
             //Create Projectile
-            Instantiate(secondaryProjectile, LaunchOffset.position, transform.rotation);
+            var projectile = Instantiate(secondaryProjectile, LaunchOffset.position, transform.rotation);
             manaBar.SetMana(currentMana -= manaCost);
         }
+    }
+
+    IEnumerator AtgSlam()
+    {
+        attackDamage = heavyDamage;
+        animator.SetTrigger("ATG");
+        animator.SetBool("IsAttacking", true);
+        yield return new WaitUntil(() => (isGrounded) == true);
+        animator.SetBool("IsAttacking", false);
+    }
+
+    IEnumerator SpinAttack()
+    {
+        attackDamage = meleeDamage;
+        animator.SetTrigger("SpinAttack");
+        animator.SetBool("IsAttacking", true);
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("IsAttacking", false);
     }
 
     void PlayerDeath()

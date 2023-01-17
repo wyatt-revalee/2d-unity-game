@@ -26,6 +26,7 @@ public class Bat : MonoBehaviour, IDamageable, IKnockbackable
     public GameObject coinDrop;
     public HealthBar healthBar;
     public GameObject healthBarVisual;
+    public SpriteRenderer spriteRen;
     public int coins;
     public int healthBarTime = 0;
     public float attackRange = 0.5f;
@@ -43,15 +44,26 @@ public class Bat : MonoBehaviour, IDamageable, IKnockbackable
     private int currentWaypoint = 0;
     Seeker seeker;
     Rigidbody2D rb;
+    private GameObject manager;
+    private ManageLevels managerScript;
 
     public void Start() 
     {
         player = GameObject.Find ("PlayerCharacter");
         target = player.GetComponent<Transform>();
+        manager = GameObject.Find("Manager");
+        managerScript = manager.GetComponent<ManageLevels>();
+        if(managerScript.world == 7)
+            spriteRen.color = managerScript.worldColors[UnityEngine.Random.Range(1, 7)];
+        else
+            spriteRen.color = managerScript.worldColors[managerScript.world];
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
+        maxHealth = 3*managerScript.world;
+        attackDamage = 1*managerScript.world;
         currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
 
         
         InvokeRepeating("UpdatePath", 0f, pathUpdateSeconds);
@@ -74,7 +86,7 @@ public class Bat : MonoBehaviour, IDamageable, IKnockbackable
     }
     public IEnumerator StartKnockback(float knockbackPwrX, float knockbackPwrY, Transform obj){
 
-        float knockDur = 0.5f;
+        float knockDur = 0.2f;
         float timer = 0;
         
         movementControl = false;

@@ -82,7 +82,11 @@ public class Anvil : MonoBehaviour
 
     public void Attack()
     {
-        playerscript.attackDamage += 1;
+        playerscript.baseDamage += 1;
+        playerscript.heavyDamage = playerscript.baseDamage + 1;
+        playerscript.meleeDamage = playerscript.baseDamage;
+        playerscript.rangedDamage = playerscript.baseDamage - 1;
+        Debug.Log(playerscript.rangedDamage);
     }
 
     public void MaxHP()
