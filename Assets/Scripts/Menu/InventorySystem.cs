@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Code partially taken from tutorial by Game Dev Guide on Youtube (https://www.youtube.com/watch?v=SGz3sbZkfkg&t=159s)
 
-public class Inventory : MonoBehaviour
+public class InventorySystem : MonoBehaviour
 {
     public PlayerMovement playerMovement;
     private static GameObject Instance;
