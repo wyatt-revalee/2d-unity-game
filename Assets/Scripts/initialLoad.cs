@@ -26,10 +26,7 @@ public class initialLoad : MonoBehaviour
     {
         if (isWebGl)
         {
-        StartCoroutine(
-            SendRequest(
-            Path.Combine(
-                assetPath, "myAsset")));
+        StartCoroutine(DownLoadAsset(StreamingAssets));
         }
         else{
             isAssetRead = true;
@@ -56,34 +53,16 @@ public class initialLoad : MonoBehaviour
     // asset fails to be read for some reason
     }
 
-    private IEnumerator SendRequest(string url)
+    IEnumerator DownLoadAsset(assetName)
     {
-    using (UnityWebRequest request = UnityWebRequest.Get(url))
-    {
-        yield return request.SendWebRequest();
-
-        if (request.isNetworkError || request.isHttpError)
+        UnityWebRequest unityWebRequest = UnityWebRequestAssetBundle.GetAssetBundle(Application.streamingAssetsPath);
+        yield return unityWebRequest.Send();
+        Debug.Log("responseCode:" + unityWebRequest.responseCode);
+        if (unityWebRequest.isDone)
         {
-        // handle failure
+            ab = (unityWebRequest.downloadHandler as DownloadHandlerAssetBundle).assetBundle;
+            Instantiate(ab.LoadAsset(assetName) as GameObject, Vector3.zero, new Quaternion(0, 0, 0, 0));
         }
-        else
-        {
-        try
-        {
-            // entire file is returned via downloadHandler
-            string fileContents = request.downloadHandler.text;
-            // or
-            //byte[] fileContents = request.downloadHandler.data;
-
-            // do whatever you need to do with the file contents
-            isAssetRead = true;
-        }
-        catch (Exception x)
-        {
-            // handle failure
-        }
-        }
-    }
     }
     
 }
