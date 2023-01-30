@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using System.Linq;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class ManageLevels : MonoBehaviour
 {
@@ -22,17 +23,31 @@ public class ManageLevels : MonoBehaviour
     public GameObject player;
 
     public List<GameObject> levelSpawns;
-    public WebGLCheck webGLCheck;
 
     public int world;
     public int currentLevel;
     public int nextLevel;
     private string firstLevel = @"Level1\1";
     string assetPath;
+    public bool isWebGL;
+    public string bundlePath;
+    public bool assetsLoaded;
 
     private void Start()
     {
 
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            isWebGL = true;
+            StartCoroutine(LoadAssetBundle(bundlePath));
+            assetsLoaded = true;
+        }
+        else
+        {
+            isWebGL = false;
+            StartCoroutine(LoadAssetBundle(bundlePath));
+            assetsLoaded = true;
+        }
 
         assetPath = Application.dataPath;
 
@@ -313,6 +328,8 @@ public class ManageLevels : MonoBehaviour
         }
     }
 
+    
+
     // This is similar to loadLevel but is just used to load the shop, nothing else.
     public void LoadShop()
     {
@@ -369,6 +386,51 @@ public class ManageLevels : MonoBehaviour
         
         loading = false;
         Debug.Log("Shop was loaded");
+    }
+
+    public void BundleTest(string[] assets)
+    {
+        foreach (var testAsset in assets)
+        {
+            Debug.Log(testAsset);
+        }
+    }
+
+    private IEnumerator LoadAssetBundle(string url)
+    {
+        using (UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(url))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.LogError("Error while downloading asset bundle: " + www.error);
+                yield break;
+            }
+
+            AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
+            string[] assets = bundle.GetAllAssetNames();
+            Debug.Log(bundle);
+            assetsLoaded = true;
+
+            BundleTest(assets);
+            // GameObject prefab = bundle.LoadAsset<GameObject>("MyPrefab");
+            // Instantiate(prefab);
+        }
+    }
+
+    public void CreateTileLists2()
+    {
+
+        //Add the initialized empty lists to the dict
+        palettes.Add("Red", red);
+        palettes.Add("Orange", orange);
+        palettes.Add("Yellow", yellow);
+        palettes.Add("Green", green);
+        palettes.Add("Blue", blue);
+        palettes.Add("Purple", purple);
+        palettes.Add("White", white);
+
     }
 }
 
