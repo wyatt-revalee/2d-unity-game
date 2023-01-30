@@ -22,6 +22,7 @@ public class ManageLevels : MonoBehaviour
     public GameObject player;
 
     public List<GameObject> levelSpawns;
+    public WebGLCheck webGLCheck;
 
     public int world;
     public int currentLevel;
@@ -32,8 +33,8 @@ public class ManageLevels : MonoBehaviour
     private void Start()
     {
 
+
         assetPath = Application.dataPath;
-        Debug.Log("Asset Path: " + assetPath);
 
         CreateTileLists();
         loading = true;
@@ -152,8 +153,6 @@ public class ManageLevels : MonoBehaviour
 
         foreach (var data in levelData.layers)
         {
-
-            Debug.Log(data);
 
             if (!layers.TryGetValue(data.layer_id, out Tilemap tilemap)) break;
             foreach (var spawn in levelSpawns) Destroy(spawn);
@@ -298,7 +297,7 @@ public class ManageLevels : MonoBehaviour
             // Debug.Log("BUFFER.LENGTH: " + buffer.Length);
             string file = path.Remove(0, buffer.Length);
             file = file.Remove(file.Length-5, 5);
-            Debug.Log("FILE: " + file);
+            // Debug.Log("FILE: " + file);
 
             //Go through each customtile in the color, create it as a customtile using Resources.Load, and add it into the corresponding list of the dict
             string[] tilePalette = Directory.GetFiles(assetPath+ @"/Resources/CustomTiles/" + file, "*.asset");
@@ -307,7 +306,7 @@ public class ManageLevels : MonoBehaviour
                 //Get local path from full path, pass it into Resources.Load to grab file
                 string tileSnip = tile.Remove(0, buffer.Length);
                 tileSnip = tileSnip.Remove(tileSnip.Length-6, 6);
-                Debug.Log("SNIP: " + tileSnip);
+                // Debug.Log("SNIP: " + tileSnip);
                 CustomTile ctile = Resources.Load<CustomTile>(@"CustomTiles/" + tileSnip);
                 palettes[file].Add(ctile);
             }
