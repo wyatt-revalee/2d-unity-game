@@ -27,7 +27,6 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     // Use this for initialization
     private void Start () {
 
-        pauseMenu = GameObject.Find("PauseMenu");
         // inventory = GameObject.Find("Inventory");
 
         isPaused = false;
@@ -149,6 +148,9 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
 
     public void PauseControl()
     {
+
+        Debug.Log(pauseMenu);
+    
         if(isPaused == false)
         {
             Time.timeScale = 0f;

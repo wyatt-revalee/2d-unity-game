@@ -24,7 +24,7 @@ public class AxeProjectileBehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.layer == 11 || other.gameObject.layer == 8 || other.gameObject.layer == 13)
+        if (other.gameObject.layer == 11 || other.gameObject.layer == 8 || other.gameObject.layer == 13 || other.gameObject.layer == 15)
             enemy = other.gameObject;
         else
             enemy = null;
@@ -38,7 +38,6 @@ public class AxeProjectileBehavior : MonoBehaviour
             if (hit != null)
             {
                 attackDamage = playerScript.attackDamage;
-                Debug.Log(attackDamage);
                 bool isCritical = UnityEngine.Random.Range(0, 100) < critChance;
                 if(isCritical)
                     attackDamage *= 2;

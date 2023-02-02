@@ -118,7 +118,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &1692965873674962853
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -135,7 +135,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &1692965873771771477
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 1692965875485127215}
   - component: {fileID: 1692965875485127213}
   - component: {fileID: 9132343097263324095}
-  m_Layer: 11
+  m_Layer: 15
   m_Name: CombatCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

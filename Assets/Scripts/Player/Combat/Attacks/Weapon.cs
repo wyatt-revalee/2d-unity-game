@@ -23,7 +23,7 @@ public class Weapon : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
 
-        if (other.gameObject.layer == 11)
+        if (other.gameObject.layer == 11 || other.gameObject.layer == 15)
             enemy = other.transform.parent.gameObject;
         else
             enemy = null;

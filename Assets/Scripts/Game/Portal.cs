@@ -29,13 +29,13 @@ public class Portal : MonoBehaviour
         sceneTransParent = GameObject.Find("SceneLoader");
         sceneTransition = sceneTransParent.transform.GetChild(0).GetComponent<Animator>();
         // randomMap = UnityEngine.Random.Range(1, 5);
-        randomMap = 1;
+        randomMap = 1; //Eventually random for random level gen
         manager = GameObject.Find("Manager");
         manageLevels = manager.GetComponent<ManageLevels>();
         nextLevelInt = manageLevels.nextLevel;
-        nextLevel = "Level" + nextLevelInt.ToString() + @"\" + randomMap.ToString();
+        nextLevel = "Level" + nextLevelInt.ToString() + @"\" + nextLevelInt.ToString() + '-' + randomMap.ToString();
         currentLevelInt = manageLevels.currentLevel;
-        currentLevel = "Level" + currentLevelInt.ToString() + @"\" + randomMap.ToString();
+        currentLevel = "Level" + currentLevelInt.ToString() + @"\" + currentLevelInt.ToString() + '-' + randomMap.ToString();
         currentWorld = manageLevels.world;
         portalColor = manageLevels.worldColors[currentWorld];
         highlightColor = new Color32(System.Convert.ToByte(portalColor.r/2), System.Convert.ToByte(portalColor.g/2), System.Convert.ToByte(portalColor.b/2), 255);

@@ -22,7 +22,6 @@ public class ItemPickup : MonoBehaviour
     // Update is called once per frame
     void OnTriggerEnter2D(Collider2D item)
     {
-        Debug.Log(item.gameObject.layer);
 
         if(item.gameObject.layer == 12)
         {

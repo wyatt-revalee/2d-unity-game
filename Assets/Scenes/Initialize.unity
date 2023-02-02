@@ -885,9 +885,9 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 8880572237057677201, guid: 7250d296224b40240a3ef702adae7d92, type: 3}
     cost: 1
   - enemyPrefab: {fileID: 3312762804332744540, guid: 5f2990c4f3878b04c815b3d0bc131e5d, type: 3}
-    cost: 100
+    cost: 2
   - enemyPrefab: {fileID: 5213107265658675407, guid: d2424f8543e5cc846af5348cc63fea6b, type: 3}
-    cost: 100
+    cost: 4
   bosses:
   - bossPrefab: {fileID: 1692965874495559366, guid: db02fc8dbcad6a34a8d21303628bee5f, type: 3}
   spawnerWorldCheck: 0
@@ -905,7 +905,7 @@ MonoBehaviour:
   spawnParent: {fileID: 0}
   bossSpawn: {fileID: 0}
   spawnLocations: []
-  waveDuration: 30
+  waveDuration: 20
 --- !u!1 &804087185
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"C:/Users/Wyatt/Documents/GitHub/2d-unity-game/WebGL_Build;C:/Users/Wyatt/UnityProjects/Builds/WebGL;;;;;;;;\"}"
+                "value": "{\"m_Value\":\"C:/Users/Wyatt/Documents/GitHub/portolio-website/unityGame;C:/Users/Wyatt/Documents/GitHub/2d-unity-game/WebGL_Build;C:/Users/Wyatt/UnityProjects/Builds/WebGL;;;;;;;\"}"
             },
             {
                 "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",

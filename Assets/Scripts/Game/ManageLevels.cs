@@ -27,31 +27,43 @@ public class ManageLevels : MonoBehaviour
     public int world;
     public int currentLevel;
     public int nextLevel;
-    private string firstLevel = @"Level1\1";
+    private string firstLevel = @"Level1\1-1";
     string assetPath;
     public bool isWebGL;
     public string bundlePath;
     public bool assetsLoaded;
+    public bool levelsLoaded;
+    public bool tilesLoaded;
+
+    AssetBundle bundle;
 
     private void Start()
     {
 
+        assetPath = Application.dataPath;
+
+
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
             isWebGL = true;
+            Debug.Log("Loading assets from web");
             StartCoroutine(LoadAssetBundle(bundlePath));
-            assetsLoaded = true;
         }
         else
         {
-            isWebGL = false;
+            // isWebGL = false;
+            Debug.Log("Loading assets locally");
+            // CreateTileListsLocal();
+            // assetsLoaded = true;
+
+            isWebGL = true;
             StartCoroutine(LoadAssetBundle(bundlePath));
-            assetsLoaded = true;
+            
+
         }
 
-        assetPath = Application.dataPath;
 
-        CreateTileLists();
+
         loading = true;
         //set up the instance
         if(Instance == null)
@@ -85,6 +97,15 @@ public class ManageLevels : MonoBehaviour
     public List<CustomTile> tiles = new List<CustomTile>();
     [SerializeField] List<Tilemap> tilemaps = new List<Tilemap>();
     public Dictionary<int, Tilemap> layers = new Dictionary<int, Tilemap>();
+
+    //List of loaded levels
+    List<List<UnityEngine.Object>> levelList = new List<List<UnityEngine.Object>>();
+    List<UnityEngine.Object> shopLevels = new List<UnityEngine.Object>();
+    List<UnityEngine.Object> world1 = new List<UnityEngine.Object>();
+    List<UnityEngine.Object> world2 = new List<UnityEngine.Object>();
+    List<UnityEngine.Object> world3= new List<UnityEngine.Object>();
+    List<UnityEngine.Object> world4 = new List<UnityEngine.Object>();
+    List<UnityEngine.Object> world5 = new List<UnityEngine.Object>();
 
     //Palette Dictionary of Lists
     public Dictionary<string, List<CustomTile>> palettes = new Dictionary<string, List<CustomTile>>();
@@ -162,7 +183,15 @@ public class ManageLevels : MonoBehaviour
         List<CustomTile> currWorld = palettes[worldKey];
 
         //load the json file to a leveldata
-        string json = File.ReadAllText(assetPath+ @"\Levels\"+levelName+".json");
+        string json = "";
+        int lvl = levelName[5] - '0';
+        int sublvl = levelName[9] - '0';
+        if(lvl == 2)
+            Debug.Log(sublvl);
+        if(isWebGL)
+            json = levelList[lvl][sublvl-1].ToString();
+        else
+            json = File.ReadAllText(assetPath+ @"\Levels\"+levelName+".json");
         LevelData levelData = JsonUtility.FromJson<LevelData>(json);
 
 
@@ -254,7 +283,15 @@ public class ManageLevels : MonoBehaviour
 
     public void ClearMap(string levelName)
     {
-        string json = File.ReadAllText(assetPath+ @"\Levels\"+levelName+".json");
+        string json = "";
+        int lvl = levelName[5] - '0';
+        int sublvl = levelName[9] - '0';
+        if(lvl == 2)
+            Debug.Log(sublvl);
+        if(isWebGL)
+            json = levelList[lvl][sublvl-1].ToString();
+        else
+            json = File.ReadAllText(assetPath+ @"\Levels\"+levelName+".json");
        LevelData levelData = JsonUtility.FromJson<LevelData>(json);
 
         foreach (var data in levelData.layers)
@@ -268,6 +305,7 @@ public class ManageLevels : MonoBehaviour
     public IEnumerator StartManager()
     {
         yield return new WaitUntil(() => (SceneManager.GetActiveScene().buildIndex == 3) == true);
+        yield return new WaitUntil(() => (assetsLoaded == true));
         LoadLevel(firstLevel);
     }
 
@@ -291,7 +329,7 @@ public class ManageLevels : MonoBehaviour
         LoadLevel(levelname);
     }
 
-    public void CreateTileLists()
+    public void CreateTileListsLocal()
     {
         //Add the initialized empty lists to the dict
         palettes.Add("Red", red);
@@ -342,7 +380,11 @@ public class ManageLevels : MonoBehaviour
         List<CustomTile> currWorld = palettes[worldKey];
 
         //load the json file to a leveldata
-        string json = File.ReadAllText(assetPath+ @"\Levels\Shop.json");
+        string json;
+        if(isWebGL)
+            json = levelList[0][0].ToString();
+        else
+            json = File.ReadAllText(assetPath+ @"\Levels\Shop.json");
         LevelData levelData = JsonUtility.FromJson<LevelData>(json);
 
 
@@ -388,40 +430,29 @@ public class ManageLevels : MonoBehaviour
         Debug.Log("Shop was loaded");
     }
 
-    public void BundleTest(string[] assets)
-    {
-        foreach (var testAsset in assets)
-        {
-            Debug.Log(testAsset);
-        }
-    }
-
     private IEnumerator LoadAssetBundle(string url)
     {
         using (UnityWebRequest www = UnityWebRequestAssetBundle.GetAssetBundle(url))
         {
-            yield return www.SendWebRequest();
+                yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.LogError("Error while downloading asset bundle: " + www.error);
-                yield break;
-            }
-
-            AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
-            string[] assets = bundle.GetAllAssetNames();
-            Debug.Log(bundle);
-            assetsLoaded = true;
-
-            BundleTest(assets);
-            // GameObject prefab = bundle.LoadAsset<GameObject>("MyPrefab");
-            // Instantiate(prefab);
+                if (www.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    Debug.LogError("Error while downloading asset bundle: " + www.error);
+                    yield break;
+                }
+                
+                bundle = DownloadHandlerAssetBundle.GetContent(www);
         }
+        string[] assets = bundle.GetAllAssetNames();
+
+        yield return new WaitUntil(() => (bundle != null));
+        CreateTileListsWeb();
+        CreateLevelLists();
     }
 
-    public void CreateTileLists2()
+    public void CreateTileListsWeb()
     {
-
         //Add the initialized empty lists to the dict
         palettes.Add("Red", red);
         palettes.Add("Orange", orange);
@@ -431,6 +462,126 @@ public class ManageLevels : MonoBehaviour
         palettes.Add("Purple", purple);
         palettes.Add("White", white);
 
+        CustomTile[] tiles = bundle.LoadAllAssets<CustomTile>();
+        string[] names = bundle.GetAllAssetNames();
+        
+        foreach (var tile in tiles)
+        {
+            if(tile.name[0] == 'R')
+            {
+                palettes["Red"].Add(tile);
+            }
+
+            if(tile.name[0] == 'O')
+            {
+                palettes["Orange"].Add(tile);
+            }
+
+            if(tile.name[0] == 'Y')
+            {
+                palettes["Yellow"].Add(tile);
+            }
+
+            if(tile.name[0] == 'G')
+            {
+                palettes["Green"].Add(tile);
+            }
+
+            if(tile.name[0] == 'B')
+            {
+                palettes["Blue"].Add(tile);
+            }
+
+            if(tile.name[0] == 'P')
+            {
+                palettes["Purple"].Add(tile);
+            }
+
+            if(tile.name[0] == 'W')
+            {
+                palettes["White"].Add(tile);
+            }
+        }
+
+        // foreach (string name in names)
+        // {
+        //     Debug.Log("Name:" + name);
+        // }
+
+        tilesLoaded = true;
+        if(levelsLoaded && tilesLoaded){
+            assetsLoaded = true;
+            bundle.Unload(false);
+        }
+
+
+    }
+
+    public void CreateLevelLists()
+    {
+        
+        levelList.Add(shopLevels);
+        levelList.Add(world1);
+        levelList.Add(world2);
+        levelList.Add(world3);
+        levelList.Add(world4);
+        levelList.Add(world5);
+
+        string[] temp = bundle.GetAllAssetNames();
+        List<string> files = new List<string>();
+
+        foreach(string fileName in temp)
+        {
+            if(fileName.EndsWith(".json"))
+            {
+                files.Add(fileName);
+            }
+        
+        }
+        
+        foreach(string file in files)
+        {
+            if(file[24] == 's')
+            {
+                UnityEngine.Object level = bundle.LoadAsset(file);
+                levelList[0].Add(level);
+            }
+
+            if(file[31] == '1')
+            {
+                UnityEngine.Object level = bundle.LoadAsset(file);
+                levelList[1].Add(level);
+            }
+
+            if(file[31] == '2')
+            {
+                UnityEngine.Object level = bundle.LoadAsset(file);
+                levelList[2].Add(level);
+            }
+
+            if(file[31] == '3')
+            {
+                UnityEngine.Object level = bundle.LoadAsset(file);
+                levelList[3].Add(level);
+            }
+
+            if(file[31] == '4')
+            {
+                UnityEngine.Object level = bundle.LoadAsset(file);
+                levelList[4].Add(level);
+            }
+
+            if(file[31] == '5')
+            {
+                UnityEngine.Object level = bundle.LoadAsset(file);
+                levelList[5].Add(level);
+            }
+        }
+        levelsLoaded = true;
+        if(levelsLoaded && tilesLoaded){
+            assetsLoaded = true;
+            bundle.Unload(false);
+        }
     }
 }
 

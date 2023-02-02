@@ -241,7 +241,8 @@ public class SlimeBoss : MonoBehaviour, IDamageable, IKnockbackable
 
     private void spawnSlime()
     {
-        Vector2 spawnOffset = new Vector2(transform.position.x-2, transform.position.y);
+        int xOffset = UnityEngine.Random.Range(-2, 2);
+        Vector2 spawnOffset = new Vector2(transform.position.x + xOffset, transform.position.y+0.5f);
         Instantiate(slime, spawnOffset, Quaternion.identity);
         nextSpawn = Time.time + spawnInterval;
     }
