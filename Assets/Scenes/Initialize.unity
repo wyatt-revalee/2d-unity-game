@@ -906,6 +906,7 @@ MonoBehaviour:
   bossSpawn: {fileID: 0}
   spawnLocations: []
   waveDuration: 20
+  waveTimer: 0
 --- !u!1 &804087185
 GameObject:
   m_ObjectHideFlags: 0

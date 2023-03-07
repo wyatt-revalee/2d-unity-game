@@ -35,7 +35,7 @@ public class waveSpawner : MonoBehaviour
 
     //Intervals and timers
     public int waveDuration;
-    private float waveTimer;
+    public float waveTimer;
     private float spawnInterval;
     private float spawnTimer;
 
@@ -123,8 +123,8 @@ public class waveSpawner : MonoBehaviour
         waveValue = currWave * 10;
         GenerateEnemies();
  
-        spawnInterval = waveDuration / enemiesToSpawn.Count; // gives a fixed time between each enemies
-        waveTimer = waveDuration; // wave duration is read only
+        spawnInterval = (waveDuration * currWave) / enemiesToSpawn.Count; // gives a fixed time between each enemies
+        waveTimer = waveDuration * currWave; // wave duration is read only
     }
  
     public void GenerateEnemies()
