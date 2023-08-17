@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6596649389071708155}
   - component: {fileID: 6596649389071708154}
   - component: {fileID: 6596649389071708158}
+  - component: {fileID: 7593493320979759244}
   m_Layer: 12
   m_Name: Coin
   m_TagString: Untagged
@@ -126,7 +127,7 @@ CapsuleCollider2D:
   m_Direction: 0
 --- !u!95 &6596649389071708158
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -143,4 +144,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &7593493320979759244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6596649389071708153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c77ef1fa3b6f7498e2333863042342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceItem: {fileID: 11400000, guid: 9b0b03c4102d2fe46b3e2cf16355d206, type: 2}

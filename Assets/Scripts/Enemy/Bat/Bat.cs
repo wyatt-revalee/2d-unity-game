@@ -67,6 +67,7 @@ public class Bat : MonoBehaviour, IDamageable, IKnockbackable
 
         
         InvokeRepeating("UpdatePath", 0f, pathUpdateSeconds);
+        GetComponent<AudioSource>().Play();
     }
 
    
@@ -120,6 +121,7 @@ public class Bat : MonoBehaviour, IDamageable, IKnockbackable
 
 
     public void Damage(int damage) {
+        
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
         StartCoroutine(ShowHealth());

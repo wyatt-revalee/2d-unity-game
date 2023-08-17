@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class InventorySystem : MonoBehaviour
 {
-    public PlayerMovement playerMovement;
     private static GameObject Instance;
 
     private Dictionary<InventoryItemData, InventoryItem> m_itemDictionary;
@@ -57,7 +56,7 @@ public class InventorySystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        gameObject.SetActive(false);
+        // gameObject.SetActive(false);
     }
 
     public void Close() {

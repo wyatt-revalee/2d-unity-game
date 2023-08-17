@@ -27,8 +27,6 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     // Use this for initialization
     private void Start () {
 
-        // inventory = GameObject.Find("Inventory");
-
         isPaused = false;
 
         if(Instance == null)
@@ -182,7 +180,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     {
         if(inventoryIsOpen == false)
         {
-            Time.timeScale = 0f;
+            Time.timeScale = 0.1f;
             inventoryIsOpen = true;
             playerCanMove = false;
             Debug.Log("Inventory Opened");

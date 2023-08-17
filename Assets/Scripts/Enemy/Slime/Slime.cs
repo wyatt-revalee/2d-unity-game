@@ -126,6 +126,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
 
 
     public void Damage(int damage) {
+        GetComponent<AudioSource>().Play();
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
         StartCoroutine(ShowHealth());

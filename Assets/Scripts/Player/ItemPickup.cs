@@ -12,10 +12,12 @@ public class ItemPickup : MonoBehaviour
     public CoinCounter coinCounter;
     public Animator playerAnimator;
     private GameObject gem;
+    public InventorySystem inventory;
     // Start is called before the first frame update
     void Start()
     {
         coinCounter.SetCoinCount(playerScript.coins);
+        
         
     }
 
@@ -25,9 +27,10 @@ public class ItemPickup : MonoBehaviour
 
         if(item.gameObject.layer == 12)
         {
+            var itemPickup = item.GetComponent<Item>();
+            var itemData = itemPickup.referenceItem;
+            inventory.Add(itemData);
             Destroy(item.gameObject);
-            playerScript.coins += 1;
-            coinCounter.SetCoinCount(playerScript.coins);
         }
 
         if(item.gameObject.layer == 14)
@@ -52,11 +55,11 @@ public class ItemPickup : MonoBehaviour
         playerAnimator.SetBool("IsPickup", true);
         movementScript.playerCanMove = false;
         movementScript.rigidbody2d.velocity = new Vector2(0, 0);
-        // Time.timeScale = 0f;
+        Time.timeScale = 0.1f;
         yield return new WaitForSeconds(2.5f);
         playerAnimator.SetBool("IsPickup", false);
         Destroy(gem);
         movementScript.playerCanMove = true;
-        // Time.timeScale = 1f;
+        Time.timeScale = 1f;
     }
 }
