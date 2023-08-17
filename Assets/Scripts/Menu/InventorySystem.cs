@@ -10,6 +10,8 @@ public class InventorySystem : MonoBehaviour
 
     private Dictionary<InventoryItemData, InventoryItem> m_itemDictionary;
     public List<InventoryItem> inventory {get; private set; }
+    public GameObject InventoryUI;
+    public GameObject slotPrefab;
 
     private void Awake()
     {
@@ -56,14 +58,21 @@ public class InventorySystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        // gameObject.SetActive(false);
     }
 
-    public void Close() {
-        //Close Inventory, resume game
-        Time.timeScale = 1f;
-        gameObject.transform.parent.gameObject.SetActive(false);
+    public void DrawInventory()
+    {
+        foreach(InventoryItem item in inventory)
+        {
+            AddInventorySlot(item);
+        }
     }
+
+    public void AddInventorySlot(InventoryItem item)
+    {
+        GameObject obj = Instantiate(slotPrefab);
+    }
+
 }
 
 [System.Serializable]

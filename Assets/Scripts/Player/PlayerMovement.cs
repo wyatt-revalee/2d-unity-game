@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     //Gameflow
     public GameObject pauseMenu;
     public GameObject inventory;
+    public InventorySystem inventorySystem;
     public bool isPaused;
     public bool playerCanMove;
     public bool inventoryIsOpen;
@@ -180,6 +181,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     {
         if(inventoryIsOpen == false)
         {
+            inventorySystem.DrawInventory();
             Time.timeScale = 0.1f;
             inventoryIsOpen = true;
             playerCanMove = false;
