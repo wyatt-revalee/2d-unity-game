@@ -181,12 +181,12 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     {
         if(inventoryIsOpen == false)
         {
-            inventorySystem.DrawInventory();
             Time.timeScale = 0.1f;
             inventoryIsOpen = true;
             playerCanMove = false;
             Debug.Log("Inventory Opened");
             inventory.SetActive(true);
+            inventorySystem.DrawInventory();
             return;
         }
 
