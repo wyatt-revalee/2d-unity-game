@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 2409464613253945979}
   - component: {fileID: 2409464613253945925}
   - component: {fileID: 2409464613253945924}
-  - component: {fileID: 2409464613253945926}
+  - component: {fileID: 4301250752657812123}
   m_Layer: 5
   m_Name: CoinCounter
   m_TagString: Untagged
@@ -686,7 +686,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &2409464613253945926
+--- !u!114 &4301250752657812123
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -695,7 +695,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2409464613253945978}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc4900dcc2ee2d042a79f50c18c194d6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f494675ded4c0f498549d120714e95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   coinCount: {fileID: 2409464613253945924}

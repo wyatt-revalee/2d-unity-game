@@ -1501,8 +1501,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe91c129fd439147a437256c393f2b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1276041586}
   inventoryWrapper: {fileID: 1107721814213730872}
   slotPrefab: {fileID: 6363303440559345330, guid: b48dcaea3127de2479caeaf58dc59fc4, type: 3}
+  coinCounter: {fileID: 1856723494}
 --- !u!1 &1313382892
 GameObject:
   m_ObjectHideFlags: 0
@@ -3206,15 +3208,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1856723490 stripped
+--- !u!114 &1856723494 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2409464613253945926, guid: 7786cd181d023ab4db0750a7cb1ac68b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4301250752657812123, guid: 7786cd181d023ab4db0750a7cb1ac68b, type: 3}
   m_PrefabInstance: {fileID: 2409464612875092068}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc4900dcc2ee2d042a79f50c18c194d6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f494675ded4c0f498549d120714e95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1868685010
@@ -3620,6 +3622,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1107721812938586949, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
+      propertyPath: coin
+      value: 
+      objectReference: {fileID: 11400000, guid: 9b0b03c4102d2fe46b3e2cf16355d206, type: 2}
+    - target: {fileID: 1107721812938586949, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
       propertyPath: manaBar
       value: 
       objectReference: {fileID: 897034701}
@@ -3628,9 +3634,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1460972741}
     - target: {fileID: 1107721812938586949, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 1276041599}
+    - target: {fileID: 1107721812938586949, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
       propertyPath: coinCounter
       value: 
-      objectReference: {fileID: 1856723490}
+      objectReference: {fileID: 1856723494}
     - target: {fileID: 1107721812938586949, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
       propertyPath: managerScript
       value: 
@@ -3658,7 +3668,7 @@ PrefabInstance:
     - target: {fileID: 1107721813409500975, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
       propertyPath: coinCounter
       value: 
-      objectReference: {fileID: 1856723490}
+      objectReference: {fileID: 0}
     - target: {fileID: 1107721814016398256, guid: f0ea0fc44a30bb24d8c3193a105c73b7, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter
@@ -3897,6 +3907,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4301250752657812123, guid: 7786cd181d023ab4db0750a7cb1ac68b, type: 3}
+      propertyPath: coin
+      value: 
+      objectReference: {fileID: 11400000, guid: 9b0b03c4102d2fe46b3e2cf16355d206, type: 2}
+    - target: {fileID: 4301250752657812123, guid: 7786cd181d023ab4db0750a7cb1ac68b, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1276041586}
+    - target: {fileID: 4301250752657812123, guid: 7786cd181d023ab4db0750a7cb1ac68b, type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 1276041599}
     - target: {fileID: 4506533444658345581, guid: 7786cd181d023ab4db0750a7cb1ac68b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3945,7 +3967,8 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2409464613253945926, guid: 7786cd181d023ab4db0750a7cb1ac68b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7786cd181d023ab4db0750a7cb1ac68b, type: 3}
 --- !u!1001 &3682683856402566182
 PrefabInstance:

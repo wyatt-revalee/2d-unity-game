@@ -6,13 +6,15 @@ using TMPro;
 
 public class CoinCounter : MonoBehaviour
 {
-
-    public TMP_Text coinCount;
     public Player player;
+    public TMP_Text coinCount;
+    public InventorySystem inventory;
+    public InventoryItemData coin;
 
     public void SetCoinCount(int coins) {
         coinCount = GetComponent<TMP_Text>();
-        coinCount.text = "  x" + player.coins.ToString();
+        coinCount.text = " x" + coins.ToString();
+
     }
 
 }

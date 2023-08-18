@@ -19,7 +19,7 @@ public class Player : MonoBehaviour, IDamageable{
     public bool isGrounded;
     private int currentWorld = 0;
 
-    // Health and Money
+    // Health and Inventory
     [Header("Health and Combat")]
     public CoinCounter coinCounter;
     public HealthBar healthBar;
@@ -30,7 +30,6 @@ public class Player : MonoBehaviour, IDamageable{
     public Transform LaunchOffset;
     public GameObject spinCooldownIcon;
     private AbilityIcon spinAttackScript;
-    public int coins;
     public int maxHealth = 10;
     public int currentHealth;
     public float maxMana = 100f;
@@ -48,6 +47,12 @@ public class Player : MonoBehaviour, IDamageable{
     float nextAttackTime = 0f;
     private float nextSpinTime = 0f;
     private float spinCooldown = 5f;
+
+    [Header("Inventory")]
+    public InventoryItemData coin;
+    public InventorySystem inventory;
+    public int coinCount;
+
 
     [Header("Iframe Variables")]
     public Collider2D combatCollider;
@@ -160,8 +165,9 @@ public class Player : MonoBehaviour, IDamageable{
     }
 
     public void Purchase(int coinCost) {
-        coins -= coinCost;
-        coinCounter.SetCoinCount(coins);
+        coinCount -= coinCost;
+        inventory.m_itemDictionary[coin].stackSize -= coinCost;
+        coinCounter.SetCoinCount(coinCount);
     }
 
     void PrimaryAttack()

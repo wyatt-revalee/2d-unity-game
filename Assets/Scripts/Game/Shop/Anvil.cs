@@ -70,7 +70,7 @@ public class Anvil : MonoBehaviour
     public void Upgrade(string upgradeID)
     {
         int cost = 5;
-        if(playerscript.coins >= cost)
+        if(playerscript.coinCount >= cost)
         {
             Invoke(upgradeID, 0f);
             playerscript.Purchase(cost);
@@ -104,7 +104,7 @@ public class Anvil : MonoBehaviour
     void HealPlayer()
     {
         // If player has enough money, and is not full health
-        if(playerscript.coins > 5 && playerscript.currentHealth != playerscript.maxHealth) {
+        if(playerscript.coinCount > 5 && playerscript.currentHealth != playerscript.maxHealth) {
             //Heal player, take payment
             playerscript.Heal();
             playerscript.Purchase(healCost);
@@ -113,7 +113,7 @@ public class Anvil : MonoBehaviour
 
     void GetPlayerCurrency()
     {
-        playerCurrency.text = "    " + playerscript.coins.ToString();
+        playerCurrency.text = "    " + playerscript.coinCount.ToString();
     }
 
     void DoNothing()    //Empty script for upgradeID to be assigned until runtime.

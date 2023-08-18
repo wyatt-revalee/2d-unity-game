@@ -8,12 +8,14 @@ using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
 {
-    private static GameObject Instance;
+    public static GameObject Instance;
 
-    private Dictionary<InventoryItemData, InventoryItem> m_itemDictionary;
+    public Player player;
+    public Dictionary<InventoryItemData, InventoryItem> m_itemDictionary;
     public List<InventoryItem> inventory {get; private set; }
     public GameObject inventoryWrapper;
     public GameObject slotPrefab;
+    public CoinCounter coinCounter;
 
     private void Awake()
     {
@@ -26,12 +28,23 @@ public class InventorySystem : MonoBehaviour
         if(m_itemDictionary.TryGetValue(referenceData, out InventoryItem value))
         {
             value.AddToStack();
+            if (referenceData.id == "coin")
+            {
+                coinCounter.SetCoinCount(value.stackSize);
+                player.coinCount += 1;
+            }
         }
         else
         {
             InventoryItem newItem = new InventoryItem(referenceData);
             inventory.Add(newItem);
             m_itemDictionary.Add(referenceData, newItem);
+
+            if (referenceData.id == "coin")
+            {
+                coinCounter.SetCoinCount(1);
+                player.coinCount = 1;
+            }
         }
     }
 
@@ -107,7 +120,7 @@ public class InventorySystem : MonoBehaviour
 public class InventoryItem
 {
     public InventoryItemData data {get; private set; }
-    public int stackSize { get; private set; }
+    public int stackSize { get; set; }
 
     public InventoryItem(InventoryItemData source)
     {

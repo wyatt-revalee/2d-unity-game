@@ -181,7 +181,7 @@ public class PlayerMovement : MonoBehaviour, IKnockbackable {
     {
         if(inventoryIsOpen == false)
         {
-            Time.timeScale = 0.1f;
+            Time.timeScale = 0.001f;
             inventoryIsOpen = true;
             playerCanMove = false;
             Debug.Log("Inventory Opened");
