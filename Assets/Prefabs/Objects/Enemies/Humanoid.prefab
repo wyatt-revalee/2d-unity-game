@@ -205,7 +205,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   combatCollider: {fileID: 5213107266816525348}
-  coinDrop: {fileID: 6596649389071708153, guid: 7d9ab96e7f2503f4aa3cb83a614a9d63, type: 3}
+  coinDrop: {fileID: 2447902326604399970, guid: 085579fffa063f3488151a1f5a4c3459, type: 3}
   healthBar: {fileID: 5213107267183438827}
   healthBarVisual: {fileID: 5213107267183438826}
   attackDamage: 0

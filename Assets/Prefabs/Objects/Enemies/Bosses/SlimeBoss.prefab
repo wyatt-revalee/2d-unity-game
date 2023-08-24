@@ -360,7 +360,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   combatCollider: {fileID: 1692965875485127213}
-  coinDrop: {fileID: 6596649389071708153, guid: 7d9ab96e7f2503f4aa3cb83a614a9d63, type: 3}
+  coinDrop: {fileID: 2447902326604399970, guid: 085579fffa063f3488151a1f5a4c3459, type: 3}
   healthBar: {fileID: 1692965874857975266}
   healthBarVisual: {fileID: 1692965874857975267}
   slime: {fileID: 8880572237057677201, guid: 7250d296224b40240a3ef702adae7d92, type: 3}

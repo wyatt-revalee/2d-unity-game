@@ -420,7 +420,10 @@ MonoBehaviour:
   knockbackY: 30
   knockbackX: 30
   attackSpeed: 2
-  coin: {fileID: 11400000, guid: 9b0b03c4102d2fe46b3e2cf16355d206, type: 2}
+  coin:
+    displayName: 
+    icon: {fileID: 0}
+    id: 
   inventory: {fileID: 9065531237926039662}
   coinCount: 0
   combatCollider: {fileID: 9065531237672409729}
