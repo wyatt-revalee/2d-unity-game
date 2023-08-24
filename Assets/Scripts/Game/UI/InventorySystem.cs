@@ -11,21 +11,42 @@ public class InventorySystem : MonoBehaviour
     public static GameObject Instance;
 
     public Player player;
-    public Dictionary<InventoryItemData, InventoryItem> m_itemDictionary;
+    public Dictionary<string, InventoryItem> m_itemDictionary;
     public List<InventoryItem> inventory {get; private set; }
     public GameObject inventoryWrapper;
     public GameObject slotPrefab;
     public CoinCounter coinCounter;
+    public GameObject gemSlotter;
 
     private void Awake()
     {
         inventory = new List<InventoryItem>();
-        m_itemDictionary = new Dictionary<InventoryItemData, InventoryItem>();
+        m_itemDictionary = new Dictionary<string, InventoryItem>();
+        StartCoroutine(CallItemUpdate());
+    }
+
+    IEnumerator CallItemUpdate()
+    {
+        foreach (InventoryItem i in inventory)
+        {
+            i.data.item.Update(player, i.stackSize);
+        }
+
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(CallItemUpdate());
+    }
+
+    public void CallItemOnHit(IDamageable enemy)
+    {
+        foreach (InventoryItem i in inventory)
+        {
+            i.data.item.OnHit(player, enemy, i.stackSize);
+        }
     }
 
     public void Add(InventoryItemData referenceData)
-    {
-        if(m_itemDictionary.TryGetValue(referenceData, out InventoryItem value))
+    {   
+        if(m_itemDictionary.TryGetValue(referenceData.id, out InventoryItem value))
         {
             value.AddToStack();
             if (referenceData.id == "coin")
@@ -38,7 +59,7 @@ public class InventorySystem : MonoBehaviour
         {
             InventoryItem newItem = new InventoryItem(referenceData);
             inventory.Add(newItem);
-            m_itemDictionary.Add(referenceData, newItem);
+            m_itemDictionary.Add(referenceData.id, newItem);
 
             if (referenceData.id == "coin")
             {
@@ -50,30 +71,24 @@ public class InventorySystem : MonoBehaviour
 
     public void Remove(InventoryItemData referenceData)
     {
-        if(m_itemDictionary.TryGetValue(referenceData, out InventoryItem value))
+        if(m_itemDictionary.TryGetValue(referenceData.id, out InventoryItem value))
         {
             value.RemoveFromStack();
 
             if(value.stackSize == 0)
             {
                 inventory.Remove(value);
-                m_itemDictionary.Remove(referenceData);
+                m_itemDictionary.Remove(referenceData.id);
             }
         }
     }
 
-    void Start()
+    public void AddGem(int slotNum)
     {
-        gameObject.SetActive(true);
-        if(Instance == null)
-        {
-            Instance = gameObject;
-            DontDestroyOnLoad(gameObject);
-        } else
-        {
-            Destroy(gameObject);
-        }
+        GemSlot gem = gemSlotter.transform.GetChild(slotNum).GetComponent<GemSlot>();
+        gem.AddGem();
     }
+
 
     public void DrawInventory()
     {
@@ -82,7 +97,7 @@ public class InventorySystem : MonoBehaviour
         foreach(Transform child in inventoryWrapper.transform){
             Destroy(child.gameObject);
         }
-        Debug.Log("Drawing Inventory");
+        // Debug.Log("Drawing Inventory");
         foreach(InventoryItem item in inventory)
         {
             AddInventorySlot(item);
@@ -94,7 +109,7 @@ public class InventorySystem : MonoBehaviour
     {
         GameObject slot = Instantiate(slotPrefab); //Intialize new slot
 
-        // Grab the image of the slot, set to the item's icon
+        // Grab the image, name, and stack size of the item, set them to the UI
         var image = slot.transform.GetChild(0).gameObject.GetComponent<Image>();
         image.sprite = item.data.icon;
 
@@ -104,14 +119,9 @@ public class InventorySystem : MonoBehaviour
         var itemStack = slot.transform.GetChild(2).gameObject.GetComponent<TMP_Text>();
         itemStack.text = item.stackSize.ToString();
 
+        // Add new slot to inventory
         slot.transform.SetParent(inventoryWrapper.transform);
 
-
-
-
-        // itemImage = this.gameObject.transform.GetChild(0).gameObject.GetComponent<Image>();
-        //     itemName = this.gameObject.transform.GetChild(1).gameObject.GetComponent<TMP_Text>();
-        //     stackSize = this.gameObject.transform.GetChild(2).gameObject.GetComponent<TMP_Text>();
     }
 
 }

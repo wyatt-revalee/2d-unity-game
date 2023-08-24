@@ -73,7 +73,7 @@ public class Player : MonoBehaviour, IDamageable{
         heavyDamage = baseDamage+1;
         attackDamage = meleeDamage;
         currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+        healthBar.SetMaxHealth(currentHealth);
         currentMana = maxMana;
         manaBar.SetMaxMana(maxMana);
         playerSprite.color = managerScript.worldColors[managerScript.world];
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour, IDamageable{
                 }
                 if(Input.GetMouseButtonDown(0))
                 {
-                    PrimaryAttack();
+                    StartCoroutine(PrimaryAttack());
                     nextAttackTime = Time.time + 1f / attackSpeed;
                 }
                 if(!isGrounded && Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.S))
@@ -166,16 +166,19 @@ public class Player : MonoBehaviour, IDamageable{
 
     public void Purchase(int coinCost) {
         coinCount -= coinCost;
-        inventory.m_itemDictionary[coin].stackSize -= coinCost;
+        inventory.m_itemDictionary["coin"].stackSize -= coinCost;
         coinCounter.SetCoinCount(coinCount);
     }
 
-    void PrimaryAttack()
+    IEnumerator PrimaryAttack()
     {
         //Play animation
         attackDamage = meleeDamage;
         animator.SetTrigger("Attack");
-        
+        animator.SetBool("IsAttacking", true);
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("IsAttacking", false);
+
     }
 
     void SecondaryAttack()

@@ -51,13 +51,13 @@ public class ManageLevels : MonoBehaviour
         }
         else
         {
-            // isWebGL = false;
+            isWebGL = false;
             Debug.Log("Loading assets locally");
-            // CreateTileListsLocal();
-            // assetsLoaded = true;
+            CreateTileListsLocal();
+            assetsLoaded = true;
 
-            isWebGL = true;
-            StartCoroutine(LoadAssetBundle(bundlePath));
+            // isWebGL = true;
+            // StartCoroutine(LoadAssetBundle(bundlePath));
             
 
         }

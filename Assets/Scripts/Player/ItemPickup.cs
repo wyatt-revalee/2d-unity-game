@@ -13,11 +13,12 @@ public class ItemPickup : MonoBehaviour
     public Animator playerAnimator;
     private GameObject gem;
     public InventorySystem inventory;
+    public int currentGemSlot;
     // Start is called before the first frame update
     void Start()
     {
         coinCounter.SetCoinCount(playerScript.coinCount);
-        
+        currentGemSlot = 0;
         
     }
 
@@ -25,16 +26,8 @@ public class ItemPickup : MonoBehaviour
     void OnTriggerEnter2D(Collider2D item)
     {
 
-        if(item.gameObject.layer == 12)
-        {
-            var itemPickup = item.GetComponent<Item>();
-            var itemData = itemPickup.referenceItem;
-            inventory.Add(itemData);
-            Destroy(item.gameObject);
-        }
-
         if(item.gameObject.layer == 14)
-            GemPickup(item.gameObject);
+            GemPickup(item.gameObject); 
         
     }
 
@@ -56,10 +49,12 @@ public class ItemPickup : MonoBehaviour
         movementScript.playerCanMove = false;
         movementScript.rigidbody2d.velocity = new Vector2(0, 0);
         Time.timeScale = 0.1f;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(0.5f);
         playerAnimator.SetBool("IsPickup", false);
         Destroy(gem);
         movementScript.playerCanMove = true;
+        inventory.AddGem(currentGemSlot);
+        currentGemSlot += 1;
         Time.timeScale = 1f;
     }
 }

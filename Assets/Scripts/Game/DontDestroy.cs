@@ -7,7 +7,6 @@ public class DontDestroy : MonoBehaviour
 {
 
     private static GameObject Instance;
-    public GameObject mainCam;
     
     // Start is called before the first frame update
     void Start()

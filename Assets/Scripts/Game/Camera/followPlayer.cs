@@ -13,12 +13,12 @@ public class followPlayer : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.Find ("PlayerCharacter");
+        player = GameObject.Find("PlayerCharacter");
     }
     void Update()
     {
         if(player == null)
-            player = GameObject.Find ("PlayerCharacter");
+            player = GameObject.Find("PlayerCharacter");
 
 
         transform.position = player.transform.position + new Vector3(-1, 0, -5);

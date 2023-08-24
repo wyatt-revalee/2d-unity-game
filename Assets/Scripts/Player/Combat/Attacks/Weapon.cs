@@ -40,7 +40,8 @@ public class Weapon : MonoBehaviour
                 bool isCritical = UnityEngine.Random.Range(0, 100) < critChance;
                 if(isCritical)
                     attackDamage *= 2;
-                hit.Damage(attackDamage);
+                // hit.Damage(attackDamage);
+                player.inventory.CallItemOnHit(hit);
                 DamagePopup.Create(enemy.transform.position, attackDamage, isCritical);
             }
 
