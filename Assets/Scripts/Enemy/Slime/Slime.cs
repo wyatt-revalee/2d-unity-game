@@ -100,25 +100,7 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
 
     }
 
-    IEnumerator CallBuffUpdate()
-    {
-        List<InventoryItem> tempBuffs = new List<InventoryItem>(buffInv);
-        foreach (InventoryItem i in tempBuffs)
-        {
-            if(i.itemBuffTime > 0)
-            {
-                i.data.item.UpdateEnemy(this, i.stackSize);
-                i.DecBuffTime();
-            }
-            else
-            {
-                RemoveBuff(i.data);
-            }
-        }
-
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(CallBuffUpdate());
-    }
+    
     
     public void Knockback(float knockbackPwrX, float knockbackPwrY, Transform obj)
     {
@@ -171,6 +153,26 @@ public class Slime : MonoBehaviour, IDamageable, IKnockbackable
         }
     }
 
+    // Buff Stuff
+    IEnumerator CallBuffUpdate()
+    {
+        List<InventoryItem> tempBuffs = new List<InventoryItem>(buffInv);
+        foreach (InventoryItem i in tempBuffs)
+        {
+            if (i.itemBuffTime > 0)
+            {
+                i.data.item.UpdateEnemy(this, i.stackSize);
+                i.DecBuffTime();
+            }
+            else
+            {
+                RemoveBuff(i.data);
+            }
+        }
+
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(CallBuffUpdate());
+    }
     public void AddBuff(InventoryItemData itemData)
     {
 

@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-
+using TMPro;
+using UnityEngine.UI;
 public class SlimeBoss : MonoBehaviour, IDamageable, IKnockbackable
 {
 
@@ -56,6 +57,11 @@ public class SlimeBoss : MonoBehaviour, IDamageable, IKnockbackable
     Seeker seeker;
     Rigidbody2D rb;
 
+    public Dictionary<string, InventoryItem> buffDict;
+    public List<InventoryItem> buffInv { get; private set; }
+    public GameObject BuffBar;
+    public GameObject buffSlot;
+
     public void Start() 
     {
         manager = GameObject.Find("Manager");
@@ -77,12 +83,17 @@ public class SlimeBoss : MonoBehaviour, IDamageable, IKnockbackable
 
         
         InvokeRepeating("UpdatePath", 0f, pathUpdateSeconds);
+
+        buffInv = new List<InventoryItem>();
+        buffDict = new Dictionary<string, InventoryItem>();
+        StartCoroutine(CallBuffUpdate());
     }
 
    
 
     private void FixedUpdate()
     {
+        UpdateBuffUI();
         if (TargetInDistance() && followEnabled)
         {
             PathFollow();
@@ -148,14 +159,77 @@ public class SlimeBoss : MonoBehaviour, IDamageable, IKnockbackable
             spawnInterval = 2f;
     }
 
+    IEnumerator CallBuffUpdate()
+    {
+        List<InventoryItem> tempBuffs = new List<InventoryItem>(buffInv);
+        foreach (InventoryItem i in tempBuffs)
+        {
+            if (i.itemBuffTime > 0)
+            {
+                i.data.item.UpdateEnemy(this, i.stackSize);
+                i.DecBuffTime();
+            }
+            else
+            {
+                RemoveBuff(i.data);
+            }
+        }
+
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(CallBuffUpdate());
+    }
     public void AddBuff(InventoryItemData itemData)
     {
 
+        if (buffDict.TryGetValue(itemData.id, out InventoryItem value))
+        {
+            value.AddToStack();
+        }
+        else
+        {
+            InventoryItem buffToAdd = new InventoryItem(itemData);
+            buffInv.Add(buffToAdd);
+            buffDict.Add(itemData.id, buffToAdd);
+
+        }
     }
 
     public void RemoveBuff(InventoryItemData itemData)
     {
+        if (buffDict.TryGetValue(itemData.id, out InventoryItem value))
+        {
+            value.RemoveFromStack();
 
+            if (value.stackSize == 0)
+            {
+                buffInv.Remove(value);
+                buffDict.Remove(itemData.id);
+            }
+        }
+
+    }
+
+    public void UpdateBuffUI()
+    {
+        foreach (Transform child in BuffBar.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        // Debug.Log("Drawing Inventory");
+        foreach (InventoryItem buffItem in buffInv)
+        {
+            if (buffItem.stackSize > 0)
+            {
+                GameObject newBuff = Instantiate(buffSlot, BuffBar.transform, false);
+
+                var image = newBuff.transform.GetChild(0).gameObject.GetComponent<Image>();
+                image.sprite = buffItem.data.icon;
+
+                var buffStack = newBuff.transform.GetChild(1).gameObject.GetComponent<TMP_Text>();
+                buffStack.text = buffItem.stackSize.ToString();
+
+            }
+        }
     }
 
     private void UpdatePath()
