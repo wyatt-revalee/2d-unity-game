@@ -42,6 +42,7 @@ public class Weapon : MonoBehaviour
                     attackDamage *= 2;
                 // hit.Damage(attackDamage);
                 player.inventory.CallItemOnHit(hit);
+                player.inventory.CallDebuffOnHit(hit);
                 DamagePopup.Create(enemy.transform.position, attackDamage, isCritical);
             }
 

@@ -159,6 +159,16 @@ public class Player : MonoBehaviour, IDamageable{
 
     }
 
+    public void AddBuff(InventoryItemData itemData)
+    {
+
+    }
+
+    public void RemoveBuff(InventoryItemData itemData)
+    {
+
+    }
+
     public void Heal() {
         currentHealth = maxHealth;
         healthBar.SetHealth(currentHealth);

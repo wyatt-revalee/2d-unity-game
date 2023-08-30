@@ -20,7 +20,7 @@ public class ItemDrop : MonoBehaviour
         if (other.tag == "Player")
         {
             Player player = other.transform.parent.gameObject.GetComponent<Player>();
-            player.inventory.Add(new InventoryItemData(item, item.GiveName(), this.GetComponent<SpriteRenderer>().sprite, item.GiveId()));
+            player.inventory.Add(new InventoryItemData(item, item.GiveName(), this.GetComponent<SpriteRenderer>().sprite, item.GiveId(), item.IsBuff(), item.GiveBuffTime()));
             Destroy(gameObject);
         }
     }

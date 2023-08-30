@@ -12,12 +12,16 @@ public class InventoryItemData
    public string displayName;
    public Sprite icon;
    public string id;
+   public bool isBuff;
+   public int buffTime;
 
-   public InventoryItemData(Item newItem, string newName, Sprite newSprite, string NewId)
+   public InventoryItemData(Item newItem, string newName, Sprite newSprite, string NewId, bool newIsBuff, int newBuffTime)
    {
       item = newItem;
       displayName = newName;
       icon = newSprite;
       id = NewId;
+      isBuff = newIsBuff;
+      buffTime = newBuffTime;
    }
 }

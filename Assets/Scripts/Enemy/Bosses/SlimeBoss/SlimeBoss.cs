@@ -148,6 +148,16 @@ public class SlimeBoss : MonoBehaviour, IDamageable, IKnockbackable
             spawnInterval = 2f;
     }
 
+    public void AddBuff(InventoryItemData itemData)
+    {
+
+    }
+
+    public void RemoveBuff(InventoryItemData itemData)
+    {
+
+    }
+
     private void UpdatePath()
     {
         if (followEnabled && TargetInDistance() && seeker.IsDone())

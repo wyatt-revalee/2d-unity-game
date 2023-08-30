@@ -29,7 +29,7 @@ public class InventorySystem : MonoBehaviour
     {
         foreach (InventoryItem i in inventory)
         {
-            i.data.item.Update(player, i.stackSize);
+            i.data.item.UpdatePlayer(player, i.stackSize);
         }
 
         yield return new WaitForSeconds(1f);
@@ -43,6 +43,19 @@ public class InventorySystem : MonoBehaviour
             i.data.item.OnHit(player, enemy, i.stackSize);
         }
     }
+
+    public void CallDebuffOnHit(IDamageable enemy)
+    {
+        foreach (InventoryItem i in inventory)
+        {
+            if (i.data.item.IsBuff())
+            {
+                enemy.AddBuff(i.data);
+            }
+        }
+    }
+
+
 
     public void Add(InventoryItemData referenceData)
     {   
@@ -131,10 +144,12 @@ public class InventoryItem
 {
     public InventoryItemData data {get; private set; }
     public int stackSize { get; set; }
+    public int itemBuffTime {get; set;}
 
     public InventoryItem(InventoryItemData source)
     {
         data = source;
+        itemBuffTime = source.buffTime;
         AddToStack();
     }
 
@@ -146,5 +161,10 @@ public class InventoryItem
     public void RemoveFromStack()
     {
         stackSize--;
+    }
+
+    public void DecBuffTime()
+    {
+        itemBuffTime--;
     }
 }
