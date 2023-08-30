@@ -1,3 +1,12 @@
+Refactoring:
+    - **Big Project** Probably should go through both player and enemies' scripts and make them cleaner (headers, comments, code layout, etc) enemies should probably inherit from an abstract class
+        Scripts are starting to turn to spaghetti and need to be maintained sooner rather than later.
+    - Buff inventory can maybe be a regular inventory? Items already have a buff tag which can be used to distinguish between items to call buff updates on.
+    - Should proably make a class for all the buff stuff, just to keep it better organized. Static procedures (is that the right word? Functions should just be nearly identical across implemenations).
+    - Enemy abstract class could also make use of the IDamageable, IKnockbackable, and IBuffable (need to reimplement) classes in their definitions.
+    - Players and enemies should get their stats from a separate script / file. Items and other things can update this file, and then call an update method on the enemy/player to update their stats.
+    - Player probably doesn't need the item pick up collider anymore
+
 Bugs:
     - While in air, player can cling to walls
         - Could be a feature, but needs proper animations
